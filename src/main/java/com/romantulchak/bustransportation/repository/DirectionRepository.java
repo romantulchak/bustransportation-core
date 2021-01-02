@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DirectionRepository extends JpaRepository<Direction, Long> {
+    boolean existsDirectionByDirection(String direction);
 }

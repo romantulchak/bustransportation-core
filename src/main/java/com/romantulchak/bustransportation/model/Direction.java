@@ -1,5 +1,7 @@
 package com.romantulchak.bustransportation.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -8,26 +10,26 @@ public class Direction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(View.BusView.class)
     private long id;
+    @JsonView(View.BusView.class)
+    private String directionFrom;
+    @JsonView(View.BusView.class)
+    private String directionTo;
 
-    public String directionFrom;
+    private String direction;
+    @JsonView(View.BusView.class)
+    private int distance;
 
-    public String directionTo;
-
-    public String direction;
-
-    public int distance;
-
-    public int maxSeats;
 
     @OneToMany(mappedBy = "direction", cascade = CascadeType.ALL)
-    public List<Seat> seats;
+    private List<Seat> seats;
 
-    @ManyToOne
-    public Bus bus;
+    @ManyToMany
+    private List<Bus> buses;
 
     public String getDirection() {
-        return directionFrom + " - " + directionTo;
+        return direction;
     }
 
     public long getId() {
@@ -58,12 +60,12 @@ public class Direction {
         this.direction = direction;
     }
 
-    public Bus getBus() {
-        return bus;
+    public List<Bus> getBuses() {
+        return buses;
     }
 
-    public void setBus(Bus bus) {
-        this.bus = bus;
+    public void setBuses(List<Bus> buses) {
+        this.buses = buses;
     }
 
     public int getDistance() {
@@ -72,14 +74,6 @@ public class Direction {
 
     public void setDistance(int distance) {
         this.distance = distance;
-    }
-
-    public int getMaxSeats() {
-        return maxSeats;
-    }
-
-    public void setMaxSeats(int maxSeats) {
-        this.maxSeats = maxSeats;
     }
 
     public List<Seat> getSeats() {

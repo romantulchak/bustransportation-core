@@ -17,11 +17,11 @@ public class BusDTO {
     private String busName;
 
     @JsonView(View.BusView.class)
-    private String carBrand;
+    private String busBrand;
 
     @JsonView(View.BusView.class)
     private int numberOfSeats;
-
+    @JsonView(View.BusView.class)
     private List<Direction> directions;
 
     public BusDTO(){
@@ -30,7 +30,7 @@ public class BusDTO {
     public BusDTO(Bus bus) {
         this.id = bus.getId();
         this.busName = bus.getBusName();
-        this.carBrand = bus.getCarBrand();
+        this.busBrand = bus.getBusBrand();
         this.numberOfSeats = bus.getNumberOfSeats();
         this.directions = bus.getDirections();
     }
@@ -51,12 +51,12 @@ public class BusDTO {
         this.busName = busName;
     }
 
-    public String getCarBrand() {
-        return carBrand;
+    public String getBusBrand() {
+        return busBrand;
     }
 
-    public void setCarBrand(String carBrand) {
-        this.carBrand = carBrand;
+    public void setBusBrand(String carBrand) {
+        this.busBrand = carBrand;
     }
 
     public int getNumberOfSeats() {

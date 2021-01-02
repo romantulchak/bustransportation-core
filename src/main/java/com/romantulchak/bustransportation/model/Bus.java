@@ -11,11 +11,14 @@ public class Bus {
 
     private String busName;
 
-    private String carBrand;
+    private String busBrand;
 
     private int numberOfSeats;
 
-    @OneToMany(mappedBy = "bus", cascade = CascadeType.ALL)
+    @ManyToMany
+    @JoinTable(name = "bus_directions",
+            joinColumns = @JoinColumn(name = "bus_id"),
+            inverseJoinColumns = @JoinColumn(name="direction_id"))
     private List<Direction> directions;
 
     public int getNumberOfSeats() {
@@ -26,9 +29,6 @@ public class Bus {
         this.busName = busName;
     }
 
-    public void setCarBrand(String carBrand) {
-        this.carBrand = carBrand;
-    }
 
     public void setId(long id) {
         this.id = id;
@@ -46,10 +46,6 @@ public class Bus {
         return busName;
     }
 
-    public String getCarBrand() {
-        return carBrand;
-    }
-
     public List<Direction> getDirections() {
         return directions;
     }
@@ -58,4 +54,11 @@ public class Bus {
         this.directions = directions;
     }
 
+    public String getBusBrand() {
+        return busBrand;
+    }
+
+    public void setBusBrand(String busBrand) {
+        this.busBrand = busBrand;
+    }
 }
