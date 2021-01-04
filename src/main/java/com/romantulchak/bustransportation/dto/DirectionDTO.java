@@ -27,10 +27,6 @@ public class DirectionDTO {
     @JsonView(View.DirectionView.class)
     public int distance;
 
-    @JsonView(View.DirectionView.class)
-    public List<Seat> seats;
-
-    public List<Bus> buses;
 
     public DirectionDTO(Direction direction){
         this.id = direction.getId();
@@ -38,8 +34,6 @@ public class DirectionDTO {
         this.directionTo = direction.getDirectionTo();
         this.direction = direction.getDirection();
         this.distance = direction.getDistance();
-        this.seats = direction.getSeats();
-        this.buses = direction.getBuses();
     }
     public DirectionDTO(Direction direction, int maxSeats){
         this.id = direction.getId();
@@ -47,8 +41,6 @@ public class DirectionDTO {
         this.directionTo = direction.getDirectionTo();
         this.direction = direction.getDirection();
         this.distance = direction.getDistance();
-        this.seats = direction.getSeats();
-        this.buses = direction.getBuses();
     }
 
     public long getId() {
@@ -91,19 +83,4 @@ public class DirectionDTO {
         this.distance = distance;
     }
 
-    public List<Seat> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
-    }
-
-    public List<Bus> getBuses() {
-        return buses;
-    }
-
-    public void setBuses(List<Bus> buses) {
-        this.buses = buses;
-    }
 }

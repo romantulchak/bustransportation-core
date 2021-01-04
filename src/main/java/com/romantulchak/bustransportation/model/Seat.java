@@ -10,11 +10,11 @@ public class Seat {
 
     private int seatNumber;
 
-    @ManyToOne
-    private Direction direction;
-
     @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
     private User user;
+
+    @ManyToOne
+    private Trip trip;
 
     public long getId() {
         return id;
@@ -32,19 +32,19 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
     }
 }

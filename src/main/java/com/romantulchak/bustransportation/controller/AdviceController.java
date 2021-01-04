@@ -1,9 +1,6 @@
 package com.romantulchak.bustransportation.controller;
 
-import com.romantulchak.bustransportation.exception.BusAlreadyExistException;
-import com.romantulchak.bustransportation.exception.BusNotFoundException;
-import com.romantulchak.bustransportation.exception.DirectionAlreadyExistException;
-import com.romantulchak.bustransportation.exception.DirectionNotFoundException;
+import com.romantulchak.bustransportation.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -44,5 +41,10 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> handleDirectionAlreadyExistException(DirectionAlreadyExistException ex, WebRequest webRequest){
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(TripNotFoundException.class)
+    public ResponseEntity<?> handleTripNotFoundException(TripNotFoundException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 }

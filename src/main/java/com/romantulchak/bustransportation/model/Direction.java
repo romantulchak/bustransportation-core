@@ -16,17 +16,10 @@ public class Direction {
     private String directionFrom;
     @JsonView(View.BusView.class)
     private String directionTo;
-
+    @JsonView({View.TripView.class})
     private String direction;
     @JsonView(View.BusView.class)
     private int distance;
-
-
-    @OneToMany(mappedBy = "direction", cascade = CascadeType.ALL)
-    private List<Seat> seats;
-
-    @ManyToMany
-    private List<Bus> buses;
 
     public String getDirection() {
         return direction;
@@ -60,14 +53,6 @@ public class Direction {
         this.direction = direction;
     }
 
-    public List<Bus> getBuses() {
-        return buses;
-    }
-
-    public void setBuses(List<Bus> buses) {
-        this.buses = buses;
-    }
-
     public int getDistance() {
         return distance;
     }
@@ -76,11 +61,4 @@ public class Direction {
         this.distance = distance;
     }
 
-    public List<Seat> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
-    }
 }

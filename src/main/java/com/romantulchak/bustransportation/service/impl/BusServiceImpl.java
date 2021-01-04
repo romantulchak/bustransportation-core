@@ -19,7 +19,6 @@ public class BusServiceImpl implements BusService, CrudService<Bus, BusDTO> {
 
     private final BusRepository busRepository;
 
-
     @Autowired
     public BusServiceImpl(BusRepository busRepository){
         this.busRepository = busRepository;
@@ -62,24 +61,6 @@ public class BusServiceImpl implements BusService, CrudService<Bus, BusDTO> {
     @Override
     public List<BusDTO> getBuses() {
         return busRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public void addDirection(Bus bus, List<Direction> directions) {
-        if(bus != null){
-            int currentNumberOfDirections = bus.getDirections().size();
-            directions.forEach(direction->{
-                if(bus.getDirections().stream().noneMatch(x->x.getId() == direction.getId())){
-                    bus.getDirections().add(direction);
-                }
-            });
-            if(currentNumberOfDirections < bus.getDirections().size()) {
-                busRepository.save(bus);
-            }
-        }else{
-            throw new BusNotFoundException();
-        }
-
     }
 
     private BusDTO convertToDTO(Bus bus){

@@ -3,6 +3,7 @@ package com.romantulchak.bustransportation.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.romantulchak.bustransportation.model.Bus;
 import com.romantulchak.bustransportation.model.Direction;
+import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 
 import javax.persistence.*;
@@ -22,7 +23,7 @@ public class BusDTO {
     @JsonView(View.BusView.class)
     private int numberOfSeats;
     @JsonView(View.BusView.class)
-    private List<Direction> directions;
+    private List<Trip> trips;
 
     public BusDTO(){
 
@@ -32,7 +33,7 @@ public class BusDTO {
         this.busName = bus.getBusName();
         this.busBrand = bus.getBusBrand();
         this.numberOfSeats = bus.getNumberOfSeats();
-        this.directions = bus.getDirections();
+        this.trips = bus.getTrips();
     }
 
     public long getId() {
@@ -67,11 +68,11 @@ public class BusDTO {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public List<Direction> getDirections() {
-        return directions;
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
     }
 
-    public void setDirections(List<Direction> directions) {
-        this.directions = directions;
+    public List<Trip> getTrips() {
+        return trips;
     }
 }

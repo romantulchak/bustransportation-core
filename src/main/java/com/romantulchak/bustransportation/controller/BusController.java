@@ -34,8 +34,4 @@ public class BusController {
         return busService.getBuses();
     }
 
-    @PutMapping("/addDirection/{busId}")
-    public void addDirection(@RequestBody List<Direction> directions, @PathVariable("busId") Bus bus){
-        busService.addDirection(bus, directions);
-    }
 }

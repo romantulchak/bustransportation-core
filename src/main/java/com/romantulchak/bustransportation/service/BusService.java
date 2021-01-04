@@ -9,6 +9,6 @@ import java.util.List;
 public interface BusService{
 
     List<BusDTO> getBuses();
-    void addDirection(Bus bus, List<Direction> directions);
+   // List<BusDTO> getBusesByDirection(String directionFrom, String directionTo);
 
 }
