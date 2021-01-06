@@ -48,14 +48,6 @@ public class TripDTO {
         this.id = id;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return date;
-    }
-
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.date = localDateTime;
-    }
-
     public Direction getDirection() {
         return direction;
     }

@@ -26,9 +26,10 @@ public class Trip {
     @JsonView(View.TripView.class)
     private int numberOfSeats;
 
-    @OneToMany
+    @OneToMany(mappedBy = "trip")
     @JsonView(View.TripView.class)
     private List<Seat> seats;
+
     @JsonView(View.TripView.class)
     private int price;
 

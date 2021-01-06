@@ -1,5 +1,7 @@
 package com.romantulchak.bustransportation.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,11 +9,13 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(View.TripView.class)
     private long id;
-
+    @JsonView(View.TripView.class)
     private String firstName;
+    @JsonView(View.TripView.class)
     private String lastName;
-
+    @JsonView(View.TripView.class)
     private String email;
 
     @OneToOne

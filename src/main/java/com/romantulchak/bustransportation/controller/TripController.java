@@ -32,10 +32,17 @@ public class TripController {
     public TripDTO createTrip(@RequestBody Trip trip){
         return tripService.create(trip);
     }
+
     @GetMapping("/tripsByDate")
     @JsonView(View.TripView.class)
-    public List<TripDTO> getTripsByDate(@RequestParam(name = "date")String date, @RequestParam(name = "numberOfSeats") int numberOfSeats, @RequestParam(name="directionFrom") String directionFrom, @RequestParam(name="directionTo") String directionTo){
+    public List<TripDTO> getTripsByDate(@RequestParam(name = "date")String date, @RequestParam(name = "numberOfSeats", defaultValue = "1") int numberOfSeats, @RequestParam(name="directionFrom") String directionFrom, @RequestParam(name="directionTo") String directionTo){
         return tripService.getTripsByDate(date,numberOfSeats, directionFrom, directionTo);
     }
+    @GetMapping("/tripById/{id}")
+    @JsonView(View.TripView.class)
+    public TripDTO getTripById(@PathVariable("id") long id){
+        return tripService.getById(id);
+    }
+
 
 }

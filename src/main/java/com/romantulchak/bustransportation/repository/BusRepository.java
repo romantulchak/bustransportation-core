@@ -11,7 +11,4 @@ import java.util.List;
 @Repository
 public interface BusRepository extends JpaRepository<Bus, Long> {
     boolean existsBusByBusName(String busName);
-
-   // @Query("SELECT b FROM Bus b left join b.directions as bd where bd.directionFrom = :directionFrom and bd.directionTo = :directionTo order by bd.price")
-  //  List<Bus> busesByDirection(@Param("directionFrom") String directionFrom, @Param("directionTo") String directionTo);
 }

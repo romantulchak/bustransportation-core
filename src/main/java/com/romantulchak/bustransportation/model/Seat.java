@@ -1,20 +1,32 @@
 package com.romantulchak.bustransportation.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Entity
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonView(View.TripView.class)
     private long id;
-
+    @JsonView(View.TripView.class)
     private int seatNumber;
 
     @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+    @JsonView(View.TripView.class)
     private User user;
 
     @ManyToOne
     private Trip trip;
+
+    public Seat(){
+
+    }
+    public Seat(int numberOfSeat, Trip trip){
+        this.seatNumber = numberOfSeat;
+        this.trip = trip;
+    }
 
     public long getId() {
         return id;
