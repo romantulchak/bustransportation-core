@@ -4,4 +4,6 @@ public class View{
     public interface BusView{};
     public interface DirectionView{};
     public interface TripView{};
+    public interface SeatTripView{};
+
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -11,26 +12,27 @@ public class Trip {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class, View.SeatTripView.class})
     private long id;
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class, View.SeatTripView.class})
     private LocalDateTime date;
 
     @ManyToOne
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class, View.SeatTripView.class})
     private Direction direction;
 
     @ManyToOne
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class, View.SeatTripView.class})
     private Bus bus;
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class, View.SeatTripView.class})
     private int numberOfSeats;
 
     @OneToMany(mappedBy = "trip")
     @JsonView(View.TripView.class)
-    private List<Seat> seats;
+    @OrderBy("seatNumber asc ")
+    private List<Seat> seats = new ArrayList<>();
 
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class, View.SeatTripView.class})
     private int price;
 
     public long getId() {

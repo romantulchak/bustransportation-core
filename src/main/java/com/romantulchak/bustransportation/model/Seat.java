@@ -8,16 +8,17 @@ import javax.persistence.*;
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class, View.SeatTripView.class})
     private long id;
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class,View.SeatTripView.class})
     private int seatNumber;
 
     @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
-    @JsonView(View.TripView.class)
+    @JsonView({View.TripView.class,View.SeatTripView.class})
     private User user;
 
     @ManyToOne
+    @JsonView(View.SeatTripView.class)
     private Trip trip;
 
     public Seat(){

@@ -5,6 +5,7 @@ import com.romantulchak.bustransportation.model.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TripDTO {
@@ -23,7 +24,7 @@ public class TripDTO {
     private int price;
 
     @JsonView(View.TripView.class)
-    private List<Seat> seats;
+    private List<Seat> seats = new ArrayList<>();
 
     public TripDTO(Trip trip) {
         this.id = trip.getId();
