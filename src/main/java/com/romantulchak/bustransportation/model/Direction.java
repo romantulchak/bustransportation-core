@@ -10,15 +10,14 @@ public class Direction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView(View.BusView.class)
     private long id;
-    @JsonView(View.BusView.class)
+
     private String directionFrom;
-    @JsonView(View.BusView.class)
+
     private String directionTo;
-    @JsonView({View.TripView.class})
+
     private String direction;
-    @JsonView(View.BusView.class)
+
     private int distance;
 
     public String getDirection() {

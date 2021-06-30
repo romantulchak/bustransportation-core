@@ -30,23 +30,30 @@ public class UserServiceImpl implements UserService {
         Trip trip = tripRepository.findById(tripId).orElseThrow(TripNotFoundException::new);
         List<Seat> occupiedSeats = new ArrayList<>();
         List<User> users = new ArrayList<>();
-        trip.getSeats().forEach(tripSeat->{
-            seats.forEach(seat->{
-                if(tripSeat.getSeatNumber() == seat.getSeatNumber()){
-                    if(tripSeat.getUser() == null) {
-                        User user = seat.getUser();
-                        user.setSeat(seat);
-                        users.add(user);
-                    }else{
-                        occupiedSeats.add(seat);
-                    }
-                }
-            });
-        });
-        userRepository.saveAll(users);
+        getSeats(seats, trip, occupiedSeats, users);
         if(occupiedSeats.size() > 0){
             throw new OccupiedSeatException(occupiedSeats);
         }
+        userRepository.saveAll(users);
+        trip.setNumberOfSeats(trip.getNumberOfSeats() - seats.size());
+        tripRepository.save(trip);
+    }
 
+    private void getSeats(List<Seat> seats, Trip trip, List<Seat> occupiedSeats, List<User> users) {
+        if(!trip.getSeats().isEmpty()){
+            trip.getSeats().forEach(tripSeat->{
+                seats.forEach(seat->{
+                    if(tripSeat.getSeatNumber() == seat.getSeatNumber()){
+                        if(tripSeat.getUser() == null) {
+                            User user = seat.getUser();
+                            user.setSeat(seat);
+                            users.add(user);
+                        }else{
+                            occupiedSeats.add(seat);
+                        }
+                    }
+                });
+            });
+        }
     }
 }
