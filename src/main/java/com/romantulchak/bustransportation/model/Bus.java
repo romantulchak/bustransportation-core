@@ -1,7 +1,5 @@
 package com.romantulchak.bustransportation.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -10,22 +8,27 @@ public class Bus {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    @JsonView(View.TripView.class)
-    private String busName;
-    @JsonView(View.TripView.class)
-    private String busBrand;
+
+    private String name;
+
+    private String brand;
 
     private int numberOfSeats;
 
     @OneToMany(mappedBy = "bus")
     private List<Trip> trips;
 
+    @ManyToOne
+    private User user;
+
+    public Bus(){}
+
     public int getNumberOfSeats() {
         return numberOfSeats;
     }
 
-    public void setBusName(String busName) {
-        this.busName = busName;
+    public void setName(String busName) {
+        this.name = busName;
     }
 
 
@@ -41,16 +44,16 @@ public class Bus {
         return id;
     }
 
-    public String getBusName() {
-        return busName;
+    public String getName() {
+        return name;
     }
 
-    public String getBusBrand() {
-        return busBrand;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setBusBrand(String busBrand) {
-        this.busBrand = busBrand;
+    public void setBrand(String busBrand) {
+        this.brand = busBrand;
     }
 
     public List<Trip> getTrips() {
@@ -59,5 +62,13 @@ public class Bus {
 
     public void setTrips(List<Trip> trips) {
         this.trips = trips;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

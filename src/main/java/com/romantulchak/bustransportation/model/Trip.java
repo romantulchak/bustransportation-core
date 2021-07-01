@@ -1,6 +1,6 @@
 package com.romantulchak.bustransportation.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
+import com.romantulchak.bustransportation.model.enums.TripType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,28 +12,32 @@ public class Trip {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView({View.TripView.class, View.SeatTripView.class})
     private long id;
-    @JsonView({View.TripView.class, View.SeatTripView.class})
+
     private LocalDateTime date;
 
-    @ManyToOne
-    @JsonView({View.TripView.class, View.SeatTripView.class})
+    @Embedded
     private Direction direction;
 
     @ManyToOne
-    @JsonView({View.TripView.class, View.SeatTripView.class})
     private Bus bus;
-    @JsonView({View.TripView.class, View.SeatTripView.class})
+
     private int numberOfSeats;
 
     @OneToMany(mappedBy = "trip")
-    @JsonView(View.TripView.class)
     @OrderBy("seatNumber asc ")
     private List<Seat> seats = new ArrayList<>();
 
-    @JsonView({View.TripView.class, View.SeatTripView.class})
+    @ElementCollection
+    private List<IntermediatePlaces> intermediatePlaces;
+
     private int price;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip")
+    private List<TripTemplate> tripTemplates;
+
+    @Enumerated(EnumType.STRING)
+    private TripType tripType;
 
     public long getId() {
         return id;
@@ -89,5 +93,29 @@ public class Trip {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public List<IntermediatePlaces> getIntermediatePlaces() {
+        return intermediatePlaces;
+    }
+
+    public void setIntermediatePlaces(List<IntermediatePlaces> intermediatePlaces) {
+        this.intermediatePlaces = intermediatePlaces;
+    }
+
+    public List<TripTemplate> getTripTemplates() {
+        return tripTemplates;
+    }
+
+    public void setTripTemplates(List<TripTemplate> tripTemplates) {
+        this.tripTemplates = tripTemplates;
+    }
+
+    public TripType getTripType() {
+        return tripType;
+    }
+
+    public void setTripType(TripType tripType) {
+        this.tripType = tripType;
     }
 }

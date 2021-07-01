@@ -49,11 +49,15 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(OccupiedSeatException.class)
     public ResponseEntity<?> handleOccupiedSeatException(OccupiedSeatException ex, WebRequest webRequest){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getSeats());
+        Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(EmailAlreadyTakenException.class)
+    public ResponseEntity<?> handleEmailAlreadyTakenException(EmailAlreadyTakenException ex, WebRequest webRequest){
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex, WebRequest webRequest){
         Map<String, Object> body = getBody(ex);

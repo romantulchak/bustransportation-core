@@ -7,19 +7,24 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO: Add checks if current bus has enough seats for trip,
+//TODO: Change all entity to DTO    
 public class TripDTO {
     @JsonView(View.TripView.class)
     private long id;
+
     @JsonView(View.TripView.class)
     private LocalDateTime date;
 
     @JsonView(View.TripView.class)
     private Direction direction;
+
     @JsonView(View.TripView.class)
     private Bus bus;
+
     @JsonView(View.TripView.class)
     private int numberOfSeats;
+
     @JsonView(View.TripView.class)
     private int price;
 

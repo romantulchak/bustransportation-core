@@ -7,6 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -41,6 +42,12 @@ public class User {
 
     @OneToOne
     private Seat seat;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<TripTemplate> tripTemplates;
+
+    @OneToMany(mappedBy = "user")
+    private List<Bus> buses;
 
     public User(){}
 
@@ -114,5 +121,19 @@ public class User {
         this.roles = roles;
     }
 
+    public List<TripTemplate> getTripTemplates() {
+        return tripTemplates;
+    }
 
+    public void setTripTemplates(List<TripTemplate> tripTemplates) {
+        this.tripTemplates = tripTemplates;
+    }
+
+    public List<Bus> getBuses() {
+        return buses;
+    }
+
+    public void setBuses(List<Bus> buses) {
+        this.buses = buses;
+    }
 }

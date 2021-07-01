@@ -77,7 +77,11 @@ public class TripServiceImpl implements TripService, CrudService<Trip, TripDTO> 
     public List<TripDTO> getTripsByDate(String date, int numberOfSeats, String directionFrom, String directionTo) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime localDateTime = LocalDateTime.parse(date,dateTimeFormatter);
-        return tripRepository.findTripsByDate(localDateTime, numberOfSeats, directionFrom, directionTo).stream().map(this::convertToDTO).filter(x-> x.getDate().isAfter(localDateTime) || x.getDate().isEqual(localDateTime)).collect(Collectors.toList());
+        return tripRepository.findTripsByDate(localDateTime, numberOfSeats, directionFrom, directionTo)
+                .stream()
+                .map(this::convertToDTO)
+                .filter(x-> x.getDate().isAfter(localDateTime) || x.getDate().isEqual(localDateTime))
+                .collect(Collectors.toList());
     }
 
     private TripDTO convertToDTO(Trip trip){

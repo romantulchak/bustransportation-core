@@ -18,14 +18,13 @@ public class JwtUtils {
     private String jwtSecret;
 
     @Value("${bustransportation.jwt.expiration}")
-    private int jwtExpirationMs;
+    private int jwtExpirationsMs;
 
     public String generateJwtToken(Authentication authentication){
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+        return Jwts.builder().setSubject((userDetails.getUsername()))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(new Date().getTime() + jwtExpirationMs))
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationsMs))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

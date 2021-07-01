@@ -2,11 +2,10 @@ package com.romantulchak.bustransportation.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.romantulchak.bustransportation.model.Bus;
-import com.romantulchak.bustransportation.model.Direction;
 import com.romantulchak.bustransportation.model.Trip;
+import com.romantulchak.bustransportation.model.User;
 import com.romantulchak.bustransportation.model.View;
 
-import javax.persistence.*;
 import java.util.List;
 
 public class BusDTO {
@@ -15,13 +14,14 @@ public class BusDTO {
     private long id;
 
     @JsonView(View.BusView.class)
-    private String busName;
+    private String name;
 
     @JsonView(View.BusView.class)
-    private String busBrand;
+    private String brand;
 
     @JsonView(View.BusView.class)
     private int numberOfSeats;
+
     @JsonView(View.BusView.class)
     private List<Trip> trips;
 
@@ -30,8 +30,8 @@ public class BusDTO {
     }
     public BusDTO(Bus bus) {
         this.id = bus.getId();
-        this.busName = bus.getBusName();
-        this.busBrand = bus.getBusBrand();
+        this.name = bus.getName();
+        this.brand = bus.getBrand();
         this.numberOfSeats = bus.getNumberOfSeats();
         this.trips = bus.getTrips();
     }
@@ -44,20 +44,20 @@ public class BusDTO {
         this.id = id;
     }
 
-    public String getBusName() {
-        return busName;
+    public String getName() {
+        return name;
     }
 
-    public void setBusName(String busName) {
-        this.busName = busName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getBusBrand() {
-        return busBrand;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setBusBrand(String carBrand) {
-        this.busBrand = carBrand;
+    public void setBrand(String carBrand) {
+        this.brand = carBrand;
     }
 
     public int getNumberOfSeats() {

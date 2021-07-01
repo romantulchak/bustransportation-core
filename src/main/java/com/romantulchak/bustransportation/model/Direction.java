@@ -1,16 +1,9 @@
 package com.romantulchak.bustransportation.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import javax.persistence.*;
-import java.util.List;
 
-@Entity
+@Embeddable
 public class Direction {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
 
     private String directionFrom;
 
@@ -22,14 +15,6 @@ public class Direction {
 
     public String getDirection() {
         return direction;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getDirectionFrom() {

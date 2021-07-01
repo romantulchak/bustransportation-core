@@ -7,6 +7,7 @@ import com.romantulchak.bustransportation.model.Direction;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.service.impl.BusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,13 +26,20 @@ public class BusController {
 
     @PostMapping("/createBus")
     @JsonView(View.BusView.class)
-    public BusDTO createBus(@RequestBody Bus bus){
-        return busService.create(bus);
+    public BusDTO createBus(@RequestBody Bus bus, Authentication authentication){
+        return busService.create(bus, authentication);
     }
     @GetMapping("/buses")
     @JsonView(View.BusView.class)
     public List<BusDTO> getBuses(){
         return busService.getBuses();
     }
+
+    @GetMapping("/findBusesForUser/{userId}")
+    @JsonView(View.BusView.class)
+    public List<BusDTO> findBusesForUser(@PathVariable("userId") long userId){
+        return busService.findBusesForUser(userId);
+    }
+
 
 }

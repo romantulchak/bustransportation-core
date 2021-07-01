@@ -1,5 +1,7 @@
 package com.romantulchak.bustransportation.service;
 
+import org.springframework.security.core.Authentication;
+
 import java.util.List;
 
 /**

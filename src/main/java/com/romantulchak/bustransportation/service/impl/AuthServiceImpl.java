@@ -1,6 +1,6 @@
 package com.romantulchak.bustransportation.service.impl;
 
-import com.romantulchak.bustransportation.exception.EmailAlreadyTaken;
+import com.romantulchak.bustransportation.exception.EmailAlreadyTakenException;
 import com.romantulchak.bustransportation.exception.UsernameAlreadyTaken;
 import com.romantulchak.bustransportation.model.Role;
 import com.romantulchak.bustransportation.model.User;
@@ -69,7 +69,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new EmailAlreadyTaken(signUpRequest.getEmail());
+            throw new EmailAlreadyTakenException(signUpRequest.getEmail());
         }
 
         User user = new User(signUpRequest.getUsername(),
