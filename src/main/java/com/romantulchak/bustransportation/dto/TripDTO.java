@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 //TODO: Add checks if current bus has enough seats for trip,
-//TODO: Change all entity to DTO    
 public class TripDTO {
     @JsonView(View.TripView.class)
     private long id;
@@ -20,7 +19,7 @@ public class TripDTO {
     private Direction direction;
 
     @JsonView(View.TripView.class)
-    private Bus bus;
+    private BusDTO bus;
 
     @JsonView(View.TripView.class)
     private int numberOfSeats;
@@ -29,18 +28,10 @@ public class TripDTO {
     private int price;
 
     @JsonView(View.TripView.class)
-    private List<Seat> seats = new ArrayList<>();
+    private List<SeatDTO> seats = new ArrayList<>();
 
-    public TripDTO(Trip trip) {
-        this.id = trip.getId();
-        this.date = trip.getDate();
-        this.direction = trip.getDirection();
-        this.bus = trip.getBus();
-        this.numberOfSeats = trip.getNumberOfSeats();
-        this.seats = trip.getSeats();
-        this.date = trip.getDate();
-        this.price = trip.getPrice();
-    }
+    @JsonView(View.TripView.class)
+    private List<IntermediatePlaces> intermediatePlaces;
 
     public TripDTO(){
 
@@ -62,11 +53,11 @@ public class TripDTO {
         this.direction = direction;
     }
 
-    public Bus getBus() {
+    public BusDTO getBus() {
         return bus;
     }
 
-    public void setBus(Bus bus) {
+    public void setBus(BusDTO bus) {
         this.bus = bus;
     }
 
@@ -76,14 +67,6 @@ public class TripDTO {
 
     public void setNumberOfSeats(int numberOfSeats) {
         this.numberOfSeats = numberOfSeats;
-    }
-
-    public List<Seat> getSeats() {
-        return seats;
-    }
-
-    public void setSeats(List<Seat> seats) {
-        this.seats = seats;
     }
 
     public int getPrice() {
@@ -100,6 +83,22 @@ public class TripDTO {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    public List<SeatDTO> getSeats() {
+        return seats;
+    }
+
+    public void setSeats(List<SeatDTO> seats) {
+        this.seats = seats;
+    }
+
+    public List<IntermediatePlaces> getIntermediatePlaces() {
+        return intermediatePlaces;
+    }
+
+    public void setIntermediatePlaces(List<IntermediatePlaces> intermediatePlaces) {
+        this.intermediatePlaces = intermediatePlaces;
     }
 }
 

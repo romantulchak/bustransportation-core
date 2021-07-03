@@ -5,36 +5,33 @@ import com.romantulchak.bustransportation.model.Bus;
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.User;
 import com.romantulchak.bustransportation.model.View;
+import org.springframework.util.ClassUtils;
 
 import java.util.List;
 
 public class BusDTO {
 
-    @JsonView(View.BusView.class)
+    @JsonView({View.BusView.class, View.TripView.class})
     private long id;
 
-    @JsonView(View.BusView.class)
+    @JsonView({View.BusView.class, View.TripView.class})
     private String name;
 
-    @JsonView(View.BusView.class)
+    @JsonView({View.BusView.class, View.TripView.class})
     private String brand;
 
     @JsonView(View.BusView.class)
     private int numberOfSeats;
 
     @JsonView(View.BusView.class)
-    private List<Trip> trips;
+    private List<TripDTO> trips;
+
+    @JsonView(View.BusView.class)
+    private User user;
 
     public BusDTO(){
+    }
 
-    }
-    public BusDTO(Bus bus) {
-        this.id = bus.getId();
-        this.name = bus.getName();
-        this.brand = bus.getBrand();
-        this.numberOfSeats = bus.getNumberOfSeats();
-        this.trips = bus.getTrips();
-    }
 
     public long getId() {
         return id;
@@ -68,11 +65,19 @@ public class BusDTO {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public void setTrips(List<Trip> trips) {
+    public void setTrips(List<TripDTO> trips) {
         this.trips = trips;
     }
 
-    public List<Trip> getTrips() {
+    public List<TripDTO> getTrips() {
         return trips;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

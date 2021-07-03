@@ -1,16 +1,22 @@
 package com.romantulchak.bustransportation.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 
 @Embeddable
 public class Direction {
 
+    @JsonView(View.TripView.class)
     private String directionFrom;
 
+    @JsonView(View.TripView.class)
     private String directionTo;
 
+    @JsonView(View.TripView.class)
     private String direction;
 
+    @JsonView(View.TripView.class)
     private int distance;
 
     public String getDirection() {

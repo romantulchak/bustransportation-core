@@ -39,6 +39,9 @@ public class Trip {
     @Enumerated(EnumType.STRING)
     private TripType tripType;
 
+    @ManyToOne
+    private User creator;
+
     public long getId() {
         return id;
     }
@@ -117,5 +120,13 @@ public class Trip {
 
     public void setTripType(TripType tripType) {
         this.tripType = tripType;
+    }
+
+    public User getCreator() {
+        return creator;
+    }
+
+    public void setCreator(User creator) {
+        this.creator = creator;
     }
 }

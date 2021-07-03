@@ -49,6 +49,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Bus> buses;
 
+    @OneToMany
+    private List<Trip> trips;
+
     public User(){}
 
     public User(String username, String email, String password){
@@ -136,4 +139,14 @@ public class User {
     public void setBuses(List<Bus> buses) {
         this.buses = buses;
     }
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
+
+
 }

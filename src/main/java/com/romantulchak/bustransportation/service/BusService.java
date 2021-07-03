@@ -16,7 +16,7 @@ public interface BusService{
     BusDTO getById(long id);
     List<BusDTO> getBuses();
 
-    List<BusDTO> findBusesForUser(long userId);
+    List<BusDTO> findBusesForUser(Authentication authentication);
     // List<BusDTO> getBusesByDirection(String directionFrom, String directionTo);
 
 }

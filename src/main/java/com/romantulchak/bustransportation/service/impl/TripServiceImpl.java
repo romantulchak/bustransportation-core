@@ -6,11 +6,16 @@ import com.romantulchak.bustransportation.exception.DirectionNotFoundException;
 import com.romantulchak.bustransportation.exception.TripNotFoundException;
 import com.romantulchak.bustransportation.model.Seat;
 import com.romantulchak.bustransportation.model.Trip;
+import com.romantulchak.bustransportation.model.User;
 import com.romantulchak.bustransportation.repository.TripRepository;
 import com.romantulchak.bustransportation.service.CrudService;
 import com.romantulchak.bustransportation.service.TripService;
+import com.romantulchak.bustransportation.utility.EntityMapper;
+import com.romantulchak.bustransportation.utility.UserUtility;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import com.romantulchak.bustransportation.repository.SeatRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -19,8 +24,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.romantulchak.bustransportation.utility.UserUtility.*;
+
 @Service
-public class TripServiceImpl implements TripService, CrudService<Trip, TripDTO> {
+public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final SeatRepository seatRepository;
     public TripServiceImpl(TripRepository tripRepository, SeatRepository seatRepository){
@@ -28,11 +35,17 @@ public class TripServiceImpl implements TripService, CrudService<Trip, TripDTO> 
         this.seatRepository = seatRepository;
     }
 
+    @Transactional
     @Override
-    public TripDTO create(Trip trip) {
+    public TripDTO create(Trip trip, Authentication authentication) {
         if(trip != null){
+            UserDetailsImpl userDetails = userInSystem(authentication);
             if (trip.getBus() != null){
                 if(trip.getDirection() != null){
+                    trip.getDirection().setDirection(trip.getDirection().getDirectionFrom() + "-" + trip.getDirection().getDirectionTo());
+                    User user = new User();
+                    user.setId(userDetails.getId());
+                    trip.setCreator(user);
                     tripRepository.save(trip);
                     List<Seat> seats = initSeats(trip);
                     seatRepository.saveAll(seats);
@@ -65,7 +78,10 @@ public class TripServiceImpl implements TripService, CrudService<Trip, TripDTO> 
 
     @Override
     public TripDTO getById(long id) {
-        return tripRepository.findById(id).map(this::convertToDTO).orElseThrow(TripNotFoundException::new);
+        return tripRepository
+                .findById(id)
+                .map(this::convertToDTO)
+                .orElseThrow(TripNotFoundException::new);
     }
 
     @Override
@@ -84,7 +100,17 @@ public class TripServiceImpl implements TripService, CrudService<Trip, TripDTO> 
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<TripDTO> getTripsForUser(Authentication authentication) {
+        UserDetailsImpl userDetails = userInSystem(authentication);
+        return tripRepository.findTripsForUser(userDetails.getId())
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     private TripDTO convertToDTO(Trip trip){
-        return new TripDTO(trip);
+        EntityMapper entityMapper = new EntityMapper();
+        return entityMapper.tripToDTO(trip);
     }
 }

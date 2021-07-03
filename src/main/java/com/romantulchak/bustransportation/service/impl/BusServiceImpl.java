@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.romantulchak.bustransportation.utility.UserUtility.userInSystem;
+
 @Service
 public class BusServiceImpl implements BusService {
 
@@ -31,8 +33,8 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public BusDTO create(Bus bus, Authentication authentication) {
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-        if(bus != null && userDetails != null){
+        if(bus != null){
+            UserDetailsImpl userDetails = userInSystem(authentication);
             User user = userRepository.findById(userDetails.getId()).orElseThrow(UserNotFoundException::new);
             if(!busRepository.existsBusByName(bus.getName())) {
                 bus.setUser(user);
@@ -75,8 +77,9 @@ public class BusServiceImpl implements BusService {
     }
 
     @Override
-    public List<BusDTO> findBusesForUser(long userId) {
-        return busRepository.findBusesByUserId(userId)
+    public List<BusDTO> findBusesForUser(Authentication authentication) {
+        UserDetailsImpl userDetails = userInSystem(authentication);
+        return busRepository.findBusesByUserId(userDetails.getId())
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -86,4 +89,6 @@ public class BusServiceImpl implements BusService {
         EntityMapper entityMapper = new EntityMapper();
         return entityMapper.busToDTO(bus);
     }
+
+
 }

@@ -12,7 +12,6 @@ public class IntermediatePlaces {
 
     private long price;
 
-
     public String getCity() {
         return city;
     }

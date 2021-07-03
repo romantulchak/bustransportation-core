@@ -6,6 +6,7 @@ import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.service.impl.TripServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -29,8 +30,8 @@ public class TripController {
     }
 
     @PostMapping("/createTrip")
-    public TripDTO createTrip(@RequestBody Trip trip){
-        return tripService.create(trip);
+    public TripDTO createTrip(@RequestBody Trip trip, Authentication authentication){
+        return tripService.create(trip, authentication);
     }
 
     @GetMapping("/tripsByDate")
@@ -44,5 +45,10 @@ public class TripController {
         return tripService.getById(id);
     }
 
+    @GetMapping("/tripsForUser")
+    @JsonView(View.TripView.class)
+    public List<TripDTO> getTripsForUser(Authentication authentication){
+        return tripService.getTripsForUser(authentication);
+    }
 
 }

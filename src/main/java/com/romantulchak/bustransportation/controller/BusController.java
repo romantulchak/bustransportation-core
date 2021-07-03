@@ -35,10 +35,10 @@ public class BusController {
         return busService.getBuses();
     }
 
-    @GetMapping("/findBusesForUser/{userId}")
+    @GetMapping("/findBusesForUser")
     @JsonView(View.BusView.class)
-    public List<BusDTO> findBusesForUser(@PathVariable("userId") long userId){
-        return busService.findBusesForUser(userId);
+    public List<BusDTO> findBusesForUser(Authentication authentication){
+        return busService.findBusesForUser(authentication);
     }
 
 
