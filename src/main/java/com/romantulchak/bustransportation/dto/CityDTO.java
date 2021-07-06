@@ -3,7 +3,6 @@ package com.romantulchak.bustransportation.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.romantulchak.bustransportation.anotations.MapToDTO;
 import com.romantulchak.bustransportation.model.Direction;
-import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 
 import java.time.LocalDateTime;
@@ -21,7 +20,7 @@ public class CityDTO {
     @JsonView(View.TripView.class)
     private long price;
 
-    private Trip trip;
+    private TripDTO trip;
 
     @MapToDTO
     @JsonView(View.TripView.class)
@@ -34,6 +33,11 @@ public class CityDTO {
     @MapToDTO
     @JsonView(View.TripView.class)
     private boolean isBusStop;
+
+    @MapToDTO
+    @JsonView(View.TripView.class)
+    private String street;
+
 
     public long getId() {
         return id;
@@ -59,11 +63,11 @@ public class CityDTO {
         this.price = price;
     }
 
-    public Trip getTrip() {
+    public TripDTO getTrip() {
         return trip;
     }
 
-    public void setTrip(Trip trip) {
+    public void setTrip(TripDTO trip) {
         this.trip = trip;
     }
 
@@ -89,5 +93,13 @@ public class CityDTO {
 
     public void setBusStop(boolean busStop) {
         isBusStop = busStop;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }

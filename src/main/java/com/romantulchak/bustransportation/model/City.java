@@ -24,6 +24,8 @@ public class City {
 
     private boolean isBusStop;
 
+    private String street;
+
     public long getId() {
         return id;
     }
@@ -78,5 +80,13 @@ public class City {
 
     public void setDateOfArrival(LocalDateTime dateOfArrival) {
         this.dateOfArrival = dateOfArrival;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
     }
 }

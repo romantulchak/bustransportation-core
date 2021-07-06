@@ -17,7 +17,7 @@ public class Seat {
     @JsonView({View.TripView.class,View.SeatTripView.class})
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JsonView(View.SeatTripView.class)
     private Trip trip;
 

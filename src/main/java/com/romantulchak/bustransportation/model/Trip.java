@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Move Departure time from Main City to Trip
 @Entity
 public class Trip {
 
@@ -14,12 +15,18 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    private String name;
+
     @ManyToOne
     private Bus bus;
 
+    private LocalDateTime dateStart;
+
+    private LocalDateTime dateEnd;
+
     private int numberOfSeats;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("seatNumber asc ")
     private List<Seat> seats = new ArrayList<>();
 
@@ -34,6 +41,8 @@ public class Trip {
 
     @OneToMany(mappedBy = "trip")
     private List<City> cities;
+
+    private String departureCity;
 
     public long getId() {
         return id;
@@ -97,5 +106,37 @@ public class Trip {
 
     public void setCities(List<City> cities) {
         this.cities = cities;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public LocalDateTime getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(LocalDateTime dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public LocalDateTime getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(LocalDateTime dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+
+    public String getDepartureCity() {
+        return departureCity;
+    }
+
+    public void setDepartureCity(String departureCity) {
+        this.departureCity = departureCity;
     }
 }

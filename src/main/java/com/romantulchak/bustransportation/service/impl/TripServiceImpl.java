@@ -46,6 +46,8 @@ public class TripServiceImpl implements TripService {
             if (trip.getBus() != null) {
                 User user = new User();
                 user.setId(userDetails.getId());
+                trip.setDateStart(trip.getCities().get(0).getDateOfDeparture());
+                trip.setDateEnd(trip.getCities().get(trip.getCities().size() - 1).getDateOfArrival());
                 trip.setCreator(user);
                 Trip tripAfterSave = tripRepository.save(trip);
                 initCities(trip.getCities(), tripAfterSave);
@@ -58,7 +60,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Transactional
-    protected void initCities(List<City> cities, Trip tripAfterSave) {
+    public void initCities(List<City> cities, Trip tripAfterSave) {
         cities.forEach(city -> {
             city.setTrip(tripAfterSave);
         });
@@ -66,7 +68,7 @@ public class TripServiceImpl implements TripService {
     }
 
     @Transactional
-    protected void initSeats(Trip trip) {
+    public void initSeats(Trip trip) {
         List<Seat> seats = new ArrayList<>(trip.getNumberOfSeats());
         for (int numberOfSeat = 1; numberOfSeat <= trip.getNumberOfSeats(); numberOfSeat++){
             seats.add(new Seat(numberOfSeat,trip));

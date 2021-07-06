@@ -1,6 +1,7 @@
 package com.romantulchak.bustransportation.utility;
 
 import com.romantulchak.bustransportation.anotations.MapToDTO;
+import org.hibernate.Hibernate;
 import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 @Component
-public class EntityMapper {
+public final class EntityMapper {
     private final Collection<Class<?>> collections = new ArrayList<>();
 
     public EntityMapper(){
@@ -69,7 +70,7 @@ public class EntityMapper {
 
     private Collection<Object> mapListOfElements(PersistentBag entity, Class<?> type, Field actualField) {
         Object internalDto;
-        if (!entity.isEmpty()) {
+        if (Hibernate.isInitialized(entity) && !entity.isEmpty()) {
             ParameterizedType genericType = (ParameterizedType) actualField.getGenericType();
             Collection<Object> collection = newCollectionInstance(type);
             type = (Class<?>) genericType.getActualTypeArguments()[0];

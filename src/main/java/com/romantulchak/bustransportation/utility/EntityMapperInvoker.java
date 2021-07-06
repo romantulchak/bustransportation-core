@@ -1,8 +1,10 @@
 package com.romantulchak.bustransportation.utility;
 
 import com.romantulchak.bustransportation.dto.BusDTO;
+import com.romantulchak.bustransportation.dto.CityDTO;
 import com.romantulchak.bustransportation.dto.TripDTO;
 import com.romantulchak.bustransportation.model.Bus;
+import com.romantulchak.bustransportation.model.City;
 import com.romantulchak.bustransportation.model.Trip;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +34,16 @@ public final class EntityMapperInvoker {
         entityMapper.handleFields(trip, tripFields, tripDTO, tripDTOFields);
         return tripDTO;
     }
+
+
+    public CityDTO cityToDTO(City trip) {
+        CityDTO cityDTO = new CityDTO();
+        Field[] cityDTOFields = CityDTO.class.getDeclaredFields();
+        List<Field> cityFields = new LinkedList<>(Arrays.asList(City.class.getDeclaredFields()));
+        entityMapper.handleFields(trip, cityFields, cityDTO, cityDTOFields);
+        return cityDTO;
+    }
+
 
     @Autowired
     public void setEntityMapper(EntityMapper entityMapper) {
