@@ -14,8 +14,8 @@ import java.util.Optional;
 @Repository
 public interface TripRepository extends JpaRepository<Trip, Long> {
 
-    @Query("SELECT t FROM Trip t left join t.direction as td where CAST(t.date as LocalDate) = CAST(:date as LocalDate) and t.numberOfSeats > :numberOfSeats and td.directionFrom = :directionFrom and td.directionTo = :directionTo order by t.price DESC")
-    List<Trip> findTripsByDate(@Param("date") LocalDateTime date, @Param("numberOfSeats") int numberOfSeats, @Param("directionFrom") String directionFrom, @Param("directionTo") String directionTo);
+//        @Query("SELECT t FROM Trip t LEFT JOIN t.direction td LEFT JOIN t.intermediatePlaces tip WHERE CAST(t.date AS LocalDate) = CAST(:date AS LocalDate) AND t.numberOfSeats >= :numberOfSeats AND td.directionFrom = :directionFrom AND (td.directionTo = :directionTo OR tip.city = :directionTo) ORDER BY t.price DESC")
+//    List<Trip> findTripsByDate(@Param("date") LocalDateTime date, @Param("numberOfSeats") int numberOfSeats, @Param("directionFrom") String directionFrom, @Param("directionTo") String directionTo);
 
     @Query(value = "SELECT t FROM Trip t WHERE t.creator.id = :userId")
     List<Trip> findTripsForUser(@Param("userId") long userId);

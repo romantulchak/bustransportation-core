@@ -1,15 +1,20 @@
 package com.romantulchak.bustransportation.model;
 
+import com.fasterxml.jackson.annotation.JsonView;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Embeddable
 public class IntermediatePlaces {
 
+    @JsonView(View.TripView.class)
     private String city;
 
+    @JsonView(View.TripView.class)
     private LocalDateTime dateAndTime;
 
+    @JsonView(View.TripView.class)
     private long price;
 
     public String getCity() {

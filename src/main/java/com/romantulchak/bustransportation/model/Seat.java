@@ -21,6 +21,11 @@ public class Seat {
     @JsonView(View.SeatTripView.class)
     private Trip trip;
 
+    @Embedded
+    private Direction direction = new Direction();
+
+    private long price;
+
     public Seat(){
 
     }
@@ -59,5 +64,21 @@ public class Seat {
 
     public void setTrip(Trip trip) {
         this.trip = trip;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
+    public long getPrice() {
+        return price;
+    }
+
+    public void setPrice(long price) {
+        this.price = price;
     }
 }

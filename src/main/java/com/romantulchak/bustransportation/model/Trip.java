@@ -14,11 +14,6 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private LocalDateTime date;
-
-    @Embedded
-    private Direction direction;
-
     @ManyToOne
     private Bus bus;
 
@@ -27,11 +22,6 @@ public class Trip {
     @OneToMany(mappedBy = "trip")
     @OrderBy("seatNumber asc ")
     private List<Seat> seats = new ArrayList<>();
-
-    @ElementCollection
-    private List<IntermediatePlaces> intermediatePlaces;
-
-    private int price;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip")
     private List<TripTemplate> tripTemplates;
@@ -42,28 +32,15 @@ public class Trip {
     @ManyToOne
     private User creator;
 
+    @OneToMany(mappedBy = "trip")
+    private List<City> cities;
+
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime localDateTime) {
-        this.date = localDateTime;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 
     public Bus getBus() {
@@ -90,22 +67,6 @@ public class Trip {
         this.seats = seats;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public List<IntermediatePlaces> getIntermediatePlaces() {
-        return intermediatePlaces;
-    }
-
-    public void setIntermediatePlaces(List<IntermediatePlaces> intermediatePlaces) {
-        this.intermediatePlaces = intermediatePlaces;
-    }
-
     public List<TripTemplate> getTripTemplates() {
         return tripTemplates;
     }
@@ -128,5 +89,13 @@ public class Trip {
 
     public void setCreator(User creator) {
         this.creator = creator;
+    }
+
+    public List<City> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<City> cities) {
+        this.cities = cities;
     }
 }

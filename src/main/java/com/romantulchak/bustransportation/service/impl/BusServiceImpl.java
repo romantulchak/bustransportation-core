@@ -9,7 +9,7 @@ import com.romantulchak.bustransportation.model.User;
 import com.romantulchak.bustransportation.repository.BusRepository;
 import com.romantulchak.bustransportation.repository.UserRepository;
 import com.romantulchak.bustransportation.service.BusService;
-import com.romantulchak.bustransportation.utility.EntityMapper;
+import com.romantulchak.bustransportation.utility.EntityMapperInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -24,11 +24,13 @@ public class BusServiceImpl implements BusService {
 
     private final BusRepository busRepository;
     private final UserRepository userRepository;
+    private final EntityMapperInvoker entityMapperInvoker;
 
     @Autowired
-    public BusServiceImpl(BusRepository busRepository, UserRepository userRepository){
+    public BusServiceImpl(BusRepository busRepository, UserRepository userRepository, EntityMapperInvoker entityMapperInvoker){
         this.busRepository = busRepository;
         this.userRepository = userRepository;
+        this.entityMapperInvoker = entityMapperInvoker;
     }
 
     @Override
@@ -86,9 +88,6 @@ public class BusServiceImpl implements BusService {
     }
 
     private BusDTO convertToDTO(Bus bus){
-        EntityMapper entityMapper = new EntityMapper();
-        return entityMapper.busToDTO(bus);
+        return entityMapperInvoker.busToDTO(bus);
     }
-
-
 }

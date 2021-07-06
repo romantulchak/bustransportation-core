@@ -1,6 +1,7 @@
 package com.romantulchak.bustransportation.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.romantulchak.bustransportation.anotations.MapToDTO;
 import com.romantulchak.bustransportation.model.Bus;
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.User;
@@ -11,23 +12,25 @@ import java.util.List;
 
 public class BusDTO {
 
+    @MapToDTO
     @JsonView({View.BusView.class, View.TripView.class})
     private long id;
 
+    @MapToDTO
     @JsonView({View.BusView.class, View.TripView.class})
     private String name;
 
+    @MapToDTO
     @JsonView({View.BusView.class, View.TripView.class})
     private String brand;
 
+    @MapToDTO
     @JsonView(View.BusView.class)
     private int numberOfSeats;
 
+    @MapToDTO
     @JsonView(View.BusView.class)
-    private List<TripDTO> trips;
-
-    @JsonView(View.BusView.class)
-    private User user;
+    private UserDTO user;
 
     public BusDTO(){
     }
@@ -65,19 +68,11 @@ public class BusDTO {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public void setTrips(List<TripDTO> trips) {
-        this.trips = trips;
-    }
-
-    public List<TripDTO> getTrips() {
-        return trips;
-    }
-
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 }

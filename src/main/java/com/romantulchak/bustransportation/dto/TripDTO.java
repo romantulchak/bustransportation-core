@@ -1,37 +1,39 @@
 package com.romantulchak.bustransportation.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.romantulchak.bustransportation.anotations.MapToDTO;
 import com.romantulchak.bustransportation.model.*;
+import com.romantulchak.bustransportation.model.enums.TripType;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 //TODO: Add checks if current bus has enough seats for trip,
 public class TripDTO {
+    @MapToDTO
     @JsonView(View.TripView.class)
     private long id;
 
-    @JsonView(View.TripView.class)
-    private LocalDateTime date;
-
-    @JsonView(View.TripView.class)
-    private Direction direction;
-
+    @MapToDTO
     @JsonView(View.TripView.class)
     private BusDTO bus;
 
+    @MapToDTO
     @JsonView(View.TripView.class)
     private int numberOfSeats;
-
-    @JsonView(View.TripView.class)
-    private int price;
 
     @JsonView(View.TripView.class)
     private List<SeatDTO> seats = new ArrayList<>();
 
     @JsonView(View.TripView.class)
-    private List<IntermediatePlaces> intermediatePlaces;
+    private TripType tripType;
+
+    @MapToDTO
+    @JsonView(View.TripView.class)
+    private UserDTO creator;
+
+    @MapToDTO
+    @JsonView(View.TripView.class)
+    private List<CityDTO> cities;
 
     public TripDTO(){
 
@@ -43,14 +45,6 @@ public class TripDTO {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 
     public BusDTO getBus() {
@@ -69,22 +63,6 @@ public class TripDTO {
         this.numberOfSeats = numberOfSeats;
     }
 
-    public int getPrice() {
-        return price;
-    }
-
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
     public List<SeatDTO> getSeats() {
         return seats;
     }
@@ -93,12 +71,28 @@ public class TripDTO {
         this.seats = seats;
     }
 
-    public List<IntermediatePlaces> getIntermediatePlaces() {
-        return intermediatePlaces;
+    public TripType getTripType() {
+        return tripType;
     }
 
-    public void setIntermediatePlaces(List<IntermediatePlaces> intermediatePlaces) {
-        this.intermediatePlaces = intermediatePlaces;
+    public void setTripType(TripType tripType) {
+        this.tripType = tripType;
+    }
+
+    public UserDTO getCreator() {
+        return creator;
+    }
+
+    public void setCreator(UserDTO creator) {
+        this.creator = creator;
+    }
+
+    public List<CityDTO> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<CityDTO> cities) {
+        this.cities = cities;
     }
 }
 
