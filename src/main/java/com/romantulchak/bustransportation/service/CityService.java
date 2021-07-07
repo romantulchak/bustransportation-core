@@ -8,4 +8,5 @@ public interface CityService {
 
     List<CityDTO> findCitiesForTrip(long tripId);
 
+    List<CityDTO> findCityTripsByDate(String date, int numberOfSeats, String directionFrom, String directionTo);
 }

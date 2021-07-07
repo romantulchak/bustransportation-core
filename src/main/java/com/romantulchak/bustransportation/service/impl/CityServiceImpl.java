@@ -9,6 +9,8 @@ import com.romantulchak.bustransportation.utility.EntityMapperInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +29,16 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<CityDTO> findCitiesForTrip(long tripId) {
         return cityRepository.findCitiesForTrip(tripId)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CityDTO> findCityTripsByDate(String date, int numberOfSeats, String directionFrom, String directionTo) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime dateOfDeparture = LocalDateTime.parse(date,dateTimeFormatter);
+        return cityRepository.findCitiesTrip(dateOfDeparture, numberOfSeats, directionFrom, directionTo)
                 .stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());

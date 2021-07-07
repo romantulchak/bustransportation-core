@@ -28,10 +28,6 @@ public class TripDTO {
 
     @MapToDTO
     @JsonView(View.TripView.class)
-    private LocalDateTime dateEnd;
-
-    @MapToDTO
-    @JsonView(View.TripView.class)
     private int numberOfSeats;
 
     @JsonView(View.TripView.class)
@@ -123,14 +119,6 @@ public class TripDTO {
 
     public void setDateStart(LocalDateTime dateStart) {
         this.dateStart = dateStart;
-    }
-
-    public LocalDateTime getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(LocalDateTime dateEnd) {
-        this.dateEnd = dateEnd;
     }
 
     public String getDepartureCity() {

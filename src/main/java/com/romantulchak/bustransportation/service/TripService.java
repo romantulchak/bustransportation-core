@@ -19,7 +19,5 @@ public interface TripService {
 
     List<TripDTO> getTrips();
 
-    List<TripDTO> getTripsByDate(String date, int numberOfSeats, String directionFrom, String directionTo);
-
     List<TripDTO> getTripsForUser(Authentication authentication);
 }

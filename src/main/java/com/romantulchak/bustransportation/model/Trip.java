@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: Move Departure time from Main City to Trip
 @Entity
 public class Trip {
 
@@ -21,8 +20,6 @@ public class Trip {
     private Bus bus;
 
     private LocalDateTime dateStart;
-
-    private LocalDateTime dateEnd;
 
     private int numberOfSeats;
 
@@ -122,14 +119,6 @@ public class Trip {
 
     public void setDateStart(LocalDateTime dateStart) {
         this.dateStart = dateStart;
-    }
-
-    public LocalDateTime getDateEnd() {
-        return dateEnd;
-    }
-
-    public void setDateEnd(LocalDateTime dateEnd) {
-        this.dateEnd = dateEnd;
     }
 
     public String getDepartureCity() {

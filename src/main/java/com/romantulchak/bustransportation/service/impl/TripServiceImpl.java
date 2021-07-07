@@ -44,11 +44,8 @@ public class TripServiceImpl implements TripService {
         UserDetailsImpl userDetails = userInSystem(authentication);
         if (!trip.getCities().isEmpty()) {
             if (trip.getBus() != null) {
-                User user = new User();
-                user.setId(userDetails.getId());
-                trip.setDateStart(trip.getCities().get(0).getDateOfDeparture());
-                trip.setDateEnd(trip.getCities().get(trip.getCities().size() - 1).getDateOfArrival());
-                trip.setCreator(user);
+                initCreator(trip, userDetails);
+                updateTripCities(trip);
                 Trip tripAfterSave = tripRepository.save(trip);
                 initCities(trip.getCities(), tripAfterSave);
                 initSeats(trip);
@@ -59,11 +56,24 @@ public class TripServiceImpl implements TripService {
         throw new TripCitiesEmptyException();
     }
 
+    private void initCreator(Trip trip, UserDetailsImpl userDetails) {
+        User user = new User();
+        user.setId(userDetails.getId());
+        trip.setCreator(user);
+    }
+
+    private void updateTripCities(Trip trip){
+        for (City city : trip.getCities()) {
+            if(city.getDirection().getDirectionFrom().isEmpty()){
+                city.getDirection().setDirectionFrom(trip.getDepartureCity());
+                city.setDateOfDeparture(trip.getDateStart());
+            }
+        }
+    }
+
     @Transactional
     public void initCities(List<City> cities, Trip tripAfterSave) {
-        cities.forEach(city -> {
-            city.setTrip(tripAfterSave);
-        });
+        cities.forEach(city -> city.setTrip(tripAfterSave));
         cityRepository.saveAll(cities);
     }
 
@@ -97,19 +107,6 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripDTO> getTrips() {
         return tripRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<TripDTO> getTripsByDate(String date, int numberOfSeats, String directionFrom, String directionTo) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime localDateTime = LocalDateTime.parse(date,dateTimeFormatter);
-//        return tripRepository.findTripsByDate(localDateTime, numberOfSeats, directionFrom, directionTo)
-//                .stream()
-//                .map(this::convertToDTO)
-//                .filter(x-> x.getDate().isAfter(localDateTime) || x.getDate().isEqual(localDateTime))
-//                .collect(Collectors.toList());
-
-        return null;
     }
 
     @Override
