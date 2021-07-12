@@ -6,6 +6,7 @@ import com.romantulchak.bustransportation.exception.BusNotFoundException;
 import com.romantulchak.bustransportation.exception.UserNotFoundException;
 import com.romantulchak.bustransportation.model.Bus;
 import com.romantulchak.bustransportation.model.User;
+import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.repository.BusRepository;
 import com.romantulchak.bustransportation.repository.UserRepository;
 import com.romantulchak.bustransportation.service.BusService;
@@ -24,10 +25,10 @@ public class BusServiceImpl implements BusService {
 
     private final BusRepository busRepository;
     private final UserRepository userRepository;
-    private final EntityMapperInvoker entityMapperInvoker;
+    private final EntityMapperInvoker<BusDTO, Bus> entityMapperInvoker;
 
     @Autowired
-    public BusServiceImpl(BusRepository busRepository, UserRepository userRepository, EntityMapperInvoker entityMapperInvoker){
+    public BusServiceImpl(BusRepository busRepository, UserRepository userRepository, EntityMapperInvoker<BusDTO, Bus> entityMapperInvoker) {
         this.busRepository = busRepository;
         this.userRepository = userRepository;
         this.entityMapperInvoker = entityMapperInvoker;
@@ -35,13 +36,13 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public BusDTO create(Bus bus, Authentication authentication) {
-        if(bus != null){
+        if (bus != null) {
             UserDetailsImpl userDetails = userInSystem(authentication);
             User user = userRepository.findById(userDetails.getId()).orElseThrow(UserNotFoundException::new);
-            if(!busRepository.existsBusByName(bus.getName())) {
+            if (!busRepository.existsBusByName(bus.getName())) {
                 bus.setUser(user);
                 busRepository.save(bus);
-                return convertToDTO(bus);
+                return convertToDTO(bus, View.BusView.class);
             }
             throw new BusAlreadyExistException(bus.getName());
         }
@@ -51,9 +52,9 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public void edit(Bus bus) {
-        if(bus != null){
+        if (bus != null) {
             busRepository.save(bus);
-        }else {
+        } else {
             throw new BusNotFoundException();
         }
     }
@@ -67,14 +68,14 @@ public class BusServiceImpl implements BusService {
     @Override
     public BusDTO getById(long id) {
         Bus bus = busRepository.findById(id).orElseThrow(BusNotFoundException::new);
-        return convertToDTO(bus);
+        return convertToDTO(bus, View.BusView.class);
     }
 
     @Override
     public List<BusDTO> getBuses() {
         return busRepository.findAll()
                 .stream()
-                .map(this::convertToDTO)
+                .map(bus -> convertToDTO(bus, View.BusView.class))
                 .collect(Collectors.toList());
     }
 
@@ -83,11 +84,11 @@ public class BusServiceImpl implements BusService {
         UserDetailsImpl userDetails = userInSystem(authentication);
         return busRepository.findBusesByUserId(userDetails.getId())
                 .stream()
-                .map(this::convertToDTO)
+                .map(bus -> convertToDTO(bus, View.BusView.class))
                 .collect(Collectors.toList());
     }
 
-    private BusDTO convertToDTO(Bus bus){
-        return entityMapperInvoker.busToDTO(bus);
+    private BusDTO convertToDTO(Bus bus, Class<?> classToCheck) {
+        return entityMapperInvoker.entityToDTO(bus, BusDTO.class, classToCheck);
     }
 }

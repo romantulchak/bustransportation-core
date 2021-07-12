@@ -8,33 +8,33 @@ import com.romantulchak.bustransportation.model.View;
 import java.time.LocalDateTime;
 
 public class CityDTO {
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private long id;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private Direction direction;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private long price;
 
     private TripDTO trip;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private LocalDateTime dateOfDeparture;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private LocalDateTime dateOfArrival;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private boolean isBusStop;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private String street;
 

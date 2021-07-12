@@ -20,4 +20,6 @@ public interface TripService {
     List<TripDTO> getTrips();
 
     List<TripDTO> getTripsForUser(Authentication authentication);
+
+    TripDTO getTripByCityId(long id);
 }

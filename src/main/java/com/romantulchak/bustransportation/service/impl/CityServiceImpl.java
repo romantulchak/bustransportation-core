@@ -2,9 +2,9 @@ package com.romantulchak.bustransportation.service.impl;
 
 import com.romantulchak.bustransportation.dto.CityDTO;
 import com.romantulchak.bustransportation.model.City;
+import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.repository.CityRepository;
 import com.romantulchak.bustransportation.service.CityService;
-import com.romantulchak.bustransportation.utility.EntityMapper;
 import com.romantulchak.bustransportation.utility.EntityMapperInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +18,10 @@ import java.util.stream.Collectors;
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
-    private final EntityMapperInvoker entityMapperInvoker;
+    private final EntityMapperInvoker<CityDTO, City> entityMapperInvoker;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository, EntityMapperInvoker entityMapperInvoker){
+    public CityServiceImpl(CityRepository cityRepository, EntityMapperInvoker<CityDTO, City> entityMapperInvoker){
         this.cityRepository = cityRepository;
         this.entityMapperInvoker = entityMapperInvoker;
     }
@@ -30,7 +30,7 @@ public class CityServiceImpl implements CityService {
     public List<CityDTO> findCitiesForTrip(long tripId) {
         return cityRepository.findCitiesForTrip(tripId)
                 .stream()
-                .map(this::convertToDTO)
+                .map(city -> convertToDTO(city, View.TripView.class))
                 .collect(Collectors.toList());
     }
 
@@ -40,12 +40,12 @@ public class CityServiceImpl implements CityService {
         LocalDateTime dateOfDeparture = LocalDateTime.parse(date,dateTimeFormatter);
         return cityRepository.findCitiesTrip(dateOfDeparture, numberOfSeats, directionFrom, directionTo)
                 .stream()
-                .map(this::convertToDTO)
+                .map(city -> convertToDTO(city, View.TripView.class))
                 .collect(Collectors.toList());
     }
 
-    private CityDTO convertToDTO(City city){
-        return entityMapperInvoker.cityToDTO(city);
+    private CityDTO convertToDTO(City city, Class<?> classToCheck){
+        return entityMapperInvoker.entityToDTO(city, CityDTO.class, classToCheck);
     }
 
 

@@ -10,41 +10,43 @@ import java.util.ArrayList;
 import java.util.List;
 //TODO: Add checks if current bus has enough seats for trip,
 public class TripDTO {
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private long id;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private BusDTO bus;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private String name;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private LocalDateTime dateStart;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private int numberOfSeats;
 
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private List<SeatDTO> seats = new ArrayList<>();
 
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private TripType tripType;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private UserDTO creator;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private List<CityDTO> cities;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private String departureCity;
 

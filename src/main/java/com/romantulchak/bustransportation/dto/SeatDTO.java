@@ -1,22 +1,23 @@
 package com.romantulchak.bustransportation.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.romantulchak.bustransportation.anotations.MapToDTO;
 import com.romantulchak.bustransportation.model.Trip;
-import com.romantulchak.bustransportation.model.User;
 import com.romantulchak.bustransportation.model.View;
-
-import javax.persistence.*;
 
 public class SeatDTO {
 
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
     @JsonView({View.TripView.class, View.SeatTripView.class})
     private long id;
 
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
     @JsonView({View.TripView.class,View.SeatTripView.class})
     private int seatNumber;
 
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
     @JsonView({View.TripView.class,View.SeatTripView.class})
-    private User user;
+    private UserDTO user;
 
     @JsonView(View.SeatTripView.class)
     private Trip trip;
@@ -38,11 +39,11 @@ public class SeatDTO {
         this.seatNumber = seatNumber;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 

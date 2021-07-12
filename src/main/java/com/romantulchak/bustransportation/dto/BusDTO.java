@@ -12,23 +12,23 @@ import java.util.List;
 
 public class BusDTO {
 
-    @MapToDTO
+    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class})
     @JsonView({View.BusView.class, View.TripView.class})
     private long id;
 
-    @MapToDTO
+    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class})
     @JsonView({View.BusView.class, View.TripView.class})
     private String name;
 
-    @MapToDTO
+    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class})
     @JsonView({View.BusView.class, View.TripView.class})
     private String brand;
 
-    @MapToDTO
+    @MapToDTO(mapClass =View.BusView.class)
     @JsonView(View.BusView.class)
     private int numberOfSeats;
 
-    @MapToDTO
+    @MapToDTO(mapClass = View.BusView.class)
     @JsonView(View.BusView.class)
     private UserDTO user;
 

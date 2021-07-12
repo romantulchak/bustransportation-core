@@ -23,11 +23,11 @@ public class Trip {
 
     private int numberOfSeats;
 
-    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("seatNumber asc ")
     private List<Seat> seats = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "trip")
+    @OneToMany(mappedBy = "trip")
     private List<TripTemplate> tripTemplates;
 
     @Enumerated(EnumType.STRING)

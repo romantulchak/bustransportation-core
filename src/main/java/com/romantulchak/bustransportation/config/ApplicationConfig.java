@@ -14,8 +14,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public EntityMapperInvoker newEntityMapperInvoker(){
-        return new EntityMapperInvoker();
+    public EntityMapperInvoker<Object, Object> newEntityMapperInvoker(){
+        return new EntityMapperInvoker<>();
     }
 
 }

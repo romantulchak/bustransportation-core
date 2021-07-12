@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -46,4 +44,8 @@ public class TripController {
         return tripService.getTripsForUser(authentication);
     }
 
+    @GetMapping("/getTripByCity/{id}")
+    public TripDTO getTripByCityId(@PathVariable("id") long id){
+        return tripService.getTripByCityId(id);
+    }
 }

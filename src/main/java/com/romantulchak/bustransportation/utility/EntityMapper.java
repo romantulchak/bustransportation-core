@@ -1,20 +1,23 @@
 package com.romantulchak.bustransportation.utility;
 
 import com.romantulchak.bustransportation.anotations.MapToDTO;
+import com.romantulchak.bustransportation.exception.CreateClassInstanceException;
 import org.hibernate.Hibernate;
 import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
+
+import static com.romantulchak.bustransportation.utility.ClassUtility.newInstanceOfType;
 
 @Component
 public final class EntityMapper {
     private final Collection<Class<?>> collections = new ArrayList<>();
+    private Class<?> classToCheck;
 
-    public EntityMapper(){
+    public EntityMapper() {
         collections.add(List.class);
         collections.add(Set.class);
         collections.add(Map.class);
@@ -27,7 +30,7 @@ public final class EntityMapper {
         for (Field busFieldOk : entityFields) {
             try {
                 busFieldOk.setAccessible(true);
-                if (field.getName().equals(busFieldOk.getName()) && field.isAnnotationPresent(MapToDTO.class)) {
+                if (field.getName().equals(busFieldOk.getName()) && checkAnnotation(field, classToCheck)) {
                     Object value = busFieldOk.get(entity);
                     entityFields.remove(busFieldOk);
                     if (value != null) {
@@ -45,6 +48,15 @@ public final class EntityMapper {
         }
     }
 
+    private boolean checkAnnotation(Field field, Class<?> classToCheck) {
+        MapToDTO declaredAnnotation = field.getDeclaredAnnotation(MapToDTO.class);
+        if (declaredAnnotation != null && declaredAnnotation.mapClass().length != 0) {
+            List<Class<?>> classes = Arrays.asList(declaredAnnotation.mapClass());
+            return field.isAnnotationPresent(MapToDTO.class) && classes.contains(classToCheck);
+        }
+        return false;
+    }
+
     private boolean isDTOField(Field field) {
         if (field.getGenericType() instanceof ParameterizedType) {
             ParameterizedType genericType = (ParameterizedType) field.getGenericType();
@@ -54,11 +66,18 @@ public final class EntityMapper {
     }
 
     private <T> Object setInternalDTOFields(T entity, Class<?> type, Field actualField) {
-        if (entity.getClass().isAssignableFrom(PersistentBag.class)) {
-            return mapListOfElements((PersistentBag) entity, type, actualField);
+        Collection<?> typeOfCollection = getTypeOfCollection(entity);
+        if (typeOfCollection != null) {
+            return mapPersistentBagOfElements(typeOfCollection, type, actualField);
         } else {
             return mapSingleObject(entity, type);
         }
+    }
+
+
+
+    private <T> boolean checkObjectInstance(T entity, Class<?> obj) {
+        return obj.isInstance(entity);
     }
 
     private <T> Object mapSingleObject(T entity, Class<?> type) {
@@ -68,14 +87,17 @@ public final class EntityMapper {
         return internalDto;
     }
 
-    private Collection<Object> mapListOfElements(PersistentBag entity, Class<?> type, Field actualField) {
+    private Collection<Object> mapPersistentBagOfElements(Collection<?> entity, Class<?> type, Field actualField) {
         Object internalDto;
         if (Hibernate.isInitialized(entity) && !entity.isEmpty()) {
             ParameterizedType genericType = (ParameterizedType) actualField.getGenericType();
             Collection<Object> collection = newCollectionInstance(type);
             type = (Class<?>) genericType.getActualTypeArguments()[0];
             for (Object object : entity) {
-                List<Field> entityFields = new LinkedList<>(Arrays.asList(entity.get(0).getClass().getDeclaredFields()));
+                List<Field> entityFields = new LinkedList<>(Arrays.asList(entity
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(() -> new RuntimeException("Collection is empty")).getClass().getDeclaredFields()));
                 internalDto = newInstanceOfType(type);
                 handleFields(object, entityFields, internalDto, type.getDeclaredFields());
                 collection.add(internalDto);
@@ -85,33 +107,40 @@ public final class EntityMapper {
         return Collections.emptyList();
     }
 
-    public  <T> void handleFields(T entity, List<Field> entityFields, Object internalDto, Field[] declaredFields) {
+    public <T> void handleFields(T entity, List<Field> entityFields, Object internalDto, Field[] declaredFields) {
         for (Field field : declaredFields) {
             handleExistsField(entity, internalDto, entityFields, field);
         }
     }
 
-    private Object newInstanceOfType(Class<?> clazz) {
-        try {
-            return clazz.getConstructor().newInstance();
-        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-            throw new RuntimeException("Cannot create new instance of class " + clazz.getTypeName());
-        }
-    }
 
     private Collection<Object> newCollectionInstance(Class<?> clazz) {
         if (clazz.isAssignableFrom(List.class)) {
             return new ArrayList<>();
-        }else if (clazz.isAssignableFrom(Set.class)){
+        } else if (clazz.isAssignableFrom(Set.class)) {
             return new HashSet<>();
-        }else if(clazz.isAssignableFrom(Queue.class)){
+        } else if (clazz.isAssignableFrom(Queue.class)) {
             return new PriorityQueue<>();
         }
-        throw new RuntimeException("Cannot create new instance of class " + clazz.getTypeName());
+        throw new CreateClassInstanceException(clazz.getTypeName());
     }
 
-    private boolean isAssignableFromCollection(Class<?> clazz) {
-        return collections.contains(clazz);
+    private <T> Collection<?> getTypeOfCollection(T entity) {
+        if (checkObjectInstance(entity, PersistentBag.class)) {
+            return (PersistentBag) entity;
+        } else if (checkObjectInstance(entity, List.class)) {
+            return (List<?>) entity;
+        } else if (checkObjectInstance(entity, Set.class)) {
+            return (Set<?>) entity;
+        }
+        return null;
     }
 
+    public Class<?> getClassToCheck() {
+        return classToCheck;
+    }
+
+    public void setClassToCheck(Class<?> classToCheck) {
+        this.classToCheck = classToCheck;
+    }
 }

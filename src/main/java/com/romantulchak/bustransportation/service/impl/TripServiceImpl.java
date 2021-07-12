@@ -4,10 +4,7 @@ import com.romantulchak.bustransportation.dto.TripDTO;
 import com.romantulchak.bustransportation.exception.BusNotFoundException;
 import com.romantulchak.bustransportation.exception.TripCitiesEmptyException;
 import com.romantulchak.bustransportation.exception.TripNotFoundException;
-import com.romantulchak.bustransportation.model.City;
-import com.romantulchak.bustransportation.model.Seat;
-import com.romantulchak.bustransportation.model.Trip;
-import com.romantulchak.bustransportation.model.User;
+import com.romantulchak.bustransportation.model.*;
 import com.romantulchak.bustransportation.repository.CityRepository;
 import com.romantulchak.bustransportation.repository.TripRepository;
 import com.romantulchak.bustransportation.service.TripService;
@@ -17,8 +14,6 @@ import org.springframework.stereotype.Service;
 import com.romantulchak.bustransportation.repository.SeatRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,8 +25,8 @@ public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final SeatRepository seatRepository;
     private final CityRepository cityRepository;
-    private final EntityMapperInvoker entityMapperInvoker;
-    public TripServiceImpl(TripRepository tripRepository, SeatRepository seatRepository, CityRepository cityRepository, EntityMapperInvoker entityMapperInvoker){
+    private final EntityMapperInvoker<TripDTO, Trip> entityMapperInvoker;
+    public TripServiceImpl(TripRepository tripRepository, SeatRepository seatRepository, CityRepository cityRepository, EntityMapperInvoker<TripDTO, Trip> entityMapperInvoker){
         this.tripRepository = tripRepository;
         this.seatRepository = seatRepository;
         this.cityRepository = cityRepository;
@@ -49,7 +44,7 @@ public class TripServiceImpl implements TripService {
                 Trip tripAfterSave = tripRepository.save(trip);
                 initCities(trip.getCities(), tripAfterSave);
                 initSeats(trip);
-                return convertToDTO(trip);
+                return convertToDTO(trip, View.TripView.class);
             }
             throw new BusNotFoundException();
         }
@@ -100,13 +95,16 @@ public class TripServiceImpl implements TripService {
     public TripDTO getById(long id) {
         return tripRepository
                 .findById(id)
-                .map(this::convertToDTO)
+                .map(trip -> convertToDTO(trip, View.TripView.class))
                 .orElseThrow(TripNotFoundException::new);
     }
 
     @Override
     public List<TripDTO> getTrips() {
-        return tripRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+        return tripRepository.findAll()
+                .stream()
+                .map(trip -> convertToDTO(trip, View.TripView.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -114,11 +112,20 @@ public class TripServiceImpl implements TripService {
         UserDetailsImpl userDetails = userInSystem(authentication);
         return tripRepository.findTripsForUser(userDetails.getId())
                 .stream()
-                .map(this::convertToDTO)
+                .map(trip -> convertToDTO(trip, View.TripView.class))
                 .collect(Collectors.toList());
     }
 
-    private TripDTO convertToDTO(Trip trip){
-        return entityMapperInvoker.tripToDTO(trip);
+    @Override
+    public TripDTO getTripByCityId(long id) {
+        Trip trip = tripRepository.findTripByCityId(id).orElseThrow(TripNotFoundException::new);
+        List<City> cities = cityRepository.findCitiesForTrip(trip.getId());
+        trip.setCities(cities);
+        return convertToDTO(trip, View.TripView.class);
+    }
+
+    private TripDTO convertToDTO(Trip trip, Class<?> classToCheck){
+        entityMapperInvoker.entityToDTO(trip, TripDTO.class, classToCheck);
+        return entityMapperInvoker.entityToDTO(trip, TripDTO.class, classToCheck);
     }
 }

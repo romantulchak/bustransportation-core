@@ -5,15 +5,15 @@ import com.romantulchak.bustransportation.anotations.MapToDTO;
 import com.romantulchak.bustransportation.model.View;
 
 public class UserDTO {
-    @MapToDTO
+    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class})
     @JsonView({View.TripView.class, View.BusView.class})
     private long id;
 
-    @MapToDTO
+    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class})
     @JsonView({View.TripView.class, View.BusView.class})
     private String firstName;
 
-    @MapToDTO
+    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class})
     @JsonView({View.TripView.class, View.BusView.class})
     private String lastName;
 
