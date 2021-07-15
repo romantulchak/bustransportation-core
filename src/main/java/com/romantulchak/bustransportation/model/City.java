@@ -2,6 +2,7 @@ package com.romantulchak.bustransportation.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class City {
@@ -25,6 +26,9 @@ public class City {
     private boolean isBusStop;
 
     private String street;
+
+    @OneToMany(mappedBy = "city")
+    private List<Booking> bookings;
 
     public long getId() {
         return id;
@@ -88,5 +92,13 @@ public class City {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 }

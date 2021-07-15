@@ -1,30 +1,21 @@
 package com.romantulchak.bustransportation.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonView({View.TripView.class, View.SeatTripView.class})
     private long id;
-    @JsonView({View.TripView.class,View.SeatTripView.class})
+
     private int seatNumber;
 
-    @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
-    @JsonView({View.TripView.class,View.SeatTripView.class})
-    private User user;
-
     @ManyToOne(cascade = CascadeType.DETACH)
-    @JsonView(View.SeatTripView.class)
     private Trip trip;
 
-    @Embedded
-    private Direction direction = new Direction();
-
-    private long price;
+    @OneToMany(mappedBy = "seat")
+    private List<Booking> bookings;
 
     public Seat(){
 
@@ -50,14 +41,6 @@ public class Seat {
         this.seatNumber = seatNumber;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Trip getTrip() {
         return trip;
     }
@@ -66,19 +49,11 @@ public class Seat {
         this.trip = trip;
     }
 
-    public Direction getDirection() {
-        return direction;
+    public List<Booking> getBookings() {
+        return bookings;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public long getPrice() {
-        return price;
-    }
-
-    public void setPrice(long price) {
-        this.price = price;
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 }

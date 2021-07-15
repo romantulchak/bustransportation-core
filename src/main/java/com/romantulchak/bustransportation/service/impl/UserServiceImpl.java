@@ -40,20 +40,20 @@ public class UserServiceImpl implements UserService {
     }
 
     private void getSeats(List<Seat> seats, Trip trip, List<Seat> occupiedSeats, List<User> users) {
-        if(!trip.getSeats().isEmpty()){
-            trip.getSeats().forEach(tripSeat->{
-                seats.forEach(seat->{
-                    if(tripSeat.getSeatNumber() == seat.getSeatNumber()){
-                        if(tripSeat.getUser() == null) {
-                            User user = seat.getUser();
-                            user.setSeat(seat);
-                            users.add(user);
-                        }else{
-                            occupiedSeats.add(seat);
-                        }
-                    }
-                });
-            });
-        }
+//        if(!trip.getSeats().isEmpty()){
+//            trip.getSeats().forEach(tripSeat->{
+//                seats.forEach(seat->{
+//                    if(tripSeat.getSeatNumber() == seat.getSeatNumber()){
+//                        if(tripSeat.getUsers() == null) {
+//                            User user = seat.getUser();
+//                            user.setSeat(seat);
+//                            users.add(user);
+//                        }else{
+//                            occupiedSeats.add(seat);
+//                        }
+//                    }
+//                });
+//            });
+//        }
     }
 }

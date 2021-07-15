@@ -40,8 +40,9 @@ public class User {
                inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToOne
-    private Seat seat;
+    @ManyToMany
+    @JoinTable(name = "user_seat", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "seatId"))
+    private List<Seat> seats;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<TripTemplate> tripTemplates;
@@ -92,12 +93,12 @@ public class User {
         this.email = email;
     }
 
-    public Seat getSeat() {
-        return seat;
+    public List<Seat> getSeats() {
+        return seats;
     }
 
-    public void setSeat(Seat seat) {
-        this.seat = seat;
+    public void setSeats(List<Seat> seats) {
+        this.seats = seats;
     }
 
     public String getUsername() {
