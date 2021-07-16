@@ -14,7 +14,7 @@ public class Seat {
     @ManyToOne(cascade = CascadeType.DETACH)
     private Trip trip;
 
-    @OneToMany(mappedBy = "seat")
+    @OneToMany(mappedBy = "seat", fetch = FetchType.EAGER)
     private List<Booking> bookings;
 
     public Seat(){

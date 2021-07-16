@@ -1,6 +1,7 @@
 package com.romantulchak.bustransportation.service.impl;
 
 import com.romantulchak.bustransportation.dto.CityDTO;
+import com.romantulchak.bustransportation.exception.CityNotFoundException;
 import com.romantulchak.bustransportation.model.City;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.repository.CityRepository;
@@ -42,6 +43,14 @@ public class CityServiceImpl implements CityService {
                 .stream()
                 .map(city -> convertToDTO(city, View.TripView.class))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public CityDTO findCityById(long id) {
+        City city = cityRepository
+                .findById(id)
+                .orElseThrow(CityNotFoundException::new);
+        return convertToDTO(city, View.TripView.class);
     }
 
     private CityDTO convertToDTO(City city, Class<?> classToCheck){

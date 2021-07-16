@@ -13,8 +13,6 @@ public class BookingDTO {
     @JsonView({View.TripView.class,View.SeatTripView.class})
     private CityDTO city;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class})
     private SeatDTO seat;
 
     @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})

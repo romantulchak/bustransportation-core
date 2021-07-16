@@ -23,43 +23,55 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(BusNotFoundException.class)
-    public ResponseEntity<?> handleBusNotFoundException(BusNotFoundException ex, WebRequest webRequest){
+    public ResponseEntity<?> handleBusNotFoundException(BusNotFoundException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(DirectionNotFoundException.class)
-    public ResponseEntity<?> handleDirectionNotFoundException(DirectionNotFoundException ex, WebRequest webRequest){
+    public ResponseEntity<?> handleDirectionNotFoundException(DirectionNotFoundException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(BusAlreadyExistException.class)
-    public ResponseEntity<?> handleBusAlreadyExistException(BusAlreadyExistException ex, WebRequest webRequest){
+    public ResponseEntity<?> handleBusAlreadyExistException(BusAlreadyExistException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(DirectionAlreadyExistException.class)
-    public ResponseEntity<?> handleDirectionAlreadyExistException(DirectionAlreadyExistException ex, WebRequest webRequest){
+    public ResponseEntity<?> handleDirectionAlreadyExistException(DirectionAlreadyExistException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(TripNotFoundException.class)
-    public ResponseEntity<?> handleTripNotFoundException(TripNotFoundException ex, WebRequest webRequest){
+    public ResponseEntity<?> handleTripNotFoundException(TripNotFoundException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(OccupiedSeatException.class)
-    public ResponseEntity<?> handleOccupiedSeatException(OccupiedSeatException ex, WebRequest webRequest){
+    public ResponseEntity<?> handleOccupiedSeatException(OccupiedSeatException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(EmailAlreadyTakenException.class)
-    public ResponseEntity<?> handleEmailAlreadyTakenException(EmailAlreadyTakenException ex, WebRequest webRequest){
+    public ResponseEntity<?> handleEmailAlreadyTakenException(EmailAlreadyTakenException ex, WebRequest webRequest) {
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CityNotFoundException.class)
+    public ResponseEntity<?> handleCityNotFoundException(CityNotFoundException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex, WebRequest webRequest){
+    public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }

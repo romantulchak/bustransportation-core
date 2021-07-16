@@ -32,4 +32,10 @@ public class CityController {
     public List<CityDTO> findCityTrip(@RequestParam(name = "date")String date, @RequestParam(name = "numberOfSeats", defaultValue = "1") int numberOfSeats, @RequestParam(name="directionFrom") String directionFrom, @RequestParam(name="directionTo") String directionTo){
         return cityService.findCityTripsByDate(date, numberOfSeats, directionFrom, directionTo);
     }
+
+    @GetMapping("/getCityById/{id}")
+    @JsonView(View.TripView.class)
+    public CityDTO findCityById(@PathVariable("id") long id){
+        return cityService.findCityById(id);
+    }
 }

@@ -9,4 +9,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 public @interface MapToDTO {
    Class<?>[] mapClass();
+   String assistedField() default "";
+   //TODO: добавити відповідне поле в Entity
 }
