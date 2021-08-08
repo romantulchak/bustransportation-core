@@ -6,7 +6,6 @@ plugins {
 
 group = 'com.romantulchak'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
@@ -24,7 +23,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.1'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
-
+    compile files("E:/dto-mapper.jar")
 }
 
 test {

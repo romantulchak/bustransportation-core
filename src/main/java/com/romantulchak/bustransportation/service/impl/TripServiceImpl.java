@@ -1,5 +1,6 @@
 package com.romantulchak.bustransportation.service.impl;
 
+import com.mapperDTO.mapper.EntityMapperInvoker;
 import com.romantulchak.bustransportation.dto.TripDTO;
 import com.romantulchak.bustransportation.exception.BusNotFoundException;
 import com.romantulchak.bustransportation.exception.TripCitiesEmptyException;
@@ -8,7 +9,6 @@ import com.romantulchak.bustransportation.model.*;
 import com.romantulchak.bustransportation.repository.CityRepository;
 import com.romantulchak.bustransportation.repository.TripRepository;
 import com.romantulchak.bustransportation.service.TripService;
-import com.romantulchak.bustransportation.utility.EntityMapperInvoker;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import com.romantulchak.bustransportation.repository.SeatRepository;
@@ -25,8 +25,8 @@ public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final SeatRepository seatRepository;
     private final CityRepository cityRepository;
-    private final EntityMapperInvoker<TripDTO, Trip> entityMapperInvoker;
-    public TripServiceImpl(TripRepository tripRepository, SeatRepository seatRepository, CityRepository cityRepository, EntityMapperInvoker<TripDTO, Trip> entityMapperInvoker){
+    private final EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker;
+    public TripServiceImpl(TripRepository tripRepository, SeatRepository seatRepository, CityRepository cityRepository, EntityMapperInvoker<Trip,TripDTO> entityMapperInvoker){
         this.tripRepository = tripRepository;
         this.seatRepository = seatRepository;
         this.cityRepository = cityRepository;
@@ -125,7 +125,6 @@ public class TripServiceImpl implements TripService {
     }
 
     private TripDTO convertToDTO(Trip trip, Class<?> classToCheck){
-        entityMapperInvoker.entityToDTO(trip, TripDTO.class, classToCheck);
         return entityMapperInvoker.entityToDTO(trip, TripDTO.class, classToCheck);
     }
 }

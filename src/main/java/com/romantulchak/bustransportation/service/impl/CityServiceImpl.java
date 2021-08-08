@@ -1,12 +1,12 @@
 package com.romantulchak.bustransportation.service.impl;
 
+import com.mapperDTO.mapper.EntityMapperInvoker;
 import com.romantulchak.bustransportation.dto.CityDTO;
 import com.romantulchak.bustransportation.exception.CityNotFoundException;
 import com.romantulchak.bustransportation.model.City;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.repository.CityRepository;
 import com.romantulchak.bustransportation.service.CityService;
-import com.romantulchak.bustransportation.utility.EntityMapperInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +19,10 @@ import java.util.stream.Collectors;
 public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
-    private final EntityMapperInvoker<CityDTO, City> entityMapperInvoker;
+    private final EntityMapperInvoker<City,CityDTO> entityMapperInvoker;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository, EntityMapperInvoker<CityDTO, City> entityMapperInvoker){
+    public CityServiceImpl(CityRepository cityRepository, EntityMapperInvoker<City,CityDTO> entityMapperInvoker){
         this.cityRepository = cityRepository;
         this.entityMapperInvoker = entityMapperInvoker;
     }

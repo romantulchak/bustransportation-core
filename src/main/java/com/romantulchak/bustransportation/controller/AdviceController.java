@@ -75,4 +75,11 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+    @ExceptionHandler(SeatsAlreadyBookedException.class)
+    public ResponseEntity<?> handleSeatsAlreadyBookedException(SeatsAlreadyBookedException ex, WebRequest webRequest) {
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+
 }

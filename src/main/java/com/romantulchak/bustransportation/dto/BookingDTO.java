@@ -1,9 +1,11 @@
 package com.romantulchak.bustransportation.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.romantulchak.bustransportation.anotations.MapToDTO;
+import com.mapperDTO.annotation.DTO;
+import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.model.View;
 
+@DTO
 public class BookingDTO {
     @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
     @JsonView({View.TripView.class,View.SeatTripView.class})

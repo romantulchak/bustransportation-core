@@ -1,15 +1,11 @@
 package com.romantulchak.bustransportation.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.romantulchak.bustransportation.anotations.MapToDTO;
-import com.romantulchak.bustransportation.model.Bus;
-import com.romantulchak.bustransportation.model.Trip;
-import com.romantulchak.bustransportation.model.User;
+import com.mapperDTO.annotation.DTO;
+import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.model.View;
-import org.springframework.util.ClassUtils;
 
-import java.util.List;
-
+@DTO
 public class BusDTO {
 
     @MapToDTO(mapClass = {View.BusView.class, View.TripView.class})

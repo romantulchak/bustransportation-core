@@ -1,14 +1,16 @@
 package com.romantulchak.bustransportation.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.romantulchak.bustransportation.anotations.MapToDTO;
+import com.mapperDTO.annotation.DTO;
+import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.model.*;
 import com.romantulchak.bustransportation.model.enums.TripType;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-//TODO: Add checks if current bus has enough seats for trip,
+
+@DTO
 public class TripDTO {
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)

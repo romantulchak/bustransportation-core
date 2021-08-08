@@ -1,12 +1,14 @@
 package com.romantulchak.bustransportation.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.romantulchak.bustransportation.anotations.MapToDTO;
+import com.mapperDTO.annotation.DTO;
+import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.model.Direction;
 import com.romantulchak.bustransportation.model.View;
 
 import java.time.LocalDateTime;
 
+@DTO
 public class CityDTO {
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)

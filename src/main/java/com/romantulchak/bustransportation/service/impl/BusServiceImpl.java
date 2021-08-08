@@ -1,5 +1,6 @@
 package com.romantulchak.bustransportation.service.impl;
 
+import com.mapperDTO.mapper.EntityMapperInvoker;
 import com.romantulchak.bustransportation.dto.BusDTO;
 import com.romantulchak.bustransportation.exception.BusAlreadyExistException;
 import com.romantulchak.bustransportation.exception.BusNotFoundException;
@@ -10,7 +11,6 @@ import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.repository.BusRepository;
 import com.romantulchak.bustransportation.repository.UserRepository;
 import com.romantulchak.bustransportation.service.BusService;
-import com.romantulchak.bustransportation.utility.EntityMapperInvoker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -25,10 +25,10 @@ public class BusServiceImpl implements BusService {
 
     private final BusRepository busRepository;
     private final UserRepository userRepository;
-    private final EntityMapperInvoker<BusDTO, Bus> entityMapperInvoker;
+    private final EntityMapperInvoker<Bus,BusDTO> entityMapperInvoker;
 
     @Autowired
-    public BusServiceImpl(BusRepository busRepository, UserRepository userRepository, EntityMapperInvoker<BusDTO, Bus> entityMapperInvoker) {
+    public BusServiceImpl(BusRepository busRepository, UserRepository userRepository, EntityMapperInvoker<Bus, BusDTO> entityMapperInvoker) {
         this.busRepository = busRepository;
         this.userRepository = userRepository;
         this.entityMapperInvoker = entityMapperInvoker;
