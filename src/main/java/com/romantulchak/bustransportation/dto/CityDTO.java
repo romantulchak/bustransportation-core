@@ -10,34 +10,34 @@ import java.time.LocalDateTime;
 
 @DTO
 public class CityDTO {
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class, View.BookingView.class})
     private long id;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class, View.BookingView.class})
     private Direction direction;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class, View.BookingView.class})
     private long price;
 
     private TripDTO trip;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class, View.BookingView.class})
     private LocalDateTime dateOfDeparture;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class, View.BookingView.class})
     private LocalDateTime dateOfArrival;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class, View.BookingView.class})
     private boolean isBusStop;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class, View.BookingView.class})
     private String street;
 
 

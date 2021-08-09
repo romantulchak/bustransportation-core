@@ -1,11 +1,8 @@
 package com.romantulchak.bustransportation.model;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +49,9 @@ public class User {
 
     @OneToMany
     private List<Trip> trips;
+
+    @OneToMany(mappedBy = "user")
+    private List<Booking> bookings;
 
     public User(){}
 
@@ -149,5 +149,11 @@ public class User {
         this.trips = trips;
     }
 
+    public List<Booking> getBookings() {
+        return bookings;
+    }
 
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
+    }
 }

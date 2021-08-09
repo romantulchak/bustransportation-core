@@ -23,6 +23,8 @@ public class Booking {
     @Email
     private String email;
 
+    @ManyToOne
+    private User user;
 
     public long getId() {
         return id;
@@ -70,5 +72,13 @@ public class Booking {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,11 +1,16 @@
 package com.romantulchak.bustransportation.controller;
 
+import com.romantulchak.bustransportation.dto.BookingDTO;
+import com.romantulchak.bustransportation.dto.PageableDTO;
 import com.romantulchak.bustransportation.model.Booking;
 import com.romantulchak.bustransportation.service.impl.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -26,4 +31,11 @@ public class BookingController {
         bookingService.create(bookings, cityId);
     }
 
+    @GetMapping("/findUserBooking")
+    @PreAuthorize("isAuthenticated()")
+    public PageableDTO<Collection<BookingDTO>> findUserBookings(@RequestParam(value = "page", defaultValue = "0") int page,
+                                                               @RequestParam(value = "size", defaultValue = "5") int size,
+                                                               Authentication authentication){
+        return bookingService.findUserBookings(page,size, authentication);
+    }
 }

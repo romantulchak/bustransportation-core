@@ -7,26 +7,28 @@ import com.romantulchak.bustransportation.model.View;
 
 @DTO
 public class BookingDTO {
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class})
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
     private long id;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class})
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
     private CityDTO city;
 
+    @MapToDTO(mapClass = {View.BookingView.class})
+    @JsonView(View.BookingView.class)
     private SeatDTO seat;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class})
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
     private String firstName;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class})
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
     private String lastName;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class})
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
     private String email;
 
     public long getId() {
