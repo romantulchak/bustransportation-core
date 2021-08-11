@@ -2,6 +2,8 @@ package com.romantulchak.bustransportation.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Booking {
@@ -14,17 +16,19 @@ public class Booking {
     private City city;
 
     @ManyToOne
-    private Seat seat;
-
-    private String firstName;
-
-    private String lastName;
-
-    @Email
-    private String email;
-
-    @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "booking", fetch = FetchType.EAGER, orphanRemoval = true)
+    public List<Ticket> tickets = new ArrayList<>();
+
+    public Booking(){
+
+    }
+
+    public Booking(City city, User user) {
+        this.city = city;
+        this.user = user;
+    }
 
     public long getId() {
         return id;
@@ -42,43 +46,19 @@ public class Booking {
         this.city = city;
     }
 
-    public Seat getSeat() {
-        return seat;
-    }
-
-    public void setSeat(Seat seat) {
-        this.seat = seat;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 }

@@ -3,6 +3,7 @@ package com.romantulchak.bustransportation.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.DTO;
 import com.mapperDTO.annotation.MapToDTO;
+import com.romantulchak.bustransportation.model.Ticket;
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 
@@ -24,7 +25,7 @@ public class SeatDTO {
 
     @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class})
     @JsonView({View.TripView.class,View.SeatTripView.class})
-    private List<BookingDTO> bookings;
+    private List<TicketDTO> tickets;
 
     public long getId() {
         return id;
@@ -50,11 +51,11 @@ public class SeatDTO {
         this.trip = trip;
     }
 
-    public List<BookingDTO> getBookings() {
-        return bookings;
+    public List<TicketDTO> getTickets() {
+        return tickets;
     }
 
-    public void setBookings(List<BookingDTO> bookings) {
-        this.bookings = bookings;
+    public void setTickets(List<TicketDTO> tickets) {
+        this.tickets = tickets;
     }
 }

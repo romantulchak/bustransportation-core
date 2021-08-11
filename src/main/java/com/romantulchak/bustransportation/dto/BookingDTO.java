@@ -5,6 +5,8 @@ import com.mapperDTO.annotation.DTO;
 import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.model.View;
 
+import java.util.List;
+
 @DTO
 public class BookingDTO {
     @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
@@ -15,21 +17,13 @@ public class BookingDTO {
     @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
     private CityDTO city;
 
-    @MapToDTO(mapClass = {View.BookingView.class})
-    @JsonView(View.BookingView.class)
-    private SeatDTO seat;
+    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
+    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
+    private UserDTO user;
 
     @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
     @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
-    private String firstName;
-
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
-    private String lastName;
-
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
-    private String email;
+    private List<TicketDTO> tickets;
 
     public long getId() {
         return id;
@@ -47,35 +41,19 @@ public class BookingDTO {
         this.city = city;
     }
 
-    public SeatDTO getSeat() {
-        return seat;
+    public UserDTO getUser() {
+        return user;
     }
 
-    public void setSeat(SeatDTO seat) {
-        this.seat = seat;
+    public void setUser(UserDTO user) {
+        this.user = user;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public List<TicketDTO> getTickets() {
+        return tickets;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setTickets(List<TicketDTO> tickets) {
+        this.tickets = tickets;
     }
 }

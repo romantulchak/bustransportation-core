@@ -15,7 +15,7 @@ public class Seat {
     private Trip trip;
 
     @OneToMany(mappedBy = "seat", fetch = FetchType.EAGER)
-    private List<Booking> bookings;
+    private List<Ticket> tickets;
 
     public Seat(){
 
@@ -49,11 +49,11 @@ public class Seat {
         this.trip = trip;
     }
 
-    public List<Booking> getBookings() {
-        return bookings;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
     }
 }

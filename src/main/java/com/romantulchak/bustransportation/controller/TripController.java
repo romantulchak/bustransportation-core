@@ -45,6 +45,7 @@ public class TripController {
     }
 
     @GetMapping("/getTripByCity/{id}")
+    @JsonView(View.TripView.class)
     public TripDTO getTripByCityId(@PathVariable("id") long id){
         return tripService.getTripByCityId(id);
     }

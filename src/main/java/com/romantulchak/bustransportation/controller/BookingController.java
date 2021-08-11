@@ -1,8 +1,10 @@
 package com.romantulchak.bustransportation.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.romantulchak.bustransportation.dto.BookingDTO;
 import com.romantulchak.bustransportation.dto.PageableDTO;
 import com.romantulchak.bustransportation.model.Booking;
+import com.romantulchak.bustransportation.payload.request.BookingRequest;
 import com.romantulchak.bustransportation.service.impl.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +29,8 @@ public class BookingController {
 
     @PostMapping("/bookPlaces/{cityId}")
     @PreAuthorize("isAuthenticated()")
-    public void bookPlaces(@RequestBody List<Booking> bookings, @PathVariable("cityId") long cityId){
-        bookingService.create(bookings, cityId);
+    public void bookPlaces(@RequestBody List<BookingRequest> bookings, @PathVariable("cityId") long cityId, Authentication authentication){
+        bookingService.create(bookings, cityId, authentication);
     }
 
     @GetMapping("/findUserBooking")

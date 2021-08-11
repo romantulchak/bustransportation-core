@@ -5,12 +5,10 @@ import com.romantulchak.bustransportation.dto.BookingDTO;
 import com.romantulchak.bustransportation.dto.PageableDTO;
 import com.romantulchak.bustransportation.exception.CityNotFoundException;
 import com.romantulchak.bustransportation.exception.SeatsAlreadyBookedException;
-import com.romantulchak.bustransportation.model.Booking;
-import com.romantulchak.bustransportation.model.City;
-import com.romantulchak.bustransportation.model.View;
-import com.romantulchak.bustransportation.repository.BookingRepository;
-import com.romantulchak.bustransportation.repository.CityRepository;
-import com.romantulchak.bustransportation.repository.SeatRepository;
+import com.romantulchak.bustransportation.exception.UserNotFoundException;
+import com.romantulchak.bustransportation.model.*;
+import com.romantulchak.bustransportation.payload.request.BookingRequest;
+import com.romantulchak.bustransportation.repository.*;
 import com.romantulchak.bustransportation.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,34 +27,45 @@ public class BookingServiceImpl implements BookingService {
     private final BookingRepository bookingRepository;
     private final CityRepository cityRepository;
     private final SeatRepository seatRepository;
+    private final UserRepository userRepository;
+    private final TicketRepository ticketRepository;
     private final EntityMapperInvoker<Booking, BookingDTO> entityMapperInvoker;
 
     @Autowired
     public BookingServiceImpl(BookingRepository bookingRepository,
                               CityRepository cityRepository,
                               SeatRepository seatRepository,
+                              UserRepository userRepository,
+                              TicketRepository ticketRepository,
                               EntityMapperInvoker<Booking, BookingDTO> entityMapperInvoker) {
         this.bookingRepository = bookingRepository;
         this.cityRepository = cityRepository;
         this.seatRepository = seatRepository;
         this.entityMapperInvoker = entityMapperInvoker;
+        this.userRepository = userRepository;
+        this.ticketRepository = ticketRepository;
     }
 
 
     @Transactional
     @Override
-    public void create(List<Booking> bookings, long cityId) {
+    public void create(List<BookingRequest> bookingRequests, long cityId, Authentication authentication) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        User user = userRepository.findUserByUsername(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
         City city = cityRepository.findById(cityId).orElseThrow(CityNotFoundException::new);
+        List<Ticket> tickets = new ArrayList<>();
         Set<Integer> bookedSeats = new TreeSet<>();
-        bookings.forEach(booking -> {
-            if (seatRepository.isSeatBooked(booking.getSeat().getId(), city.getDirection().getDirectionFrom()).isEmpty()) {
-                booking.setCity(city);
-            } else {
-                bookedSeats.add(booking.getSeat().getSeatNumber());
+        for (BookingRequest bookingRequest : bookingRequests) {
+            if(seatRepository.isSeatBooked(bookingRequest.getSeat().getId(), city.getDirection().getDirectionFrom()).isEmpty()){
+                Booking booking = bookingRepository.save(new Booking(city, user));
+                Ticket ticket = new Ticket(bookingRequest.getFirstName(), bookingRequest.getLastName(), bookingRequest.getEmail(), bookingRequest.getSeat(), booking);
+                tickets.add(ticket);
+            }else{
+                bookedSeats.add(bookingRequest.getSeat().getSeatNumber());
             }
-        });
+        }
         checkBookedSeats(bookedSeats);
-        bookingRepository.saveAll(bookings);
+        ticketRepository.saveAll(tickets);
     }
 
     @Override
