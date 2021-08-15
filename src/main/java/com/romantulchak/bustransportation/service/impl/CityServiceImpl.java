@@ -39,8 +39,13 @@ public class CityServiceImpl implements CityService {
     public List<CityDTO> findCityTripsByDate(String date, int numberOfSeats, String directionFrom, String directionTo) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
         LocalDateTime dateOfDeparture = LocalDateTime.parse(date,dateTimeFormatter);
+        List<City> citiesTrip = cityRepository.findCitiesTrip(dateOfDeparture, numberOfSeats, directionFrom, directionTo);
+        for (City city : citiesTrip) {
+            city.getBookings().stream().filter(booking -> booking.getTotalNumberOfSeats() > numberOfSeats).collect(Collectors.toList());
+        }
         return cityRepository.findCitiesTrip(dateOfDeparture, numberOfSeats, directionFrom, directionTo)
                 .stream()
+       //         .filter(city -> city.getBookings().stream().filter(booking -> booking.getTickets().size() >= numberOfSeats))
                 .map(city -> convertToDTO(city, View.TripView.class))
                 .collect(Collectors.toList());
     }

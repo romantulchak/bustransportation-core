@@ -21,13 +21,16 @@ public class Booking {
     @OneToMany(mappedBy = "booking", fetch = FetchType.EAGER, orphanRemoval = true)
     public List<Ticket> tickets = new ArrayList<>();
 
+    private int totalNumberOfSeats;
+
     public Booking(){
 
     }
 
-    public Booking(City city, User user) {
+    public Booking(City city, User user, int totalNumberOfSeats) {
         this.city = city;
         this.user = user;
+        this.totalNumberOfSeats = totalNumberOfSeats;
     }
 
     public long getId() {
@@ -60,5 +63,13 @@ public class Booking {
 
     public void setTickets(List<Ticket> tickets) {
         this.tickets = tickets;
+    }
+
+    public int getTotalNumberOfSeats() {
+        return totalNumberOfSeats;
+    }
+
+    public void setTotalNumberOfSeats(int totalNumberOfSeats) {
+        this.totalNumberOfSeats = totalNumberOfSeats;
     }
 }

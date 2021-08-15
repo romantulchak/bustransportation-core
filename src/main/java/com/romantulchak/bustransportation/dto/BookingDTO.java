@@ -25,6 +25,8 @@ public class BookingDTO {
     @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
     private List<TicketDTO> tickets;
 
+    private int totalNumberOfSeats;
+
     public long getId() {
         return id;
     }
@@ -55,5 +57,13 @@ public class BookingDTO {
 
     public void setTickets(List<TicketDTO> tickets) {
         this.tickets = tickets;
+    }
+
+    public int getTotalNumberOfSeats() {
+        return totalNumberOfSeats;
+    }
+
+    public void setTotalNumberOfSeats(int totalNumberOfSeats) {
+        this.totalNumberOfSeats = totalNumberOfSeats;
     }
 }
