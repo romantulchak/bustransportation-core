@@ -15,6 +15,6 @@ public interface CityRepository extends JpaRepository<City, Long> {
     @Query(value = "SELECT c FROM City c LEFT JOIN c.trip ct WHERE ct.id = :tripId")
     List<City> findCitiesForTrip(@Param("tripId") long tripId);
 
-    @Query(value = "SELECT c FROM City c LEFT OUTER JOIN c.trip ct WHERE CAST(c.dateOfDeparture AS LocalDate) = CAST(:dateOfDeparture AS LocalDate) AND c.direction.directionFrom = :directionFrom AND c.direction.directionTo = :directionTo AND ct.numberOfSeats >= :numberOfSeats")
-    List<City> findCitiesTrip(@Param("dateOfDeparture")LocalDateTime dateOfDeparture, @Param("numberOfSeats") int numberOfSeats, @Param("directionFrom") String directionFrom, @Param("directionTo") String directionTo);
+    @Query(value = "SELECT c FROM City c LEFT OUTER JOIN c.trip ct WHERE CAST(c.dateOfDeparture AS LocalDate) = CAST(:dateOfDeparture AS LocalDate) AND c.direction.directionFrom = :directionFrom AND c.direction.directionTo = :directionTo")
+    List<City> findCitiesTrip(@Param("dateOfDeparture")LocalDateTime dateOfDeparture, @Param("directionFrom") String directionFrom, @Param("directionTo") String directionTo);
 }

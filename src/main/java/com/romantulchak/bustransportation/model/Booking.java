@@ -1,6 +1,7 @@
 package com.romantulchak.bustransportation.model;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class Booking {
     private City city;
 
     @ManyToOne
+    @Valid
     private User user;
 
     @OneToMany(mappedBy = "booking", fetch = FetchType.EAGER, orphanRemoval = true)

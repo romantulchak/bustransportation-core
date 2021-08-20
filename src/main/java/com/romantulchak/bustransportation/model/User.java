@@ -27,8 +27,10 @@ public class User {
     @NotBlank
     private String password;
 
+    @NotBlank
     private String firstName;
 
+    @NotBlank
     private String lastName;
 
     @ManyToMany(fetch = FetchType.LAZY)
