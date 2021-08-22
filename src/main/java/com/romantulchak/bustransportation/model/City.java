@@ -27,7 +27,7 @@ public class City {
 
     private String street;
 
-    @OneToMany(mappedBy = "city")
+    @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
     private List<Booking> bookings;
 
     public long getId() {

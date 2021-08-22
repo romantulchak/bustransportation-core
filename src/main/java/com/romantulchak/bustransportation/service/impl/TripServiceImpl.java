@@ -119,7 +119,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripDTO getTripByCityId(long id) {
         Trip trip = tripRepository.findTripByCityId(id).orElseThrow(TripNotFoundException::new);
-        List<City> cities = cityRepository.findCitiesForTrip(trip.getId());
+        List<City> cities = cityRepository.findCitiesForTrip(id);
         trip.setCities(cities);
         return convertToDTO(trip, View.TripView.class);
     }

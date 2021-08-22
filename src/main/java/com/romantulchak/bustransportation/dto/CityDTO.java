@@ -7,6 +7,7 @@ import com.romantulchak.bustransportation.model.Direction;
 import com.romantulchak.bustransportation.model.View;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @DTO
 public class CityDTO {
@@ -39,6 +40,11 @@ public class CityDTO {
     @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
     @JsonView({View.TripView.class, View.BookingView.class})
     private String street;
+
+//    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+//    @JsonView({View.TripView.class, View.BookingView.class})
+    private List<BookingDTO> bookings;
+
 
 
     public long getId() {
@@ -103,5 +109,13 @@ public class CityDTO {
 
     public void setStreet(String street) {
         this.street = street;
+    }
+
+    public List<BookingDTO> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<BookingDTO> bookings) {
+        this.bookings = bookings;
     }
 }

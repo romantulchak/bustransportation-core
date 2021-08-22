@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,8 +56,12 @@ public class CityServiceImpl implements CityService {
     private void getCities(int numberOfSeats, String directionFrom, String directionTo, List<City> cities, LocalDateTime dateOfDeparture) {
         List<City> citiesTrip = cityRepository.findCitiesTrip(dateOfDeparture, directionFrom, directionTo);
         for (City city : citiesTrip) {
-            int totalNumberOfSeats = bookingRepository.findTotalNumberOfSeats(city.getId()).orElse(city.getTrip().getNumberOfSeats());
-            if (totalNumberOfSeats > numberOfSeats)
+            Optional<Integer> totalNumberOfSeats = bookingRepository.findTotalNumberOfBookedSeats(city.getId());
+            int seats = city.getTrip().getNumberOfSeats();
+            if(totalNumberOfSeats.isPresent()){
+                seats = city.getTrip().getNumberOfSeats() - totalNumberOfSeats.get();
+            }
+            if (seats > numberOfSeats)
                 cities.add(city);
         }
     }
