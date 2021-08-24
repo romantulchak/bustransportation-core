@@ -15,10 +15,6 @@ public class BookingDTO {
 
     @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
     @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
-    private CityDTO city;
-
-    @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
-    @JsonView({View.TripView.class,View.SeatTripView.class, View.BookingView.class})
     private UserDTO user;
 
     @MapToDTO(mapClass = {View.TripView.class, View.SeatTripView.class, View.BookingView.class})
@@ -33,14 +29,6 @@ public class BookingDTO {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public CityDTO getCity() {
-        return city;
-    }
-
-    public void setCity(CityDTO city) {
-        this.city = city;
     }
 
     public UserDTO getUser() {

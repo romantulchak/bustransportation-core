@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long> {
 
-    @Query(value = "SELECT s FROM Seat s LEFT OUTER JOIN s.tickets st WHERE s.id = :seatId AND st.booking.city.direction.directionFrom <> :from")
+    @Query(value = "SELECT s FROM Seat s LEFT OUTER JOIN s.tickets st WHERE s.id = :seatId AND st.city.directionFrom <> :from")
     Optional<Boolean> isSeatBooked(@Param("seatId") long seatId, @Param("from") String from);
 }

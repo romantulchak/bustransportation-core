@@ -11,8 +11,12 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Embedded
-    private Direction direction;
+//    @Embedded
+//    private Direction direction;
+
+    private String directionTo;
+
+    private String directionFrom;
 
     private long price;
 
@@ -21,14 +25,10 @@ public class City {
 
     private LocalDateTime dateOfDeparture;
 
-    private LocalDateTime dateOfArrival;
-
-    private boolean isBusStop;
-
     private String street;
 
     @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
-    private List<Booking> bookings;
+    private List<Ticket> tickets;
 
     public long getId() {
         return id;
@@ -36,14 +36,6 @@ public class City {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
     }
 
     public long getPrice() {
@@ -62,28 +54,12 @@ public class City {
         this.trip = trip;
     }
 
-    public boolean isBusStop() {
-        return isBusStop;
-    }
-
-    public void setBusStop(boolean busStop) {
-        isBusStop = busStop;
-    }
-
     public LocalDateTime getDateOfDeparture() {
         return dateOfDeparture;
     }
 
     public void setDateOfDeparture(LocalDateTime dateOfDeparture) {
         this.dateOfDeparture = dateOfDeparture;
-    }
-
-    public LocalDateTime getDateOfArrival() {
-        return dateOfArrival;
-    }
-
-    public void setDateOfArrival(LocalDateTime dateOfArrival) {
-        this.dateOfArrival = dateOfArrival;
     }
 
     public String getStreet() {
@@ -94,11 +70,27 @@ public class City {
         this.street = street;
     }
 
-    public List<Booking> getBookings() {
-        return bookings;
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
-    public void setBookings(List<Booking> bookings) {
-        this.bookings = bookings;
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    public String getDirectionTo() {
+        return directionTo;
+    }
+
+    public void setDirectionTo(String directionTo) {
+        this.directionTo = directionTo;
+    }
+
+    public String getDirectionFrom() {
+        return directionFrom;
+    }
+
+    public void setDirectionFrom(String directionFrom) {
+        this.directionFrom = directionFrom;
     }
 }

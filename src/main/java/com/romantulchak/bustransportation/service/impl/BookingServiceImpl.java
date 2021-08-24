@@ -56,11 +56,11 @@ public class BookingServiceImpl implements BookingService {
         List<Ticket> tickets = new ArrayList<>();
         Set<Integer> bookedSeats = new TreeSet<>();
         for (BookingRequest bookingRequest : bookingRequests) {
-            if(seatRepository.isSeatBooked(bookingRequest.getSeat().getId(), city.getDirection().getDirectionFrom()).isEmpty()){
-                Booking booking = bookingRepository.save(new Booking(city, user, bookingRequests.size()));
-                Ticket ticket = new Ticket(bookingRequest.getFirstName(), bookingRequest.getLastName(), bookingRequest.getEmail(), bookingRequest.getSeat(), booking);
+            if (seatRepository.isSeatBooked(bookingRequest.getSeat().getId(), city.getDirectionTo()).isEmpty()) {
+                Booking booking = bookingRepository.save(new Booking(user, bookingRequests.size()));
+                Ticket ticket = new Ticket(bookingRequest.getFirstName(), bookingRequest.getLastName(), bookingRequest.getEmail(), bookingRequest.getSeat(), booking, city);
                 tickets.add(ticket);
-            }else{
+            } else {
                 bookedSeats.add(bookingRequest.getSeat().getSeatNumber());
             }
         }

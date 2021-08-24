@@ -40,7 +40,7 @@ public class TripServiceImpl implements TripService {
         if (!trip.getCities().isEmpty()) {
             if (trip.getBus() != null) {
                 initCreator(trip, userDetails);
-                updateTripCities(trip);
+                addTripStops(trip);
                 Trip tripAfterSave = tripRepository.save(trip);
                 initCities(trip.getCities(), tripAfterSave);
                 initSeats(trip);
@@ -57,13 +57,13 @@ public class TripServiceImpl implements TripService {
         trip.setCreator(user);
     }
 
-    private void updateTripCities(Trip trip){
-        for (City city : trip.getCities()) {
-            if(city.getDirection().getDirectionFrom().isEmpty()){
-                city.getDirection().setDirectionFrom(trip.getDepartureCity());
-                city.setDateOfDeparture(trip.getDateStart());
-            }
-        }
+    private void addTripStops(Trip trip){
+        List<CityStop> stops = new ArrayList<>();
+        trip.getCities().forEach(city -> {
+            CityStop cityStop = new CityStop(city.getDirectionTo(), city.getDateOfDeparture());
+            stops.add(cityStop);
+        });
+        trip.setStops(stops);
     }
 
     @Transactional

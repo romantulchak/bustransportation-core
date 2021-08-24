@@ -36,10 +36,11 @@ public class Trip {
     @ManyToOne
     private User creator;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", orphanRemoval = true)
     private List<City> cities;
 
-    private String departureCity;
+    @ElementCollection
+    private List<CityStop> stops;
 
     public long getId() {
         return id;
@@ -121,11 +122,11 @@ public class Trip {
         this.dateStart = dateStart;
     }
 
-    public String getDepartureCity() {
-        return departureCity;
+    public List<CityStop> getStops() {
+        return stops;
     }
 
-    public void setDepartureCity(String departureCity) {
-        this.departureCity = departureCity;
+    public void setStops(List<CityStop> stops) {
+        this.stops = stops;
     }
 }

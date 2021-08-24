@@ -14,9 +14,6 @@ public class Booking {
     private long id;
 
     @ManyToOne
-    private City city;
-
-    @ManyToOne
     @Valid
     private User user;
 
@@ -29,8 +26,7 @@ public class Booking {
 
     }
 
-    public Booking(City city, User user, int totalNumberOfSeats) {
-        this.city = city;
+    public Booking(User user, int totalNumberOfSeats) {
         this.user = user;
         this.totalNumberOfSeats = totalNumberOfSeats;
     }
@@ -43,13 +39,6 @@ public class Booking {
         this.id = id;
     }
 
-    public City getCity() {
-        return city;
-    }
-
-    public void setCity(City city) {
-        this.city = city;
-    }
 
     public User getUser() {
         return user;

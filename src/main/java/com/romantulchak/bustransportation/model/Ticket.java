@@ -23,15 +23,19 @@ public class Ticket {
     @ManyToOne
     private Booking booking;
 
+    @ManyToOne
+    private City city;
+
     public Ticket(){
 
     }
-    public Ticket(String firstName, String lastName, @Email String email, Seat seat, Booking booking) {
+    public Ticket(String firstName, String lastName, @Email String email, Seat seat, Booking booking, City city) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.seat = seat;
         this.booking = booking;
+        this.city = city;
     }
 
     public String getFirstName() {
@@ -80,5 +84,13 @@ public class Ticket {
 
     public void setBooking(Booking booking) {
         this.booking = booking;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }

@@ -3,7 +3,6 @@ package com.romantulchak.bustransportation.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.DTO;
 import com.mapperDTO.annotation.MapToDTO;
-import com.romantulchak.bustransportation.model.Ticket;
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 

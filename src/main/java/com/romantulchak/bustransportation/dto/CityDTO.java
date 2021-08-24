@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.DTO;
 import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.model.Direction;
+import com.romantulchak.bustransportation.model.Ticket;
 import com.romantulchak.bustransportation.model.View;
 
 import java.time.LocalDateTime;
@@ -19,7 +20,7 @@ public class CityDTO {
     @JsonView({View.TripView.class, View.BookingView.class})
     private Direction direction;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @MapToDTO(mapClass = {View.BookingView.class})
     @JsonView({View.TripView.class, View.BookingView.class})
     private long price;
 
@@ -33,18 +34,17 @@ public class CityDTO {
     @JsonView({View.TripView.class, View.BookingView.class})
     private LocalDateTime dateOfArrival;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @MapToDTO(mapClass = {View.BookingView.class})
     @JsonView({View.TripView.class, View.BookingView.class})
     private boolean isBusStop;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @MapToDTO(mapClass = {View.BookingView.class})
     @JsonView({View.TripView.class, View.BookingView.class})
     private String street;
 
-//    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    //    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
 //    @JsonView({View.TripView.class, View.BookingView.class})
-    private List<BookingDTO> bookings;
-
+    private List<TicketDTO> tickets;
 
 
     public long getId() {
@@ -111,11 +111,11 @@ public class CityDTO {
         this.street = street;
     }
 
-    public List<BookingDTO> getBookings() {
-        return bookings;
+    public List<TicketDTO> getTickets() {
+        return tickets;
     }
 
-    public void setBookings(List<BookingDTO> bookings) {
-        this.bookings = bookings;
+    public void setTickets(List<TicketDTO> tickets) {
+        this.tickets = tickets;
     }
 }

@@ -3,7 +3,10 @@ package com.romantulchak.bustransportation.dto;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.DTO;
 import com.mapperDTO.annotation.MapToDTO;
+import com.romantulchak.bustransportation.model.City;
 import com.romantulchak.bustransportation.model.View;
+
+import javax.persistence.ManyToOne;
 
 @DTO
 public class TicketDTO {
@@ -27,6 +30,9 @@ public class TicketDTO {
 
     private BookingDTO booking;
 
+    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
+    @JsonView(View.TripView.class)
+    private CityDTO city;
 
     public long getId() {
         return id;
@@ -74,5 +80,13 @@ public class TicketDTO {
 
     public void setBooking(BookingDTO booking) {
         this.booking = booking;
+    }
+
+    public CityDTO getCity() {
+        return city;
+    }
+
+    public void setCity(CityDTO city) {
+        this.city = city;
     }
 }
