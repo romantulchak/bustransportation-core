@@ -1,8 +1,12 @@
 package com.romantulchak.bustransportation.model;
 
 import com.romantulchak.bustransportation.model.enums.TripType;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +40,13 @@ public class Trip {
     @ManyToOne
     private User creator;
 
-    @OneToMany(mappedBy = "trip", orphanRemoval = true)
-    private List<City> cities;
-
-    @ElementCollection
+    @ElementCollection(targetClass = CityStop.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<CityStop> stops;
+
+    @ElementCollection(targetClass = Route.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Route> routes;
 
     public long getId() {
         return id;
@@ -98,14 +104,6 @@ public class Trip {
         this.creator = creator;
     }
 
-    public List<City> getCities() {
-        return cities;
-    }
-
-    public void setCities(List<City> cities) {
-        this.cities = cities;
-    }
-
     public String getName() {
         return name;
     }
@@ -128,5 +126,13 @@ public class Trip {
 
     public void setStops(List<CityStop> stops) {
         this.stops = stops;
+    }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Route> routes) {
+        this.routes = routes;
     }
 }

@@ -46,12 +46,11 @@ public class TripDTO {
 
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
-    private List<CityDTO> cities;
+    private List<CityStop> stops;
 
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
-    private String departureCity;
-
+    private List<Route> routes;
 
     public long getId() {
         return id;
@@ -101,14 +100,6 @@ public class TripDTO {
         this.creator = creator;
     }
 
-    public List<CityDTO> getCities() {
-        return cities;
-    }
-
-    public void setCities(List<CityDTO> cities) {
-        this.cities = cities;
-    }
-
     public String getName() {
         return name;
     }
@@ -125,12 +116,20 @@ public class TripDTO {
         this.dateStart = dateStart;
     }
 
-    public String getDepartureCity() {
-        return departureCity;
+    public List<CityStop> getStops() {
+        return stops;
     }
 
-    public void setDepartureCity(String departureCity) {
-        this.departureCity = departureCity;
+    public void setStops(List<CityStop> stops) {
+        this.stops = stops;
+    }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
+    public void setRoutes(List<Route> routes) {
+        this.routes = routes;
     }
 }
 

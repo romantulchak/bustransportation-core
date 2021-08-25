@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import com.romantulchak.bustransportation.repository.SeatRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.romantulchak.bustransportation.utility.UserUtility.*;
@@ -26,7 +25,8 @@ public class TripServiceImpl implements TripService {
     private final SeatRepository seatRepository;
     private final CityRepository cityRepository;
     private final EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker;
-    public TripServiceImpl(TripRepository tripRepository, SeatRepository seatRepository, CityRepository cityRepository, EntityMapperInvoker<Trip,TripDTO> entityMapperInvoker){
+
+    public TripServiceImpl(TripRepository tripRepository, SeatRepository seatRepository, CityRepository cityRepository, EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker) {
         this.tripRepository = tripRepository;
         this.seatRepository = seatRepository;
         this.cityRepository = cityRepository;
@@ -37,12 +37,11 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripDTO create(Trip trip, Authentication authentication) {
         UserDetailsImpl userDetails = userInSystem(authentication);
-        if (!trip.getCities().isEmpty()) {
+        if (!trip.getStops().isEmpty()) {
             if (trip.getBus() != null) {
                 initCreator(trip, userDetails);
-                addTripStops(trip);
-                Trip tripAfterSave = tripRepository.save(trip);
-                initCities(trip.getCities(), tripAfterSave);
+                addTripRoutes(trip);
+                tripRepository.save(trip);
                 initSeats(trip);
                 return convertToDTO(trip, View.TripView.class);
             }
@@ -57,26 +56,29 @@ public class TripServiceImpl implements TripService {
         trip.setCreator(user);
     }
 
-    private void addTripStops(Trip trip){
-        List<CityStop> stops = new ArrayList<>();
-        trip.getCities().forEach(city -> {
-            CityStop cityStop = new CityStop(city.getDirectionTo(), city.getDateOfDeparture());
-            stops.add(cityStop);
-        });
-        trip.setStops(stops);
+    private void addTripRoutes(Trip trip) {
+        List<Route> routes = new ArrayList<>();
+        List<CityStop> cityStops = new ArrayList<>(trip.getStops());
+        ListIterator<CityStop> stops = cityStops.listIterator();
+        while (stops.hasNext()) {
+            CityStop previous = stops.next();
+            for (CityStop stop : cityStops) {
+                if (!(Objects.equals(previous, stop)) && stop.isBusStop()) {
+                    Route route = new Route(previous.getName(), stop.getName(), previous.getDeparture(), stop.getArrival());
+                    routes.add(route);
+                }
+            }
+            stops.remove();
+        }
+        trip.setRoutes(routes);
     }
 
-    @Transactional
-    public void initCities(List<City> cities, Trip tripAfterSave) {
-        cities.forEach(city -> city.setTrip(tripAfterSave));
-        cityRepository.saveAll(cities);
-    }
 
     @Transactional
     public void initSeats(Trip trip) {
         List<Seat> seats = new ArrayList<>(trip.getNumberOfSeats());
-        for (int numberOfSeat = 1; numberOfSeat <= trip.getNumberOfSeats(); numberOfSeat++){
-            seats.add(new Seat(numberOfSeat,trip));
+        for (int numberOfSeat = 1; numberOfSeat <= trip.getNumberOfSeats(); numberOfSeat++) {
+            seats.add(new Seat(numberOfSeat, trip));
         }
         seatRepository.saveAll(seats);
     }
@@ -119,12 +121,10 @@ public class TripServiceImpl implements TripService {
     @Override
     public TripDTO getTripByCityId(long id) {
         Trip trip = tripRepository.findTripByCityId(id).orElseThrow(TripNotFoundException::new);
-        List<City> cities = cityRepository.findCitiesForTrip(id);
-        trip.setCities(cities);
         return convertToDTO(trip, View.TripView.class);
     }
 
-    private TripDTO convertToDTO(Trip trip, Class<?> classToCheck){
+    private TripDTO convertToDTO(Trip trip, Class<?> classToCheck) {
         return entityMapperInvoker.entityToDTO(trip, TripDTO.class, classToCheck);
     }
 }

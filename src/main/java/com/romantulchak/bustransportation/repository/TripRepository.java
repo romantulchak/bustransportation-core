@@ -21,6 +21,6 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     @Query(value = "SELECT t FROM Trip t WHERE t.creator.id = :userId")
     List<Trip> findTripsForUser(@Param("userId") long userId);
 
-    @Query(value = "SELECT t FROM Trip t LEFT JOIN t.cities tc JOIN FETCH t.seats ts WHERE tc.id = :id")
+    @Query(value = "SELECT t FROM Trip t JOIN FETCH t.seats ts")
     Optional<Trip> findTripByCityId(@Param("id") long id);
 }
