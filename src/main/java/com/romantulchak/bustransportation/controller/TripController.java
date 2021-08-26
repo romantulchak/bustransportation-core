@@ -2,6 +2,7 @@ package com.romantulchak.bustransportation.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.romantulchak.bustransportation.dto.TripDTO;
+import com.romantulchak.bustransportation.model.Route;
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.service.impl.TripServiceImpl;
@@ -42,11 +43,5 @@ public class TripController {
     @JsonView(View.TripView.class)
     public List<TripDTO> getTripsForUser(Authentication authentication){
         return tripService.getTripsForUser(authentication);
-    }
-
-    @GetMapping("/getTripByCity/{id}")
-    @JsonView(View.TripView.class)
-    public TripDTO getTripByCityId(@PathVariable("id") long id){
-        return tripService.getTripByCityId(id);
     }
 }

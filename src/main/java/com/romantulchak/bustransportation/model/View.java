@@ -6,4 +6,5 @@ public class View{
     public interface TripView{}
     public interface SeatTripView{}
     public interface BookingView{}
+    public interface RouteView{}
 }

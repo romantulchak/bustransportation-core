@@ -44,8 +44,7 @@ public class Trip {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<CityStop> stops;
 
-    @ElementCollection(targetClass = Route.class)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "trip")
     private List<Route> routes;
 
     public long getId() {

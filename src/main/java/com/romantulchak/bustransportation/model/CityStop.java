@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.MapToDTO;
 
 import javax.persistence.Embeddable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Embeddable
@@ -16,7 +16,7 @@ public class CityStop {
 
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
-    private LocalDateTime departure;
+    private LocalDate departure;
 
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
@@ -34,7 +34,7 @@ public class CityStop {
 
     }
 
-    public CityStop(String name, LocalDateTime departure, boolean isBusStop) {
+    public CityStop(String name, LocalDate departure, boolean isBusStop) {
         this.name = name;
         this.departure = departure;
         this.isBusStop = isBusStop;
@@ -48,11 +48,11 @@ public class CityStop {
         this.name = name;
     }
 
-    public LocalDateTime getArrival() {
+    public LocalDate getArrival() {
         return departure;
     }
 
-    public void setArrival(LocalDateTime departure) {
+    public void setArrival(LocalDate departure) {
         this.departure = departure;
     }
 
@@ -64,11 +64,11 @@ public class CityStop {
         this.street = street;
     }
 
-    public LocalDateTime getDeparture() {
+    public LocalDate getDeparture() {
         return departure;
     }
 
-    public void setDeparture(LocalDateTime departure) {
+    public void setDeparture(LocalDate departure) {
         this.departure = departure;
     }
 

@@ -1,44 +1,39 @@
-package com.romantulchak.bustransportation.model;
+package com.romantulchak.bustransportation.dto;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.mapperDTO.annotation.DTO;
+import com.mapperDTO.annotation.MapToDTO;
+import com.romantulchak.bustransportation.model.View;
+
 import java.time.LocalDate;
 
-@Entity
-public class Route {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@DTO
+public class RouteDTO {
+    @MapToDTO(mapClass = View.RouteView.class)
+    @JsonView(View.RouteView.class)
     private long id;
 
-    @NotBlank
+    @MapToDTO(mapClass = View.RouteView.class)
+    @JsonView(View.RouteView.class)
     private String departureFrom;
 
-    @NotBlank
+    @MapToDTO(mapClass = View.RouteView.class)
+    @JsonView(View.RouteView.class)
     private String arrivalTo;
 
-    @NotBlank
+    @MapToDTO(mapClass = View.RouteView.class)
+    @JsonView(View.RouteView.class)
     private LocalDate departureTime;
 
-    @NotBlank
+    @MapToDTO(mapClass = View.RouteView.class)
+    @JsonView(View.RouteView.class)
     private LocalDate arrivalTime;
 
-    @NotBlank
+    @MapToDTO(mapClass = View.RouteView.class)
+    @JsonView(View.RouteView.class)
     private int price;
 
-    @ManyToOne
-    private Trip trip;
-
-    public Route(){}
-
-    public Route(String departureFrom, String arrivalTo, LocalDate departureTime, LocalDate arrivalTime, int price, Trip trip){
-        this.departureFrom = departureFrom;
-        this.arrivalTo = arrivalTo;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-        this.price = price;
-        this.trip = trip;
-    }
+    private TripDTO tripDTO;
 
     public String getDepartureFrom() {
         return departureFrom;
@@ -80,19 +75,19 @@ public class Route {
         this.price = price;
     }
 
+    public TripDTO getTripDTO() {
+        return tripDTO;
+    }
+
+    public void setTripDTO(TripDTO tripDTO) {
+        this.tripDTO = tripDTO;
+    }
+
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Trip getTrip() {
-        return trip;
-    }
-
-    public void setTrip(Trip trip) {
-        this.trip = trip;
     }
 }

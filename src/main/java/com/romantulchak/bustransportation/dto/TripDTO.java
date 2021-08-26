@@ -48,8 +48,6 @@ public class TripDTO {
     @JsonView(View.TripView.class)
     private List<CityStop> stops;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
     private List<Route> routes;
 
     public long getId() {
