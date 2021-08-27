@@ -14,6 +14,6 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Query(value = "SELECT b FROM Booking b WHERE b.user.id = :id")
     Page<Booking> findBookingByUserId(@Param("id") long id, Pageable pageable);
 
-    @Query(value = "SELECT sum(b.totalNumberOfSeats) FROM Booking b LEFT JOIN b.tickets bt LEFT JOIN bt.city c WHERE c.id = :cityId")
-    Optional<Integer> findTotalNumberOfBookedSeats(@Param("cityId") long id);
+    @Query(value = "SELECT sum(b.totalNumberOfSeats) FROM Booking b LEFT JOIN b.tickets bt LEFT JOIN bt.route btr WHERE btr.id = :routeId")
+    Optional<Integer> findTotalNumberOfBookedSeats(@Param("routeId") long id);
 }

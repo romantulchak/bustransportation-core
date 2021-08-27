@@ -71,9 +71,14 @@ public class TripServiceImpl implements TripService {
                 break;
             CityStop previous = stops.next();
             for (CityStop stop : cityStops) {
-                if (!(Objects.equals(previous, stop)) && stop.isBusStop()) {
+                if (!(Objects.equals(previous, stop)) && stop.isBusStop() && previous.isBusStop()) {
                     int price = stop.getPrice() - previous.getPrice();
-                    Route route = new Route(previous.getName(), stop.getName(), previous.getDeparture(), stop.getArrival(), price, trip);
+                    Route route = new Route.Builder(previous.getName(), stop.getName(), previous.getDeparture(), stop.getArrival())
+                            .withPrice(price)
+                            .withTrip(trip)
+                            .withEntranceStop(previous.getBusStopNumber())
+                            .withExitStop(stop.getBusStopNumber())
+                            .build();
                     routes.add(route);
                 }
             }

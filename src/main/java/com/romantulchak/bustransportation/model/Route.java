@@ -1,8 +1,10 @@
 package com.romantulchak.bustransportation.model;
 
+import com.romantulchak.bustransportation.validator.constraint.DateFormatConstraint;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Route {
@@ -11,33 +13,39 @@ public class Route {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotBlank
+    @NotBlank(message = "Departure from is empty")
     private String departureFrom;
 
-    @NotBlank
+    @NotBlank(message = "Arrival from is empty")
     private String arrivalTo;
 
-    @NotBlank
-    private LocalDate departureTime;
+    @DateFormatConstraint
+    private LocalDateTime departureTime;
 
-    @NotBlank
-    private LocalDate arrivalTime;
+    @DateFormatConstraint
+    private LocalDateTime arrivalTime;
 
-    @NotBlank
     private int price;
 
     @ManyToOne
     private Trip trip;
 
+    private int entranceStop;
+
+    private int exitStop;
+
+
     public Route(){}
 
-    public Route(String departureFrom, String arrivalTo, LocalDate departureTime, LocalDate arrivalTime, int price, Trip trip){
-        this.departureFrom = departureFrom;
-        this.arrivalTo = arrivalTo;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-        this.price = price;
-        this.trip = trip;
+    public Route(Builder builder){
+        this.departureFrom = builder.departureFrom;
+        this.arrivalTo = builder.arrivalTo;
+        this.departureTime = builder.departureTime;
+        this.arrivalTime = builder.arrivalTime;
+        this.price = builder.price;
+        this.trip = builder.trip;
+        this.entranceStop = builder.entranceStop;
+        this.exitStop = builder.exitStop;
     }
 
     public String getDepartureFrom() {
@@ -56,19 +64,19 @@ public class Route {
         this.arrivalTo = arrivalTo;
     }
 
-    public LocalDate getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(LocalDate departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
-    public LocalDate getArrivalTime() {
+    public LocalDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(LocalDate arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
@@ -94,5 +102,74 @@ public class Route {
 
     public void setTrip(Trip trip) {
         this.trip = trip;
+    }
+
+    public int getEntranceStop() {
+        return entranceStop;
+    }
+
+    public void setEntranceStop(int entranceStop) {
+        this.entranceStop = entranceStop;
+    }
+
+    public int getExitStop() {
+        return exitStop;
+    }
+
+    public void setExitStop(int exitStop) {
+        this.exitStop = exitStop;
+    }
+
+
+    public static class Builder{
+
+        private final String departureFrom;
+
+        private final String arrivalTo;
+
+        private final LocalDateTime departureTime;
+
+        private final LocalDateTime arrivalTime;
+
+        private int price;
+
+        private Trip trip;
+
+        private int entranceStop;
+
+        private int exitStop;
+
+        public Builder(String departureFrom, String arrivalTo, LocalDateTime departureTime, LocalDateTime arrivalTime){
+            this.departureFrom = departureFrom;
+            this.arrivalTo = arrivalTo;
+            this.departureTime = departureTime;
+            this.arrivalTime = arrivalTime;
+        }
+
+        public Builder withPrice(int price){
+            this.price = price;
+            return this;
+        }
+
+        public Builder withTrip(Trip trip){
+            this.trip = trip;
+            return this;
+        }
+
+        public Builder withEntranceStop(int entranceStop){
+            this.entranceStop = entranceStop;
+            return this;
+        }
+
+        public Builder withExitStop(int exitStop){
+            this.exitStop = exitStop;
+            return this;
+        }
+
+        public Route build(){
+            return new Route(this);
+        }
+
+
     }
 }

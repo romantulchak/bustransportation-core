@@ -1,13 +1,13 @@
 package com.romantulchak.bustransportation.model;
 
 import com.romantulchak.bustransportation.model.enums.TripType;
-import org.hibernate.annotations.*;
+import com.romantulchak.bustransportation.validator.constraint.CityStopConstraint;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import java.time.LocalDateTime;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,12 +18,11 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotBlank(message = "Trip name cannot be empty")
     private String name;
 
     @ManyToOne
     private Bus bus;
-
-    private LocalDateTime dateStart;
 
     private int numberOfSeats;
 
@@ -40,11 +39,12 @@ public class Trip {
     @ManyToOne
     private User creator;
 
+    @CityStopConstraint
     @ElementCollection(targetClass = CityStop.class)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<CityStop> stops;
+    private List<@Valid CityStop> stops;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", orphanRemoval = true)
     private List<Route> routes;
 
     public long getId() {
@@ -109,14 +109,6 @@ public class Trip {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public LocalDateTime getDateStart() {
-        return dateStart;
-    }
-
-    public void setDateStart(LocalDateTime dateStart) {
-        this.dateStart = dateStart;
     }
 
     public List<CityStop> getStops() {

@@ -18,19 +18,20 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotBlank(message = "Username cannot be empty")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Email cannot be empty")
     @Email
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Password cannot be empty")
     private String password;
 
-    @NotBlank
+    @NotBlank(message = "First name cannot be empty")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "Last name cannot be empty")
     private String lastName;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -43,10 +44,10 @@ public class User {
     @JoinTable(name = "user_seat", joinColumns = @JoinColumn(name = "userId"), inverseJoinColumns = @JoinColumn(name = "seatId"))
     private List<Seat> seats;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<TripTemplate> tripTemplates;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Bus> buses;
 
     @OneToMany

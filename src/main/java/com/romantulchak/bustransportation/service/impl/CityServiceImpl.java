@@ -2,7 +2,7 @@ package com.romantulchak.bustransportation.service.impl;
 
 import com.mapperDTO.mapper.EntityMapperInvoker;
 import com.romantulchak.bustransportation.dto.CityDTO;
-import com.romantulchak.bustransportation.exception.CityNotFoundException;
+import com.romantulchak.bustransportation.exception.RouteNotFoundException;
 import com.romantulchak.bustransportation.model.City;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.repository.BookingRepository;
@@ -70,7 +70,7 @@ public class CityServiceImpl implements CityService {
     public CityDTO findCityById(long id) {
         City city = cityRepository
                 .findById(id)
-                .orElseThrow(CityNotFoundException::new);
+                .orElseThrow(RouteNotFoundException::new);
         return convertToDTO(city, View.TripView.class);
     }
 

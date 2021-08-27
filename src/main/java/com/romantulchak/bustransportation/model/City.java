@@ -11,9 +11,6 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @Embedded
-//    private Direction direction;
-
     private String directionTo;
 
     private String directionFrom;
@@ -26,9 +23,6 @@ public class City {
     private LocalDateTime dateOfDeparture;
 
     private String street;
-
-    @OneToMany(mappedBy = "city", fetch = FetchType.EAGER)
-    private List<Ticket> tickets;
 
     public long getId() {
         return id;
@@ -68,14 +62,6 @@ public class City {
 
     public void setStreet(String street) {
         this.street = street;
-    }
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
     }
 
     public String getDirectionTo() {

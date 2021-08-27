@@ -3,7 +3,7 @@ package com.romantulchak.bustransportation.service.impl;
 import com.mapperDTO.mapper.EntityMapperInvoker;
 import com.romantulchak.bustransportation.dto.BookingDTO;
 import com.romantulchak.bustransportation.dto.PageableDTO;
-import com.romantulchak.bustransportation.exception.CityNotFoundException;
+import com.romantulchak.bustransportation.exception.RouteNotFoundException;
 import com.romantulchak.bustransportation.exception.SeatsAlreadyBookedException;
 import com.romantulchak.bustransportation.exception.UserNotFoundException;
 import com.romantulchak.bustransportation.model.*;
@@ -25,22 +25,22 @@ import java.util.stream.Collectors;
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
-    private final CityRepository cityRepository;
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
+    private final RouteRepository routeRepository;
     private final TicketRepository ticketRepository;
     private final EntityMapperInvoker<Booking, BookingDTO> entityMapperInvoker;
 
     @Autowired
     public BookingServiceImpl(BookingRepository bookingRepository,
-                              CityRepository cityRepository,
+                              RouteRepository routeRepository,
                               SeatRepository seatRepository,
                               UserRepository userRepository,
                               TicketRepository ticketRepository,
                               EntityMapperInvoker<Booking, BookingDTO> entityMapperInvoker) {
         this.bookingRepository = bookingRepository;
-        this.cityRepository = cityRepository;
         this.seatRepository = seatRepository;
+        this.routeRepository = routeRepository;
         this.entityMapperInvoker = entityMapperInvoker;
         this.userRepository = userRepository;
         this.ticketRepository = ticketRepository;
@@ -49,20 +49,20 @@ public class BookingServiceImpl implements BookingService {
 
     @Transactional
     @Override
-    public void create(List<BookingRequest> bookingRequests, long cityId, Authentication authentication) {
+    public void create(List<BookingRequest> bookingRequests, long routeId, Authentication authentication) {
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
         User user = userRepository.findUserByUsername(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
-        City city = cityRepository.findById(cityId).orElseThrow(CityNotFoundException::new);
+        Route city = routeRepository.findById(routeId).orElseThrow(RouteNotFoundException::new);
         List<Ticket> tickets = new ArrayList<>();
         Set<Integer> bookedSeats = new TreeSet<>();
         for (BookingRequest bookingRequest : bookingRequests) {
-            if (seatRepository.isSeatBooked(bookingRequest.getSeat().getId(), city.getDirectionTo()).isEmpty()) {
-                Booking booking = bookingRepository.save(new Booking(user, bookingRequests.size()));
-                Ticket ticket = new Ticket(bookingRequest.getFirstName(), bookingRequest.getLastName(), bookingRequest.getEmail(), bookingRequest.getSeat(), booking, city);
-                tickets.add(ticket);
-            } else {
-                bookedSeats.add(bookingRequest.getSeat().getSeatNumber());
-            }
+//            if (seatRepository.isSeatBooked(bookingRequest.getSeat().getId(), city.getDirectionTo()).isEmpty()) {
+//                Booking booking = bookingRepository.save(new Booking(user, bookingRequests.size()));
+//                Ticket ticket = new Ticket(bookingRequest.getFirstName(), bookingRequest.getLastName(), bookingRequest.getEmail(), bookingRequest.getSeat(), booking, city);
+//                tickets.add(ticket);
+//            } else {
+//                bookedSeats.add(bookingRequest.getSeat().getSeatNumber());
+//            }
         }
         checkBookedSeats(bookedSeats);
         ticketRepository.saveAll(tickets);

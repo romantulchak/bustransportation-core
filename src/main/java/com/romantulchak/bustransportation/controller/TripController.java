@@ -2,16 +2,18 @@ package com.romantulchak.bustransportation.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.romantulchak.bustransportation.dto.TripDTO;
-import com.romantulchak.bustransportation.model.Route;
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.service.impl.TripServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
+@Validated
 @RestController
 @CrossOrigin(value = "*", maxAge = 3600L)
 @RequestMapping("/api/trip")
@@ -29,7 +31,7 @@ public class TripController {
     }
 
     @PostMapping("/createTrip")
-    public TripDTO createTrip(@RequestBody Trip trip, Authentication authentication){
+    public TripDTO createTrip(@RequestBody @Valid Trip trip, Authentication authentication){
         return tripService.create(trip, authentication);
     }
 

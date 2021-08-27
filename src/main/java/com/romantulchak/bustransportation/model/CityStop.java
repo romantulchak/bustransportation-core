@@ -2,26 +2,31 @@ package com.romantulchak.bustransportation.model;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.MapToDTO;
+import com.romantulchak.bustransportation.validator.constraint.DateFormatConstraint;
 
 import javax.persistence.Embeddable;
-import java.time.LocalDate;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Embeddable
 public class CityStop {
 
+    @NotBlank(message = "City name cannot be null")
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private String name;
 
+    @DateFormatConstraint
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
-    private LocalDate departure;
+    private LocalDateTime departure;
 
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private boolean isBusStop;
 
+    @NotBlank(message ="The place of arrival (Street) cannot be empty")
     @MapToDTO(mapClass = View.TripView.class)
     @JsonView(View.TripView.class)
     private String street;
@@ -30,11 +35,13 @@ public class CityStop {
     @JsonView(View.TripView.class)
     private int price;
 
+    private int busStopNumber;
+
     public CityStop(){
 
     }
 
-    public CityStop(String name, LocalDate departure, boolean isBusStop) {
+    public CityStop(String name, LocalDateTime departure, boolean isBusStop) {
         this.name = name;
         this.departure = departure;
         this.isBusStop = isBusStop;
@@ -48,11 +55,11 @@ public class CityStop {
         this.name = name;
     }
 
-    public LocalDate getArrival() {
+    public LocalDateTime getArrival() {
         return departure;
     }
 
-    public void setArrival(LocalDate departure) {
+    public void setArrival(LocalDateTime departure) {
         this.departure = departure;
     }
 
@@ -64,11 +71,11 @@ public class CityStop {
         this.street = street;
     }
 
-    public LocalDate getDeparture() {
+    public LocalDateTime getDeparture() {
         return departure;
     }
 
-    public void setDeparture(LocalDate departure) {
+    public void setDeparture(LocalDateTime departure) {
         this.departure = departure;
     }
 
@@ -86,6 +93,14 @@ public class CityStop {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getBusStopNumber() {
+        return busStopNumber;
+    }
+
+    public void setBusStopNumber(int busStopNumber) {
+        this.busStopNumber = busStopNumber;
     }
 
     @Override

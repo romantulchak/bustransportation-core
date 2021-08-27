@@ -30,9 +30,7 @@ public class TicketDTO {
 
     private BookingDTO booking;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.BookingView.class})
-    @JsonView(View.TripView.class)
-    private CityDTO city;
+    private RouteDTO routeDTO;
 
     public long getId() {
         return id;
@@ -82,11 +80,11 @@ public class TicketDTO {
         this.booking = booking;
     }
 
-    public CityDTO getCity() {
-        return city;
+    public RouteDTO getRouteDTO() {
+        return routeDTO;
     }
 
-    public void setCity(CityDTO city) {
-        this.city = city;
+    public void setRouteDTO(RouteDTO routeDTO) {
+        this.routeDTO = routeDTO;
     }
 }

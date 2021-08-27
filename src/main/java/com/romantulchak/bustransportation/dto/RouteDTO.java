@@ -5,7 +5,7 @@ import com.mapperDTO.annotation.DTO;
 import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.model.View;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @DTO
 public class RouteDTO {
@@ -23,15 +23,24 @@ public class RouteDTO {
 
     @MapToDTO(mapClass = View.RouteView.class)
     @JsonView(View.RouteView.class)
-    private LocalDate departureTime;
+    private LocalDateTime departureTime;
 
     @MapToDTO(mapClass = View.RouteView.class)
     @JsonView(View.RouteView.class)
-    private LocalDate arrivalTime;
+    private LocalDateTime arrivalTime;
 
     @MapToDTO(mapClass = View.RouteView.class)
     @JsonView(View.RouteView.class)
     private int price;
+
+    @MapToDTO(mapClass = View.RouteView.class)
+    @JsonView(View.RouteView.class)
+    private int entranceStop;
+
+    @MapToDTO(mapClass = View.RouteView.class)
+    @JsonView(View.RouteView.class)
+    private int exitStop;
+
 
     private TripDTO tripDTO;
 
@@ -51,19 +60,19 @@ public class RouteDTO {
         this.arrivalTo = arrivalTo;
     }
 
-    public LocalDate getDepartureTime() {
+    public LocalDateTime getDepartureTime() {
         return departureTime;
     }
 
-    public void setDepartureTime(LocalDate departureTime) {
+    public void setDepartureTime(LocalDateTime departureTime) {
         this.departureTime = departureTime;
     }
 
-    public LocalDate getArrivalTime() {
+    public LocalDateTime getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(LocalDate arrivalTime) {
+    public void setArrivalTime(LocalDateTime arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
@@ -89,5 +98,21 @@ public class RouteDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getEntranceStop() {
+        return entranceStop;
+    }
+
+    public void setEntranceStop(int entranceStop) {
+        this.entranceStop = entranceStop;
+    }
+
+    public int getExitStop() {
+        return exitStop;
+    }
+
+    public void setExitStop(int exitStop) {
+        this.exitStop = exitStop;
     }
 }

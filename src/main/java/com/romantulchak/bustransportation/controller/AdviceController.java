@@ -1,14 +1,18 @@
 package com.romantulchak.bustransportation.controller;
 
 import com.romantulchak.bustransportation.exception.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -64,8 +68,8 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CityNotFoundException.class)
-    public ResponseEntity<?> handleCityNotFoundException(CityNotFoundException ex, WebRequest webRequest) {
+    @ExceptionHandler(RouteNotFoundException.class)
+    public ResponseEntity<?> handleCityNotFoundException(RouteNotFoundException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
@@ -75,11 +79,21 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(SeatsAlreadyBookedException.class)
     public ResponseEntity<?> handleSeatsAlreadyBookedException(SeatsAlreadyBookedException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
-
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
 }

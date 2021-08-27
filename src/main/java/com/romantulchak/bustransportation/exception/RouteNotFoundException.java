@@ -1,7 +1,7 @@
 package com.romantulchak.bustransportation.exception;
 
-public class CityNotFoundException extends RuntimeException{
-    public CityNotFoundException(){
+public class RouteNotFoundException extends RuntimeException{
+    public RouteNotFoundException(){
         super("City not found exception");
     }
 }

@@ -14,7 +14,6 @@ public class Booking {
     private long id;
 
     @ManyToOne
-    @Valid
     private User user;
 
     @OneToMany(mappedBy = "booking", fetch = FetchType.EAGER, orphanRemoval = true)
