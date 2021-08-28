@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/route")
@@ -28,5 +29,11 @@ public class RouteController {
                                            @RequestParam(value = "date") String date,
                                            @RequestParam(value = "numberOfSeats", defaultValue = "0") int numberOfSeats) {
         return routeService.findRoutesByDirectionAndDate(from, to, date, numberOfSeats);
+    }
+
+    @GetMapping("/details/{id}")
+    @JsonView(View.RouteView.class)
+    public Map<String, Object> getRouteDetailsById(@PathVariable(value = "id") long id){
+        return routeService.findRouteDetailsById(id);
     }
 }

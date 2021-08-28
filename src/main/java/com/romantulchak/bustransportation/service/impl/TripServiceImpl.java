@@ -20,7 +20,7 @@ import java.util.ListIterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.romantulchak.bustransportation.utility.UserUtility.userInSystem;
+import static com.romantulchak.bustransportation.utils.UserUtils.userInSystem;
 
 @Service
 public class TripServiceImpl implements TripService {

@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.romantulchak.bustransportation.utility.UserUtility.userInSystem;
+import static com.romantulchak.bustransportation.utils.UserUtils.userInSystem;
 
 @Service
 public class BusServiceImpl implements BusService {

@@ -30,7 +30,7 @@ public class TicketDTO {
 
     private BookingDTO booking;
 
-    private RouteDTO routeDTO;
+    private RouteDTO route;
 
     public long getId() {
         return id;
@@ -80,11 +80,11 @@ public class TicketDTO {
         this.booking = booking;
     }
 
-    public RouteDTO getRouteDTO() {
-        return routeDTO;
+    public RouteDTO getRoute() {
+        return route;
     }
 
-    public void setRouteDTO(RouteDTO routeDTO) {
-        this.routeDTO = routeDTO;
+    public void setRoute(RouteDTO route) {
+        this.route = route;
     }
 }

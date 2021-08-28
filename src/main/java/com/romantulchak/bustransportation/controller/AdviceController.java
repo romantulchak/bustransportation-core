@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -96,4 +97,16 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    private ResponseEntity<?> handleTransactionSystemException(ConstraintViolationException  ex, WebRequest request){
+        Map<String, String> errors = new HashMap<>();
+        ex.getConstraintViolations().forEach(error ->{
+            String field = error.getPropertyPath().toString();
+            String message = error.getMessage();
+            errors.put(field, message);
+        });
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+
 }
