@@ -44,7 +44,7 @@ public class Trip {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<@Valid CityStop> stops;
 
-    @OneToMany(mappedBy = "trip", orphanRemoval = true)
+    @OneToMany(mappedBy = "trip", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Route> routes;
 
     public long getId() {

@@ -1,4 +1,4 @@
-package com.romantulchak.bustransportation.service.impl;
+package com.romantulchak.bustransportation.service;
 
 import com.romantulchak.bustransportation.dto.SeatDTO;
 import com.romantulchak.bustransportation.model.Route;

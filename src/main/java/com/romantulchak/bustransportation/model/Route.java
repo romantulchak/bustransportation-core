@@ -5,6 +5,8 @@ import com.romantulchak.bustransportation.validator.constraint.DateFormatConstra
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Route {
@@ -33,7 +35,6 @@ public class Route {
     private int entranceStop;
 
     private int exitStop;
-
 
     public Route(){}
 
@@ -120,7 +121,6 @@ public class Route {
         this.exitStop = exitStop;
     }
 
-
     public static class Builder{
 
         private final String departureFrom;
@@ -170,6 +170,18 @@ public class Route {
             return new Route(this);
         }
 
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Route)) return false;
+        Route route = (Route) o;
+        return Objects.equals(departureFrom, route.departureFrom) && Objects.equals(arrivalTo, route.arrivalTo) && Objects.equals(departureTime, route.departureTime) && Objects.equals(arrivalTime, route.arrivalTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(departureFrom, arrivalTo, departureTime, arrivalTime);
     }
 }

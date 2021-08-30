@@ -10,6 +10,7 @@ import com.romantulchak.bustransportation.model.*;
 import com.romantulchak.bustransportation.payload.request.BookingRequest;
 import com.romantulchak.bustransportation.repository.*;
 import com.romantulchak.bustransportation.service.BookingService;
+import com.romantulchak.bustransportation.utils.SeatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,14 +22,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.romantulchak.bustransportation.utils.SeatUtils.*;
+
 @Service
 public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
-    private final SeatRepository seatRepository;
     private final UserRepository userRepository;
     private final RouteRepository routeRepository;
     private final TicketRepository ticketRepository;
+    private final SeatRepository seatRepository;
     private final EntityMapperInvoker<Booking, BookingDTO> entityMapperInvoker;
 
     @Autowired
@@ -39,15 +42,14 @@ public class BookingServiceImpl implements BookingService {
                               TicketRepository ticketRepository,
                               EntityMapperInvoker<Booking, BookingDTO> entityMapperInvoker) {
         this.bookingRepository = bookingRepository;
-        this.seatRepository = seatRepository;
         this.routeRepository = routeRepository;
         this.entityMapperInvoker = entityMapperInvoker;
         this.userRepository = userRepository;
+        this.seatRepository = seatRepository;
         this.ticketRepository = ticketRepository;
     }
 
 
-    //TODO: add a check when the user tries to book a seat
     @Transactional
     @Override
     public void create(List<BookingRequest> bookingRequests, long routeId, Authentication authentication) {
@@ -57,13 +59,14 @@ public class BookingServiceImpl implements BookingService {
         List<Ticket> tickets = new ArrayList<>();
         Set<Integer> bookedSeats = new TreeSet<>();
         for (BookingRequest bookingRequest : bookingRequests) {
-//            if (seatRepository.isSeatBooked(bookingRequest.getSeat().getId(), route.getDirectionTo()).isEmpty()) {
+            Seat seat = seatRepository.findSeatByNumberAndRouteId(bookingRequest.getSeat().getSeatNumber(), route.getId()).orElseThrow();
+            if (isSeatBooked(route, seat)) {
+                bookedSeats.add(seat.getSeatNumber());
+            }else{
                 Booking booking = bookingRepository.save(new Booking(user, bookingRequests.size()));
                 Ticket ticket = new Ticket(bookingRequest.getFirstName(), bookingRequest.getLastName(), bookingRequest.getEmail(), bookingRequest.getSeat(), booking, route);
                 tickets.add(ticket);
-//            } else {
-//                bookedSeats.add(bookingRequest.getSeat().getSeatNumber());
-//            }
+            }
         }
         checkBookedSeats(bookedSeats);
         ticketRepository.saveAll(tickets);

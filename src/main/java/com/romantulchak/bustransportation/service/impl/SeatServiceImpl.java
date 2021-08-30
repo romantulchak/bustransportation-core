@@ -5,10 +5,13 @@ import com.romantulchak.bustransportation.dto.SeatDTO;
 import com.romantulchak.bustransportation.model.Route;
 import com.romantulchak.bustransportation.model.Seat;
 import com.romantulchak.bustransportation.repository.SeatRepository;
+import com.romantulchak.bustransportation.service.SeatService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.romantulchak.bustransportation.utils.SeatUtils.isSeatBooked;
 
 @Service
 public class SeatServiceImpl implements SeatService {
@@ -31,17 +34,21 @@ public class SeatServiceImpl implements SeatService {
                 .collect(Collectors.toList());
     }
 
-    private SeatDTO checkBookedSeat(Route route, Class<?> classToCheck, Seat seat) {
-        boolean isBooked = seat.getTickets()
-                .stream()
-                .anyMatch(ticket ->
-                        ticket.getRoute().getEntranceStop() >= route.getEntranceStop() &&
-                        ticket.getRoute().getExitStop() <= route.getExitStop());
+    public SeatDTO checkBookedSeat(Route route, Class<?> classToCheck, Seat seat) {
         SeatDTO seatDTO = convertToDTO(seat, classToCheck);
-        if (isBooked) {
-            seatDTO.setBooked(true);
+        if (!seat.getTickets().isEmpty()) {
+            boolean isBooked = isSeatBooked(route, seat);
+            if (isBooked) {
+                seatDTO.setBooked(true);
+            }
         }
         return seatDTO;
+    }
+
+
+
+    private boolean fromStartToEnd(com.romantulchak.bustransportation.model.Ticket ticket, int lastStop) {
+        return ticket.getRoute().getEntranceStop() == 0 && ticket.getRoute().getExitStop() == lastStop;
     }
 
 
