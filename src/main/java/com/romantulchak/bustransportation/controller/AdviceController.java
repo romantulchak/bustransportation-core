@@ -81,8 +81,20 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UsernameAlreadyTakenException.class)
+    public ResponseEntity<?> handleUsernameAlreadyTakenException(UsernameAlreadyTakenException ex, WebRequest webRequest) {
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(SeatsAlreadyBookedException.class)
     public ResponseEntity<?> handleSeatsAlreadyBookedException(SeatsAlreadyBookedException ex, WebRequest webRequest) {
+        Map<String, Object> body = getBody(ex);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserTokenNotFoundException.class)
+    public ResponseEntity<?> handleUserTokenNotFoundException(UserTokenNotFoundException ex, WebRequest webRequest) {
         Map<String, Object> body = getBody(ex);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
@@ -99,9 +111,9 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    private ResponseEntity<?> handleTransactionSystemException(ConstraintViolationException  ex, WebRequest request){
+    private ResponseEntity<?> handleTransactionSystemException(ConstraintViolationException ex, WebRequest request) {
         Map<String, String> errors = new HashMap<>();
-        ex.getConstraintViolations().forEach(error ->{
+        ex.getConstraintViolations().forEach(error -> {
             String field = error.getPropertyPath().toString();
             String message = error.getMessage();
             errors.put(field, message);

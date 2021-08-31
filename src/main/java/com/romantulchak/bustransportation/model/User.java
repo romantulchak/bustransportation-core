@@ -56,12 +56,19 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Booking> bookings;
 
+    private boolean isEnabled;
+
+    @OneToMany(mappedBy = "user")
+    private Set<ActivateToken> tokens;
+
     public User(){}
 
-    public User(String username, String email, String password){
+    public User(String username, String email, String password, String firstName, String lastName){
         this.username = username;
         this.email = email;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     public long getId() {
@@ -158,5 +165,21 @@ public class User {
 
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public Set<ActivateToken> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(Set<ActivateToken> tokens) {
+        this.tokens = tokens;
     }
 }

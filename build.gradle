@@ -19,9 +19,9 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.1'
     implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.1'
-    // https://mvnrepository.com/artifact/org.hibernate/hibernate-validator
     implementation group: 'org.hibernate', name: 'hibernate-validator', version: '7.0.1.Final'
-
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.4.1'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.4.1'
     implementation 'junit:junit:4.12'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     runtimeOnly 'org.postgresql:postgresql'

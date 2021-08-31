@@ -27,4 +27,9 @@ public class AuthController {
     public void registration(@RequestBody SignupRequest signupRequest){
         authService.registerUser(signupRequest);
     }
+
+    @GetMapping("/verify/{token}")
+    public boolean activateAccount(@PathVariable("token") String token){
+        return authService.activateAccount(token);
+    }
 }
