@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface BusRepository extends JpaRepository<Bus, Long> {
-    boolean existsBusByName(String busName);
+    boolean existsBusByNameAndUserUsername(String busName, String username);
 
     List<Bus> findBusesByUserId(long userId);
 }

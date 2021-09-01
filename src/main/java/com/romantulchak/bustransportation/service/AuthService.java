@@ -13,4 +13,7 @@ public interface AuthService {
     void sendRegistrationConfirmationEmail(User user);
 
     boolean activateAccount(String token);
+
+    void reSendActivationLink(String username);
+
 }

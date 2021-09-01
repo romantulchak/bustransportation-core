@@ -5,8 +5,12 @@ import com.romantulchak.bustransportation.payload.request.SignupRequest;
 import com.romantulchak.bustransportation.payload.response.JwtResponse;
 import com.romantulchak.bustransportation.service.impl.AuthServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
+@Validated
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/auth")
@@ -19,7 +23,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public JwtResponse login(@RequestBody LoginRequest loginRequest){
+    public JwtResponse login(@Valid @RequestBody LoginRequest loginRequest){
         return authService.authenticateUser(loginRequest);
     }
 
@@ -31,5 +35,10 @@ public class AuthController {
     @GetMapping("/verify/{token}")
     public boolean activateAccount(@PathVariable("token") String token){
         return authService.activateAccount(token);
+    }
+
+    @GetMapping("/re-activate-account/{username}")
+    public void reSendActivationEmail(@PathVariable("username") String username){
+        authService.reSendActivationLink(username);
     }
 }

@@ -1,9 +1,11 @@
 package com.romantulchak.bustransportation.controller;
 
 import com.romantulchak.bustransportation.exception.*;
+import com.romantulchak.bustransportation.model.enums.ErrorCode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -12,6 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
+import java.lang.reflect.InvocationTargetException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -24,6 +27,13 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", ex.getMessage());
+        return body;
+    }
+    private Map<String, Object> getBody(RuntimeException ex, ErrorCode errorCode) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.getMessage());
+        body.put("errorCode", errorCode.getValue());
         return body;
     }
 
@@ -65,7 +75,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EmailAlreadyTakenException.class)
     public ResponseEntity<?> handleEmailAlreadyTakenException(EmailAlreadyTakenException ex, WebRequest webRequest) {
-        Map<String, Object> body = getBody(ex);
+        Map<String, Object> body = getBody(ex, ErrorCode.USER_DATA_INCORRECT);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
@@ -77,14 +87,27 @@ public class AdviceController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<?> handleUserNotFoundException(UserNotFoundException ex, WebRequest webRequest) {
-        Map<String, Object> body = getBody(ex);
+        Map<String, Object> body = getBody(ex, ErrorCode.USER_DATA_INCORRECT);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UsernameAlreadyTakenException.class)
     public ResponseEntity<?> handleUsernameAlreadyTakenException(UsernameAlreadyTakenException ex, WebRequest webRequest) {
-        Map<String, Object> body = getBody(ex);
+        Map<String, Object> body = getBody(ex, ErrorCode.USER_DATA_INCORRECT);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UserTokenExpiredException.class)
+    public ResponseEntity<?> handleUserTokenExpiredException(UserTokenExpiredException ex, WebRequest webRequest) {
+        Map<String, Object> body = getBody(ex, ErrorCode.USER_TOKEN_EXPIRED);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<?> handleInvocationTargetException(DisabledException ex, WebRequest webRequest) {
+        UserAccountNotActivatedException userAccountNotActivatedException = new UserAccountNotActivatedException();
+        Map<String, Object> body = getBody(userAccountNotActivatedException, ErrorCode.USER_DISABLED);
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(SeatsAlreadyBookedException.class)
@@ -95,7 +118,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserTokenNotFoundException.class)
     public ResponseEntity<?> handleUserTokenNotFoundException(UserTokenNotFoundException ex, WebRequest webRequest) {
-        Map<String, Object> body = getBody(ex);
+        Map<String, Object> body = getBody(ex, ErrorCode.USER_TOKEN_NOT_FOUND);
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 

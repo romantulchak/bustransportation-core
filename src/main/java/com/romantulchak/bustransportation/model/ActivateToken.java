@@ -76,7 +76,7 @@ public class ActivateToken {
     }
 
     public boolean isExpired() {
-        return isExpired;
+        return LocalDateTime.now().isAfter(expireAt);
     }
 
     public void setExpired(boolean expired) {

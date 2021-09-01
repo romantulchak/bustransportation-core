@@ -1,8 +1,6 @@
 package com.romantulchak.bustransportation.service.impl;
 
-import com.romantulchak.bustransportation.exception.EmailAlreadyTakenException;
-import com.romantulchak.bustransportation.exception.UserNotFoundException;
-import com.romantulchak.bustransportation.exception.UsernameAlreadyTakenException;
+import com.romantulchak.bustransportation.exception.*;
 import com.romantulchak.bustransportation.model.ActivateToken;
 import com.romantulchak.bustransportation.model.Role;
 import com.romantulchak.bustransportation.model.User;
@@ -132,11 +130,21 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public boolean activateAccount(String token) {
         ActivateToken activateToken = activateTokenService.findActivateToken(token);
+        if (activateToken.isExpired()){
+            activateTokenService.removeToken(activateToken);
+            throw new UserTokenExpiredException(token);
+        }
         User user = userRepository.findById(activateToken.getUser().getId()).orElseThrow(UserNotFoundException::new);
         user.setEnabled(true);
         userRepository.save(user);
         activateTokenService.removeToken(activateToken);
         return true;
+    }
+
+    @Override
+    public void reSendActivationLink(String username) {
+        User user = userRepository.findUserByUsername(username).orElseThrow(UserNotFoundException::new);
+        sendRegistrationConfirmationEmail(user);
     }
 
 }

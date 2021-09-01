@@ -3,10 +3,11 @@ package com.romantulchak.bustransportation.payload.request;
 import javax.validation.constraints.NotBlank;
 
 public class LoginRequest {
-    @NotBlank
+
+    @NotBlank(message = "Username cannot be null or empty")
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "User password cannot be null or empty")
     private String password;
 
     public String getUsername() {

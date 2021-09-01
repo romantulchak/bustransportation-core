@@ -39,7 +39,7 @@ public class BusServiceImpl implements BusService {
         if (bus != null) {
             UserDetailsImpl userDetails = userInSystem(authentication);
             User user = userRepository.findById(userDetails.getId()).orElseThrow(UserNotFoundException::new);
-            if (!busRepository.existsBusByName(bus.getName())) {
+            if (!busRepository.existsBusByNameAndUserUsername(bus.getName(), user.getUsername())) {
                 bus.setUser(user);
                 busRepository.save(bus);
                 return convertToDTO(bus, View.BusView.class);
