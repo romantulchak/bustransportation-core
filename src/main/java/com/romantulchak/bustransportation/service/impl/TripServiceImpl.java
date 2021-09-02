@@ -6,6 +6,7 @@ import com.romantulchak.bustransportation.exception.BusNotFoundException;
 import com.romantulchak.bustransportation.exception.TripCitiesEmptyException;
 import com.romantulchak.bustransportation.exception.TripNotFoundException;
 import com.romantulchak.bustransportation.model.*;
+import com.romantulchak.bustransportation.model.enums.TripType;
 import com.romantulchak.bustransportation.repository.RouteRepository;
 import com.romantulchak.bustransportation.repository.SeatRepository;
 import com.romantulchak.bustransportation.repository.TripRepository;
@@ -14,11 +15,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.romantulchak.bustransportation.utils.UserUtils.userInSystem;
 
@@ -41,19 +46,26 @@ public class TripServiceImpl implements TripService {
 
     @Transactional
     @Override
-    public TripDTO create(Trip trip, Authentication authentication) {
+    public void create(Trip trip, Authentication authentication) {
         UserDetailsImpl userDetails = userInSystem(authentication);
-        if (!trip.getStops().isEmpty()) {
-            if (trip.getBus() != null) {
-                initCreator(trip, userDetails);
-                trip = tripRepository.save(trip);
-                addTripRoutes(trip);
-                initSeats(trip);
-                return convertToDTO(trip, View.TripView.class);
+        if (trip.getTripType().equals(TripType.REGULAR)) {
+            long numberOfDays = ChronoUnit.DAYS.between(trip.getDateStart(), trip.getDateEnded());
+            for (int i = 0; i < numberOfDays; i++) {
+                Trip trip1 = (Trip) trip.clone();
+                trip1.getStops().forEach(cityStop -> cityStop.setDeparture(cityStop.getDeparture().plusDays(1)));
+                initTrip(trip1, userDetails);
             }
-            throw new BusNotFoundException();
+        }else {
+            initTrip(trip, userDetails);
         }
-        throw new TripCitiesEmptyException();
+    }
+
+
+    private void initTrip(Trip trip, UserDetailsImpl userDetails) {
+        initCreator(trip, userDetails);
+        trip = tripRepository.save(trip);
+        addTripRoutes(trip);
+        initSeats(trip);
     }
 
     private void initCreator(Trip trip, UserDetailsImpl userDetails) {

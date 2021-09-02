@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TripService {
 
-    TripDTO create(Trip trip, Authentication authentication);
+    void create(Trip trip, Authentication authentication);
 
     void edit(Trip trip);
 

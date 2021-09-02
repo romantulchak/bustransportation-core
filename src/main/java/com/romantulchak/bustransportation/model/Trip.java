@@ -1,6 +1,7 @@
 package com.romantulchak.bustransportation.model;
 
 import com.romantulchak.bustransportation.model.enums.TripType;
+import com.romantulchak.bustransportation.validator.constraint.BusConstraint;
 import com.romantulchak.bustransportation.validator.constraint.CityStopConstraint;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -8,11 +9,12 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Trip {
+public class Trip implements Cloneable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,6 +23,7 @@ public class Trip {
     @NotBlank(message = "Trip name cannot be empty")
     private String name;
 
+    @BusConstraint
     @ManyToOne
     private Bus bus;
 
@@ -46,6 +49,10 @@ public class Trip {
 
     @OneToMany(mappedBy = "trip", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Route> routes;
+
+    private LocalDate dateStart;
+
+    private LocalDate dateEnded;
 
     public long getId() {
         return id;
@@ -125,5 +132,32 @@ public class Trip {
 
     public void setRoutes(List<Route> routes) {
         this.routes = routes;
+    }
+
+    public LocalDate getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(LocalDate dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public LocalDate getDateEnded() {
+        return dateEnded;
+    }
+
+    public void setDateEnded(LocalDate dateEnded) {
+        this.dateEnded = dateEnded;
+    }
+
+    @Override
+    public Object clone() {
+        Trip trip = null;
+        try {
+            trip = (Trip) super.clone();
+        }catch (CloneNotSupportedException ex){
+            ex.printStackTrace();
+        }
+        return trip;
     }
 }
