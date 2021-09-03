@@ -33,9 +33,6 @@ public class Trip implements Cloneable{
     @OrderBy("seatNumber asc ")
     private List<Seat> seats = new ArrayList<>();
 
-    @OneToMany(mappedBy = "trip")
-    private List<TripTemplate> tripTemplates;
-
     @Enumerated(EnumType.STRING)
     private TripType tripType;
 
@@ -84,14 +81,6 @@ public class Trip implements Cloneable{
 
     public void setSeats(List<Seat> seats) {
         this.seats = seats;
-    }
-
-    public List<TripTemplate> getTripTemplates() {
-        return tripTemplates;
-    }
-
-    public void setTripTemplates(List<TripTemplate> tripTemplates) {
-        this.tripTemplates = tripTemplates;
     }
 
     public TripType getTripType() {

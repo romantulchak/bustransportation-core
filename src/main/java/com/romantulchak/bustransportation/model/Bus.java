@@ -21,7 +21,8 @@ public class Bus {
     @ManyToOne
     private User user;
 
-    public Bus(){}
+    @OneToMany(mappedBy = "bus")
+    private List<TripTemplate> tripTemplates;
 
     public int getNumberOfSeats() {
         return numberOfSeats;
@@ -30,7 +31,6 @@ public class Bus {
     public void setName(String busName) {
         this.name = busName;
     }
-
 
     public void setId(long id) {
         this.id = id;
@@ -70,5 +70,13 @@ public class Bus {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<TripTemplate> getTripTemplates() {
+        return tripTemplates;
+    }
+
+    public void setTripTemplates(List<TripTemplate> tripTemplates) {
+        this.tripTemplates = tripTemplates;
     }
 }

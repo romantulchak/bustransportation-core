@@ -13,31 +13,33 @@ import java.util.Objects;
 public class CityStop {
 
     @NotBlank(message = "City name cannot be null")
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
+    @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private String name;
 
     @DateFormatConstraint
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
+    @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private LocalDateTime departure;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
+    @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private boolean isBusStop;
 
-    @NotBlank(message ="The place of arrival (Street) cannot be empty")
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @NotBlank(message = "The place of arrival (Street) cannot be empty")
+    @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
+    @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private String street;
 
-    @MapToDTO(mapClass = View.TripView.class)
-    @JsonView(View.TripView.class)
+    @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
+    @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private int price;
 
+    @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
+    @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private int busStopNumber;
 
-    public CityStop(){
+    public CityStop() {
 
     }
 

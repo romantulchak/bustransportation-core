@@ -8,16 +8,16 @@ import com.romantulchak.bustransportation.model.View;
 @DTO
 public class BusDTO {
 
-    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class})
-    @JsonView({View.BusView.class, View.TripView.class})
+    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class, View.TripTemplateView.class})
+    @JsonView({View.BusView.class, View.TripView.class, View.TripTemplateView.class})
     private long id;
 
-    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class})
-    @JsonView({View.BusView.class, View.TripView.class})
+    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class, View.TripTemplateView.class})
+    @JsonView({View.BusView.class, View.TripView.class, View.TripTemplateView.class})
     private String name;
 
-    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class})
-    @JsonView({View.BusView.class, View.TripView.class})
+    @MapToDTO(mapClass = {View.BusView.class, View.TripView.class, View.TripTemplateView.class})
+    @JsonView({View.BusView.class, View.TripView.class, View.TripTemplateView.class})
     private String brand;
 
     @MapToDTO(mapClass =View.BusView.class)
