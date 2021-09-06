@@ -27,6 +27,7 @@ dependencies {
     runtimeOnly 'org.postgresql:postgresql'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.1'
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.14.1'
     compile files("E:/dto-mapper.jar")
 }
 

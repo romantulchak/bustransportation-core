@@ -3,7 +3,6 @@ package com.romantulchak.bustransportation.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.romantulchak.bustransportation.dto.BusDTO;
 import com.romantulchak.bustransportation.model.Bus;
-import com.romantulchak.bustransportation.model.Direction;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.service.impl.BusServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

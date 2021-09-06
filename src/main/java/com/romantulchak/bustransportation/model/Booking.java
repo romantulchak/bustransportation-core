@@ -1,8 +1,6 @@
 package com.romantulchak.bustransportation.model;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.List;
 

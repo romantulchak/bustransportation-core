@@ -2,8 +2,6 @@ package com.romantulchak.bustransportation.service;
 
 import com.romantulchak.bustransportation.dto.BusDTO;
 import com.romantulchak.bustransportation.model.Bus;
-import com.romantulchak.bustransportation.model.Direction;
-import com.romantulchak.bustransportation.model.User;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
