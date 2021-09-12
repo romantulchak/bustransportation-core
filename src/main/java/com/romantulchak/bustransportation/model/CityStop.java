@@ -1,14 +1,17 @@
 package com.romantulchak.bustransportation.model;
 
+import com.ecfinder.core.anotation.ECF;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.validator.constraint.DateFormatConstraint;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@ECF(tableName = "stops")
 @Embeddable
 public class CityStop {
 
@@ -22,6 +25,7 @@ public class CityStop {
     @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private LocalDateTime departure;
 
+    @Column(name = "is_bus_stop")
     @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
     @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private boolean isBusStop;
@@ -35,6 +39,7 @@ public class CityStop {
     @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private int price;
 
+    @Column(name = "bus_stop_number")
     @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
     @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
     private int busStopNumber;

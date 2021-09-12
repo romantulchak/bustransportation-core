@@ -2,10 +2,12 @@ package com.romantulchak.bustransportation.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.romantulchak.bustransportation.dto.TripDTO;
+import com.romantulchak.bustransportation.model.CityStop;
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.service.impl.TripServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,5 +48,11 @@ public class TripController {
     @JsonView(View.TripView.class)
     public List<TripDTO> getTripsForUser(Authentication authentication) {
         return tripService.getTripsForUser(authentication);
+    }
+    @GetMapping("/trip-stops/{id}")
+    @PreAuthorize("hasRole('USER')")
+    @JsonView(View.TripTemplateStopsView.class)
+    public List<CityStop> getTripStopsById(@PathVariable("id") long id){
+        return tripService.getStopsForTrip(id);
     }
 }

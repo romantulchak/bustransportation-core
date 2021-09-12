@@ -1,8 +1,8 @@
 package com.romantulchak.bustransportation.service.impl;
 
+import com.ecfinder.core.manager.ECFinderInvoker;
 import com.mapperDTO.mapper.EntityMapperInvoker;
 import com.romantulchak.bustransportation.dto.TripTemplateDTO;
-import com.romantulchak.bustransportation.exception.TripTemplateNotFoundException;
 import com.romantulchak.bustransportation.model.CityStop;
 import com.romantulchak.bustransportation.model.TripTemplate;
 import com.romantulchak.bustransportation.model.User;
@@ -21,11 +21,14 @@ import static com.romantulchak.bustransportation.utils.UserUtils.userInSystem;
 public class TripTemplateServiceImpl implements TripTemplateService {
 
     private final TripTemplateRepository tripTemplateRepository;
+    private final ECFinderInvoker<CityStop> ecFinderInvoker;
     private final EntityMapperInvoker<TripTemplate, TripTemplateDTO> entityMapperInvoker;
 
     public TripTemplateServiceImpl(TripTemplateRepository tripTemplateRepository,
+                                   ECFinderInvoker<CityStop> ecFinderInvoker,
                                    EntityMapperInvoker<TripTemplate, TripTemplateDTO> entityMapperInvoker) {
         this.tripTemplateRepository = tripTemplateRepository;
+        this.ecFinderInvoker = ecFinderInvoker;
         this.entityMapperInvoker = entityMapperInvoker;
     }
 
@@ -48,9 +51,7 @@ public class TripTemplateServiceImpl implements TripTemplateService {
 
     @Override
     public List<CityStop> getStopsForTripTemplate(long id) {
-        TripTemplate tripTemplate = tripTemplateRepository.findTripTemplateStopsById(id)
-                .orElseThrow(() -> new TripTemplateNotFoundException(id));
-        return tripTemplate.getStops();
+        return ecFinderInvoker.invoke(id, CityStop.class, TripTemplate.class);
     }
 
     private TripTemplateDTO convertToDTO(TripTemplate tripTemplate, Class<?> classToCheck) {

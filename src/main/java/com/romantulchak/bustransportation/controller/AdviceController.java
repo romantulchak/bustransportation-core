@@ -122,6 +122,12 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(TripTemplateNotFoundException.class)
+    public ResponseEntity<?> handleTripTemplateNotFoundException(TripTemplateNotFoundException ex, WebRequest webRequest) {
+        Map<String, Object> body = getBody(ex, ErrorCode.USER_TOKEN_NOT_FOUND);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         Map<String, String> errors = new HashMap<>();

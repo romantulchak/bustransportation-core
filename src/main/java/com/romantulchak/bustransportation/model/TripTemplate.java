@@ -1,5 +1,6 @@
 package com.romantulchak.bustransportation.model;
 
+import com.ecfinder.core.anotation.ECFEntity;
 import com.romantulchak.bustransportation.model.enums.TripType;
 import com.romantulchak.bustransportation.validator.constraint.BusConstraint;
 import com.romantulchak.bustransportation.validator.constraint.CityStopConstraint;
@@ -7,6 +8,7 @@ import com.romantulchak.bustransportation.validator.constraint.CityStopConstrain
 import javax.persistence.*;
 import java.util.List;
 
+@ECFEntity(tablePrefix = "trip_template")
 @Entity
 public class TripTemplate {
 

@@ -1,5 +1,6 @@
 package com.romantulchak.bustransportation.model;
 
+import com.ecfinder.core.anotation.ECFEntity;
 import com.romantulchak.bustransportation.model.enums.TripType;
 import com.romantulchak.bustransportation.validator.constraint.BusConstraint;
 import com.romantulchak.bustransportation.validator.constraint.CityStopConstraint;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@ECFEntity(tablePrefix = "trip")
 @Entity
 public class Trip implements Cloneable{
 

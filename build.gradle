@@ -29,6 +29,7 @@ dependencies {
     testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.14.1'
     compile files("E:/dto-mapper.jar")
+    compile files("E:/ECFinder-1.0.1.jar")
 }
 
 test {

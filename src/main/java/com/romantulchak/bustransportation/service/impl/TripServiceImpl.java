@@ -1,9 +1,8 @@
 package com.romantulchak.bustransportation.service.impl;
 
+import com.ecfinder.core.manager.ECFinderInvoker;
 import com.mapperDTO.mapper.EntityMapperInvoker;
 import com.romantulchak.bustransportation.dto.TripDTO;
-import com.romantulchak.bustransportation.exception.BusNotFoundException;
-import com.romantulchak.bustransportation.exception.TripCitiesEmptyException;
 import com.romantulchak.bustransportation.exception.TripNotFoundException;
 import com.romantulchak.bustransportation.model.*;
 import com.romantulchak.bustransportation.model.enums.TripType;
@@ -11,19 +10,17 @@ import com.romantulchak.bustransportation.repository.RouteRepository;
 import com.romantulchak.bustransportation.repository.SeatRepository;
 import com.romantulchak.bustransportation.repository.TripRepository;
 import com.romantulchak.bustransportation.service.TripService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
-import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.romantulchak.bustransportation.utils.UserUtils.userInSystem;
 
@@ -32,13 +29,17 @@ public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final SeatRepository seatRepository;
     private final RouteRepository routeRepository;
+    private final ECFinderInvoker<CityStop> ecFinderInvoker;
     private final EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker;
 
+    @Autowired
     public TripServiceImpl(TripRepository tripRepository,
                            SeatRepository seatRepository,
                            RouteRepository routeRepository,
+                           ECFinderInvoker<CityStop> ecFinderInvoker,
                            EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker) {
         this.tripRepository = tripRepository;
+        this.ecFinderInvoker = ecFinderInvoker;
         this.seatRepository = seatRepository;
         this.routeRepository = routeRepository;
         this.entityMapperInvoker = entityMapperInvoker;
@@ -146,6 +147,11 @@ public class TripServiceImpl implements TripService {
     public TripDTO getTripByCityId(long id) {
         Trip trip = tripRepository.findTripByCityId(id).orElseThrow(TripNotFoundException::new);
         return convertToDTO(trip, View.TripView.class);
+    }
+
+    @Override
+    public List<CityStop> getStopsForTrip(long id) {
+        return ecFinderInvoker.invoke(id, CityStop.class, Trip.class);
     }
 
     private TripDTO convertToDTO(Trip trip, Class<?> classToCheck) {

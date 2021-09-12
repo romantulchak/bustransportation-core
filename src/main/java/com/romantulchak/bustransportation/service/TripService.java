@@ -1,6 +1,7 @@
 package com.romantulchak.bustransportation.service;
 
 import com.romantulchak.bustransportation.dto.TripDTO;
+import com.romantulchak.bustransportation.model.CityStop;
 import com.romantulchak.bustransportation.model.Trip;
 import org.springframework.security.core.Authentication;
 
@@ -22,4 +23,5 @@ public interface TripService {
 
     TripDTO getTripByCityId(long id);
 
+    List<CityStop> getStopsForTrip(long id);
 }
