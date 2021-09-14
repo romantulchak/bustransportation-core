@@ -24,8 +24,8 @@ public class BusDTO {
     @JsonView({View.BusView.class, View.TripTemplateView.class})
     private int numberOfSeats;
 
-    @MapToDTO(mapClass = View.BusView.class)
-    @JsonView(View.BusView.class)
+    @MapToDTO(mapClass = {View.BusView.class,View.TripTemplateView.class})
+    @JsonView({View.BusView.class, View.TripTemplateView.class})
     private UserDTO user;
 
     public BusDTO(){

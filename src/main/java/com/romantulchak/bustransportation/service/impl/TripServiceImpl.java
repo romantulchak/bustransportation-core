@@ -49,7 +49,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public void create(Trip trip, Authentication authentication) {
         UserDetailsImpl userDetails = userInSystem(authentication);
-        if (trip.getTripType().equals(TripType.REGULAR)) {
+        if (trip.getTripType() == TripType.REGULAR) {
             long numberOfDays = ChronoUnit.DAYS.between(trip.getDateStart(), trip.getDateEnded());
             for (int i = 0; i < numberOfDays; i++) {
                 Trip trip1 = (Trip) trip.clone();

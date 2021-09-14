@@ -26,10 +26,11 @@ dependencies {
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     runtimeOnly 'org.postgresql:postgresql'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.4.1'
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.14.1'
+//    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.12.4'
     compile files("E:/dto-mapper.jar")
-    compile files("E:/ECFinder-1.0.1.jar")
+    compile files("E:/ECFinder-1.0.2.jar")
+    implementation group: 'org.flywaydb', name: 'flyway-core', version: '7.14.1'
 }
 
 test {

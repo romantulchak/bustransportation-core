@@ -7,16 +7,16 @@ import com.romantulchak.bustransportation.model.View;
 
 @DTO
 public class UserDTO {
-    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class})
-    @JsonView({View.TripView.class, View.BusView.class})
+    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class, View.TripTemplateView.class})
+    @JsonView({View.TripView.class, View.BusView.class, View.TripTemplateView.class})
     private long id;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class})
-    @JsonView({View.TripView.class, View.BusView.class})
+    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class, View.TripTemplateView.class})
+    @JsonView({View.TripView.class, View.BusView.class, View.TripTemplateView.class})
     private String firstName;
 
-    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class})
-    @JsonView({View.TripView.class, View.BusView.class})
+    @MapToDTO(mapClass = {View.TripView.class, View.BusView.class, View.TripTemplateView.class})
+    @JsonView({View.TripView.class, View.BusView.class, View.TripTemplateView.class})
     private String lastName;
 
     public long getId() {

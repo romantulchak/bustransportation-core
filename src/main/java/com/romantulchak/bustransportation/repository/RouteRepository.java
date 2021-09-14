@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface RouteRepository extends JpaRepository<Route, Long> {
 
-    @Query(value = "SELECT r FROM Route r LEFT OUTER JOIN r.trip rt WHERE r.departureFrom = :from AND r.arrivalTo = :to AND DATE(r.arrivalTime)  = DATE(:date)")
+    @Query(value = "SELECT r FROM Route r LEFT OUTER JOIN r.trip rt WHERE r.departureFrom = :from AND r.arrivalTo = :to AND DATE(r.departureTime) = DATE(:date)")
     List<Route> findRoutesByDateAndDirection(@Param("from") String from, @Param("to") String to, @Param("date") LocalDate date);
 
 }
