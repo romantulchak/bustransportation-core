@@ -1,6 +1,7 @@
 package com.romantulchak.bustransportation.model;
 
 import com.ecfinder.core.anotation.ECF;
+import com.ecfinder.core.anotation.ECFUnique;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.validator.constraint.DateFormatConstraint;
@@ -18,6 +19,7 @@ public class CityStop {
     @NotBlank(message = "City name cannot be null")
     @MapToDTO(mapClass = {View.TripView.class, View.TripTemplateStopsView.class})
     @JsonView({View.TripView.class, View.TripTemplateStopsView.class})
+    @ECFUnique
     private String name;
 
     @DateFormatConstraint

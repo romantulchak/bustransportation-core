@@ -151,6 +151,8 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public List<CityStop> getStopsForTrip(long id) {
+        CityStop lviv = ecFinderInvoker.invoke(id, "Lviv", CityStop.class, Trip.class);
+        System.out.println(lviv);
         return ecFinderInvoker.invoke(id, CityStop.class, Trip.class);
     }
 
