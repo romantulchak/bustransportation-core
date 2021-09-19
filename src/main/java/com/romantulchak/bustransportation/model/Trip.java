@@ -1,6 +1,7 @@
 package com.romantulchak.bustransportation.model;
 
 import com.ecfinder.core.anotation.ECFEntity;
+import com.romantulchak.bustransportation.model.enums.RemoveType;
 import com.romantulchak.bustransportation.model.enums.TripType;
 import com.romantulchak.bustransportation.validator.constraint.BusConstraint;
 import com.romantulchak.bustransportation.validator.constraint.CityStopConstraint;
@@ -26,7 +27,7 @@ public class Trip implements Cloneable{
     private String name;
 
     @BusConstraint
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Bus bus;
 
     private int numberOfSeats;
@@ -52,6 +53,9 @@ public class Trip implements Cloneable{
     private LocalDate dateStart;
 
     private LocalDate dateEnded;
+
+    @Enumerated(EnumType.STRING)
+    private RemoveType removeType;
 
     public long getId() {
         return id;
@@ -141,8 +145,16 @@ public class Trip implements Cloneable{
         this.dateEnded = dateEnded;
     }
 
+    public RemoveType getRemoveType() {
+        return removeType;
+    }
+
+    public void setRemoveType(RemoveType removeType) {
+        this.removeType = removeType;
+    }
+
     @Override
-    public Object clone() {
+    public Trip clone() {
         Trip trip = null;
         try {
             trip = (Trip) super.clone();

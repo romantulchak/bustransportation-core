@@ -2,6 +2,7 @@ package com.romantulchak.bustransportation.model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 public class Bus {
@@ -78,5 +79,18 @@ public class Bus {
 
     public void setTripTemplates(List<TripTemplate> tripTemplates) {
         this.tripTemplates = tripTemplates;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Bus)) return false;
+        Bus bus = (Bus) o;
+        return id == bus.id && numberOfSeats == bus.numberOfSeats && Objects.equals(name, bus.name) && Objects.equals(brand, bus.brand);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, brand, numberOfSeats);
     }
 }

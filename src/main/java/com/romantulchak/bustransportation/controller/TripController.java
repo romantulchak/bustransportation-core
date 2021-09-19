@@ -55,4 +55,11 @@ public class TripController {
     public List<CityStop> getTripStopsById(@PathVariable("id") long id){
         return tripService.getStopsForTrip(id);
     }
+
+    @PutMapping("edit-trip-bus/{id}")
+    @PreAuthorize("hasRole('USER')")
+    @JsonView(View.TripView.class)
+    public TripDTO editTripBus(@RequestBody Trip trip, long busId, Authentication authentication){
+        return tripService.editTripBus(trip, busId, authentication);
+    }
 }

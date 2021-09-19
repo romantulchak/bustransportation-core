@@ -11,9 +11,11 @@ public interface TripService {
 
     void create(Trip trip, Authentication authentication);
 
-    void edit(Trip trip);
+    TripDTO editTripBus(Trip trip, long busId, Authentication authentication);
 
     void delete(long id);
+
+    void preDelete(long id);
 
     TripDTO getById(long id);
 

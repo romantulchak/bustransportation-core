@@ -3,9 +3,13 @@ package com.romantulchak.bustransportation.service.impl;
 import com.ecfinder.core.manager.ECFinderInvoker;
 import com.mapperDTO.mapper.EntityMapperInvoker;
 import com.romantulchak.bustransportation.dto.TripDTO;
+import com.romantulchak.bustransportation.exception.BusNotFoundException;
+import com.romantulchak.bustransportation.exception.TripAlreadyPreDeletedException;
 import com.romantulchak.bustransportation.exception.TripNotFoundException;
 import com.romantulchak.bustransportation.model.*;
+import com.romantulchak.bustransportation.model.enums.RemoveType;
 import com.romantulchak.bustransportation.model.enums.TripType;
+import com.romantulchak.bustransportation.repository.BusRepository;
 import com.romantulchak.bustransportation.repository.RouteRepository;
 import com.romantulchak.bustransportation.repository.SeatRepository;
 import com.romantulchak.bustransportation.repository.TripRepository;
@@ -29,6 +33,7 @@ public class TripServiceImpl implements TripService {
     private final TripRepository tripRepository;
     private final SeatRepository seatRepository;
     private final RouteRepository routeRepository;
+    private final BusRepository busRepository;
     private final ECFinderInvoker<CityStop> ecFinderInvoker;
     private final EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker;
 
@@ -36,10 +41,12 @@ public class TripServiceImpl implements TripService {
     public TripServiceImpl(TripRepository tripRepository,
                            SeatRepository seatRepository,
                            RouteRepository routeRepository,
+                           BusRepository busRepository,
                            ECFinderInvoker<CityStop> ecFinderInvoker,
                            EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker) {
         this.tripRepository = tripRepository;
         this.ecFinderInvoker = ecFinderInvoker;
+        this.busRepository = busRepository;
         this.seatRepository = seatRepository;
         this.routeRepository = routeRepository;
         this.entityMapperInvoker = entityMapperInvoker;
@@ -52,7 +59,7 @@ public class TripServiceImpl implements TripService {
         if (trip.getTripType() == TripType.REGULAR) {
             long numberOfDays = ChronoUnit.DAYS.between(trip.getDateStart(), trip.getDateEnded());
             for (int i = 0; i < numberOfDays; i++) {
-                Trip trip1 = (Trip) trip.clone();
+                Trip trip1 = trip.clone();
                 trip1.getStops().forEach(cityStop -> cityStop.setDeparture(cityStop.getDeparture().plusDays(1)));
                 initTrip(trip1, userDetails);
             }
@@ -109,13 +116,30 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public void edit(Trip entity) {
-
+    public TripDTO editTripBus(Trip trip, long busId, Authentication authentication) {
+        UserDetailsImpl user = userInSystem(authentication);
+        Bus bus = busRepository.findBusByIdAndUserId(busId, user.getId()).orElseThrow(BusNotFoundException::new);
+        if (!Objects.equals(trip.getBus(), bus)){
+            trip.setBus(bus);
+            trip.setNumberOfSeats(bus.getNumberOfSeats());
+            tripRepository.save(trip);
+        }
+        return convertToDTO(trip, View.TripView.class);
     }
 
     @Override
     public void delete(long id) {
+        tripRepository.deleteById(id);
+    }
 
+    @Override
+    public void preDelete(long id) {
+        Trip trip = tripRepository.findById(id).orElseThrow(TripNotFoundException::new);
+        if (trip.getRemoveType() == RemoveType.PRE_REMOVE){
+            throw new TripAlreadyPreDeletedException(trip.getId(), trip.getName());
+        }
+        trip.setRemoveType(RemoveType.PRE_REMOVE);
+        tripRepository.save(trip);
     }
 
     @Override
@@ -137,7 +161,7 @@ public class TripServiceImpl implements TripService {
     @Override
     public List<TripDTO> getTripsForUser(Authentication authentication) {
         UserDetailsImpl userDetails = userInSystem(authentication);
-        return tripRepository.findTripsForUser(userDetails.getId())
+        return tripRepository.findTripsForUser(userDetails.getId(), RemoveType.PRE_REMOVE)
                 .stream()
                 .map(trip -> convertToDTO(trip, View.TripView.class))
                 .collect(Collectors.toList());
@@ -145,14 +169,12 @@ public class TripServiceImpl implements TripService {
 
     @Override
     public TripDTO getTripByCityId(long id) {
-        Trip trip = tripRepository.findTripByCityId(id).orElseThrow(TripNotFoundException::new);
+        Trip trip = tripRepository.findTripByCityId(id, RemoveType.PRE_REMOVE).orElseThrow(TripNotFoundException::new);
         return convertToDTO(trip, View.TripView.class);
     }
 
     @Override
     public List<CityStop> getStopsForTrip(long id) {
-        CityStop lviv = ecFinderInvoker.invoke(id, "Lviv", CityStop.class, Trip.class);
-        System.out.println(lviv);
         return ecFinderInvoker.invoke(id, CityStop.class, Trip.class);
     }
 

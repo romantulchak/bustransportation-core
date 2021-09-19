@@ -7,6 +7,7 @@ import com.romantulchak.bustransportation.dto.TripDTO;
 import com.romantulchak.bustransportation.exception.TripNotFoundException;
 import com.romantulchak.bustransportation.exception.UserNotFoundException;
 import com.romantulchak.bustransportation.model.*;
+import com.romantulchak.bustransportation.model.enums.RemoveType;
 import com.romantulchak.bustransportation.model.enums.TripType;
 import com.romantulchak.bustransportation.repository.RouteRepository;
 import com.romantulchak.bustransportation.repository.SeatRepository;
@@ -168,7 +169,7 @@ public class TripServiceImplTest {
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(entityMapperInvoker.entityToDTO(trip, TripDTO.class, View.TripView.class)).thenReturn(tripDTO);
         when(entityMapperInvoker.entityToDTO(trip1, TripDTO.class, View.TripView.class)).thenReturn(tripDTO1);
-        when(tripRepository.findTripsForUser(1)).thenReturn(trips);
+        when(tripRepository.findTripsForUser(1, RemoveType.PRE_REMOVE)).thenReturn(trips);
         List<TripDTO> tripsForUser = tripService.getTripsForUser(authentication);
 
         assertNotNull(tripsForUser);
@@ -191,7 +192,7 @@ public class TripServiceImplTest {
         tripDTO.setId(trip.getId());
         tripDTO.setName(trip.getName());
 
-        when(tripRepository.findTripByCityId(1)).thenReturn(Optional.of(trip));
+        when(tripRepository.findTripByCityId(1, RemoveType.PRE_REMOVE)).thenReturn(Optional.of(trip));
         when(entityMapperInvoker.entityToDTO(trip, TripDTO.class, View.TripView.class)).thenReturn(tripDTO);
         TripDTO tripByCityId = tripService.getTripByCityId(1);
 
@@ -201,7 +202,7 @@ public class TripServiceImplTest {
 
     @Test(expected = TripNotFoundException.class)
     public void getTripByCityIdTipNotFound() {
-        when(tripRepository.findTripByCityId(1)).thenThrow(TripNotFoundException.class);
+        when(tripRepository.findTripByCityId(1,RemoveType.PRE_REMOVE)).thenThrow(TripNotFoundException.class);
         tripService.getTripByCityId(1);
     }
 
