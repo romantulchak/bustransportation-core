@@ -1,5 +1,7 @@
 package com.romantulchak.bustransportation.dto;
 
+import java.util.List;
+
 public class PageableDTO<T> {
 
     private long totalPages;
@@ -8,9 +10,9 @@ public class PageableDTO<T> {
 
     private int currentPage;
 
-    private T model;
+    private List<T> model;
 
-    public PageableDTO(long totalPages, long totalElements, int currentPage, T model){
+    public PageableDTO(long totalPages, long totalElements, int currentPage, List<T> model){
         this.totalPages = totalPages;
         this.totalElements = totalElements;
         this.currentPage = currentPage;
@@ -41,11 +43,11 @@ public class PageableDTO<T> {
         this.currentPage = currentPage;
     }
 
-    public T getModel() {
+    public List<T> getModel() {
         return model;
     }
 
-    public void setModel(T model) {
+    public void setModel(List<T> model) {
         this.model = model;
     }
 }

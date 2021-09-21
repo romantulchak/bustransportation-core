@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS trip
 (
-    id              bigserial    not null unique primary key,
+    id              bigserial    not null primary key,
     name            varchar(150) not null,
     bus_id          bigint       null references bus,
     number_of_seats numeric      not null,

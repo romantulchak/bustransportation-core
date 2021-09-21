@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.mapperDTO.annotation.DTO;
 import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.model.*;
+import com.romantulchak.bustransportation.model.enums.RemoveType;
 import com.romantulchak.bustransportation.model.enums.TripType;
 
 import java.time.LocalDateTime;
@@ -49,6 +50,10 @@ public class TripDTO {
     private List<CityStop> stops;
 
     private List<Route> routes;
+
+    @MapToDTO(mapClass = View.TripView.class)
+    @JsonView(View.TripView.class)
+    private RemoveType removeType;
 
     public long getId() {
         return id;
@@ -128,6 +133,14 @@ public class TripDTO {
 
     public void setRoutes(List<Route> routes) {
         this.routes = routes;
+    }
+
+    public RemoveType getRemoveType() {
+        return removeType;
+    }
+
+    public void setRemoveType(RemoveType removeType) {
+        this.removeType = removeType;
     }
 }
 

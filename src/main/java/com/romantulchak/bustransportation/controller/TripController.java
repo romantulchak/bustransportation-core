@@ -1,12 +1,15 @@
 package com.romantulchak.bustransportation.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.romantulchak.bustransportation.dto.PageableDTO;
 import com.romantulchak.bustransportation.dto.TripDTO;
 import com.romantulchak.bustransportation.model.CityStop;
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.View;
 import com.romantulchak.bustransportation.service.impl.TripServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
@@ -44,10 +47,9 @@ public class TripController {
         return tripService.getById(id);
     }
 
-    @GetMapping("/tripsForUser")
-    @JsonView(View.TripView.class)
-    public List<TripDTO> getTripsForUser(Authentication authentication) {
-        return tripService.getTripsForUser(authentication);
+    @GetMapping("/tripsForUser/{page}")
+    public PageableDTO<TripDTO> getTripsForUser(@PathVariable("page") int page, Authentication authentication) {
+        return tripService.getTripsForUser(page, authentication);
     }
     @GetMapping("/trip-stops/{id}")
     @PreAuthorize("hasRole('USER')")
@@ -61,5 +63,17 @@ public class TripController {
     @JsonView(View.TripView.class)
     public TripDTO editTripBus(@RequestBody Trip trip, long busId, Authentication authentication){
         return tripService.editTripBus(trip, busId, authentication);
+    }
+
+    @PutMapping("/pre-delete/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public void preDeleteTrip(@PathVariable("id") long id){
+        tripService.preDelete(id);
+    }
+
+    @GetMapping("/pre-deleted-trips/{page}")
+    @PreAuthorize("hasRole('USER')")
+    public PageableDTO<TripDTO> getPreDeletedTrips(@PathVariable("page") int page, Authentication authentication){
+        return tripService.getPreDeletedTrips(page, authentication);
     }
 }

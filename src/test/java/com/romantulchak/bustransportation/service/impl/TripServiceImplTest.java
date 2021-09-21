@@ -3,6 +3,7 @@ package com.romantulchak.bustransportation.service.impl;
 import com.ecfinder.core.manager.ECFinderInvoker;
 import com.mapperDTO.mapper.EntityMapper;
 import com.mapperDTO.mapper.EntityMapperInvoker;
+import com.romantulchak.bustransportation.dto.PageableDTO;
 import com.romantulchak.bustransportation.dto.TripDTO;
 import com.romantulchak.bustransportation.exception.TripNotFoundException;
 import com.romantulchak.bustransportation.exception.UserNotFoundException;
@@ -18,6 +19,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.util.ReflectionTestUtils;
 
@@ -57,7 +62,7 @@ public class TripServiceImplTest {
     EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         ReflectionTestUtils.setField(entityMapperInvoker, "entityMapper", new EntityMapper());
     }
 
@@ -156,31 +161,27 @@ public class TripServiceImplTest {
         UserDetailsImpl userDetails = new UserDetailsImpl(1, "KzzxD", "test@gmail.com", "test", null, true);
         List<Trip> trips = new ArrayList<>();
         Trip trip = new Trip();
-        Trip trip1 = new Trip();
         trip.setId(1);
-        trip1.setId(2);
         trips.add(trip);
-        trips.add(trip1);
         TripDTO tripDTO = new TripDTO();
-        TripDTO tripDTO1 = new TripDTO();
         tripDTO.setId(trip.getId());
-        tripDTO1.setId(trip1.getId());
+        Pageable pageable = PageRequest.of(1, 1);
+        Page<Trip> page = new PageImpl<>(trips, pageable, 2);
 
         when(authentication.getPrincipal()).thenReturn(userDetails);
         when(entityMapperInvoker.entityToDTO(trip, TripDTO.class, View.TripView.class)).thenReturn(tripDTO);
-        when(entityMapperInvoker.entityToDTO(trip1, TripDTO.class, View.TripView.class)).thenReturn(tripDTO1);
-        when(tripRepository.findTripsForUser(1, RemoveType.PRE_REMOVE)).thenReturn(trips);
-        List<TripDTO> tripsForUser = tripService.getTripsForUser(authentication);
+        when(tripRepository.findTripsForUser(1, RemoveType.SAVED, pageable)).thenReturn(page);
+        PageableDTO<TripDTO> tripsForUser = tripService.getTripsForUser(1, authentication);
 
         assertNotNull(tripsForUser);
-        assertEquals(2, tripsForUser.size());
-        assertSame(tripDTO, tripsForUser.get(0));
+        assertEquals(pageable.getPageSize(), tripsForUser.getModel().size());
+        assertSame(tripDTO, tripsForUser.getModel().get(0));
     }
 
     @Test(expected = UserNotFoundException.class)
     public void getTripsForUserThrowUserNotFound() {
         when(authentication.getPrincipal()).thenReturn(null);
-        tripService.getTripsForUser(authentication);
+        tripService.getTripsForUser(1, authentication);
     }
 
     @Test
@@ -192,7 +193,7 @@ public class TripServiceImplTest {
         tripDTO.setId(trip.getId());
         tripDTO.setName(trip.getName());
 
-        when(tripRepository.findTripByCityId(1, RemoveType.PRE_REMOVE)).thenReturn(Optional.of(trip));
+        when(tripRepository.findTripByCityId(1, RemoveType.PRE_REMOVE.name())).thenReturn(Optional.of(trip));
         when(entityMapperInvoker.entityToDTO(trip, TripDTO.class, View.TripView.class)).thenReturn(tripDTO);
         TripDTO tripByCityId = tripService.getTripByCityId(1);
 
@@ -202,7 +203,7 @@ public class TripServiceImplTest {
 
     @Test(expected = TripNotFoundException.class)
     public void getTripByCityIdTipNotFound() {
-        when(tripRepository.findTripByCityId(1,RemoveType.PRE_REMOVE)).thenThrow(TripNotFoundException.class);
+        when(tripRepository.findTripByCityId(1, RemoveType.PRE_REMOVE.name())).thenThrow(TripNotFoundException.class);
         tripService.getTripByCityId(1);
     }
 

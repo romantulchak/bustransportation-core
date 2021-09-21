@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS seat
 
 CREATE TABLE IF NOT EXISTS route
 (
-    id             bigserial    not null unique primary key,
+    id             bigserial    not null primary key,
     departure_from varchar(100) not null,
     arrival_to     varchar(100) not null,
     departure_time timestamp    not null,

@@ -35,7 +35,7 @@ public class BookingController {
 
     @GetMapping("/findUserBooking")
     @PreAuthorize("isAuthenticated()")
-    public PageableDTO<Collection<BookingDTO>> findUserBookings(@RequestParam(value = "page", defaultValue = "0") int page,
+    public PageableDTO<BookingDTO> findUserBookings(@RequestParam(value = "page", defaultValue = "0") int page,
                                                                @RequestParam(value = "size", defaultValue = "5") int size,
                                                                Authentication authentication){
         return bookingService.findUserBookings(page,size, authentication);

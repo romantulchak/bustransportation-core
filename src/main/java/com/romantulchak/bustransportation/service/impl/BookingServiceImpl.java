@@ -73,7 +73,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public PageableDTO<Collection<BookingDTO>> findUserBookings(int page, int size, Authentication authentication) {
+    public PageableDTO<BookingDTO> findUserBookings(int page, int size, Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         Pageable bookingDTOS = PageRequest.of(page, size);
         Page<Booking> bookings = bookingRepository.findBookingByUserId(principal.getId(), bookingDTOS);

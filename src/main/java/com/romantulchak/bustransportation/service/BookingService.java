@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface BookingService {
     void create(List<BookingRequest> bookingRequests, long cityId, Authentication authentication);
-    PageableDTO<Collection<BookingDTO>> findUserBookings(int page, int size, Authentication authentication);
+    PageableDTO<BookingDTO> findUserBookings(int page, int size, Authentication authentication);
 }

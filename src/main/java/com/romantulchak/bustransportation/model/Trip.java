@@ -55,7 +55,7 @@ public class Trip implements Cloneable{
     private LocalDate dateEnded;
 
     @Enumerated(EnumType.STRING)
-    private RemoveType removeType;
+    private RemoveType removeType = RemoveType.SAVED;
 
     public long getId() {
         return id;

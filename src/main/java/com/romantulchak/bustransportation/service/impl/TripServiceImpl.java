@@ -2,6 +2,7 @@ package com.romantulchak.bustransportation.service.impl;
 
 import com.ecfinder.core.manager.ECFinderInvoker;
 import com.mapperDTO.mapper.EntityMapperInvoker;
+import com.romantulchak.bustransportation.dto.PageableDTO;
 import com.romantulchak.bustransportation.dto.TripDTO;
 import com.romantulchak.bustransportation.exception.BusNotFoundException;
 import com.romantulchak.bustransportation.exception.TripAlreadyPreDeletedException;
@@ -15,6 +16,9 @@ import com.romantulchak.bustransportation.repository.SeatRepository;
 import com.romantulchak.bustransportation.repository.TripRepository;
 import com.romantulchak.bustransportation.service.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,7 +67,7 @@ public class TripServiceImpl implements TripService {
                 trip1.getStops().forEach(cityStop -> cityStop.setDeparture(cityStop.getDeparture().plusDays(1)));
                 initTrip(trip1, userDetails);
             }
-        }else {
+        } else {
             initTrip(trip, userDetails);
         }
     }
@@ -119,7 +123,7 @@ public class TripServiceImpl implements TripService {
     public TripDTO editTripBus(Trip trip, long busId, Authentication authentication) {
         UserDetailsImpl user = userInSystem(authentication);
         Bus bus = busRepository.findBusByIdAndUserId(busId, user.getId()).orElseThrow(BusNotFoundException::new);
-        if (!Objects.equals(trip.getBus(), bus)){
+        if (!Objects.equals(trip.getBus(), bus)) {
             trip.setBus(bus);
             trip.setNumberOfSeats(bus.getNumberOfSeats());
             tripRepository.save(trip);
@@ -135,11 +139,10 @@ public class TripServiceImpl implements TripService {
     @Override
     public void preDelete(long id) {
         Trip trip = tripRepository.findById(id).orElseThrow(TripNotFoundException::new);
-        if (trip.getRemoveType() == RemoveType.PRE_REMOVE){
+        if (trip.getRemoveType() == RemoveType.PRE_REMOVE) {
             throw new TripAlreadyPreDeletedException(trip.getId(), trip.getName());
         }
-        trip.setRemoveType(RemoveType.PRE_REMOVE);
-        tripRepository.save(trip);
+        tripRepository.updateRemoveType(trip.getId(), RemoveType.PRE_REMOVE);
     }
 
     @Override
@@ -159,23 +162,35 @@ public class TripServiceImpl implements TripService {
     }
 
     @Override
-    public List<TripDTO> getTripsForUser(Authentication authentication) {
-        UserDetailsImpl userDetails = userInSystem(authentication);
-        return tripRepository.findTripsForUser(userDetails.getId(), RemoveType.PRE_REMOVE)
-                .stream()
-                .map(trip -> convertToDTO(trip, View.TripView.class))
-                .collect(Collectors.toList());
+    public PageableDTO<TripDTO> getTripsForUser(int page, Authentication authentication) {
+        return getTripDTOPageableDTO(page, authentication, RemoveType.SAVED);
     }
 
     @Override
     public TripDTO getTripByCityId(long id) {
-        Trip trip = tripRepository.findTripByCityId(id, RemoveType.PRE_REMOVE).orElseThrow(TripNotFoundException::new);
+        Trip trip = tripRepository.findTripByCityId(id, RemoveType.PRE_REMOVE.name()).orElseThrow(TripNotFoundException::new);
         return convertToDTO(trip, View.TripView.class);
     }
 
     @Override
     public List<CityStop> getStopsForTrip(long id) {
         return ecFinderInvoker.invoke(id, CityStop.class, Trip.class);
+    }
+
+    @Override
+    public PageableDTO<TripDTO> getPreDeletedTrips(int page, Authentication authentication) {
+        return getTripDTOPageableDTO(page, authentication, RemoveType.PRE_REMOVE);
+    }
+
+    private PageableDTO<TripDTO> getTripDTOPageableDTO(int page, Authentication authentication, RemoveType preRemove) {
+        UserDetailsImpl userDetails = userInSystem(authentication);
+        Pageable pageable = PageRequest.of(page, 1);
+        Page<Trip> tripsPage = tripRepository.findTripsForUser(userDetails.getId(), preRemove, pageable);
+        List<TripDTO> trips = tripsPage.getContent()
+                .stream()
+                .map(trip -> convertToDTO(trip, View.TripView.class))
+                .collect(Collectors.toList());
+        return new PageableDTO<>(tripsPage.getTotalPages(), tripsPage.getTotalElements(), page, trips);
     }
 
     private TripDTO convertToDTO(Trip trip, Class<?> classToCheck) {
