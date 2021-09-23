@@ -3,6 +3,7 @@ package com.romantulchak.bustransportation.model;
 import com.ecfinder.core.anotation.ECF;
 import com.ecfinder.core.anotation.ECFUnique;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.mapperDTO.annotation.DTO;
 import com.mapperDTO.annotation.MapToDTO;
 import com.romantulchak.bustransportation.validator.constraint.DateFormatConstraint;
 
@@ -12,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@DTO
 @ECF(tableName = "stops")
 @Embeddable
 public class CityStop {

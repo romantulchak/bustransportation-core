@@ -39,15 +39,15 @@ public class Trip implements Cloneable{
     @Enumerated(EnumType.STRING)
     private TripType tripType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.TRUE)
     private User creator;
 
     @CityStopConstraint
-    @ElementCollection(targetClass = CityStop.class)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    @ElementCollection
     private List<@Valid CityStop> stops;
 
-    @OneToMany(mappedBy = "trip", fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "trip", orphanRemoval = true)
     private List<Route> routes;
 
     private LocalDate dateStart;

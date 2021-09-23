@@ -65,6 +65,12 @@ public class TripController {
         return tripService.editTripBus(trip, busId, authentication);
     }
 
+    @DeleteMapping("/full-delete/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public void fullDeleteTrip(@PathVariable("id") long id){
+        tripService.delete(id);
+    }
+
     @PutMapping("/pre-delete/{id}")
     @PreAuthorize("hasRole('USER')")
     public void preDeleteTrip(@PathVariable("id") long id){
