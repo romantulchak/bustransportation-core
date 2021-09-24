@@ -82,4 +82,18 @@ public class TripController {
     public PageableDTO<TripDTO> getPreDeletedTrips(@PathVariable("page") int page, Authentication authentication){
         return tripService.getPreDeletedTrips(page, authentication);
     }
+
+    @GetMapping("/count-pre-deleted-trips")
+    @PreAuthorize("hasRole('USER')")
+    public int getCountPreDeletedTrips(Authentication authentication){
+        return tripService.getCountPreDeletedTrips(authentication);
+    }
+
+    @PutMapping("/restore-trip/{id}")
+    @PreAuthorize("hasRole('USER')")
+    @JsonView(View.TripView.class)
+    public TripDTO restoreTrip(@PathVariable("id") long id){
+        return tripService.restoreTrip(id);
+    }
+
 }

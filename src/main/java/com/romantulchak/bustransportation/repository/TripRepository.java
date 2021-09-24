@@ -2,6 +2,7 @@ package com.romantulchak.bustransportation.repository;
 
 import com.romantulchak.bustransportation.model.Trip;
 import com.romantulchak.bustransportation.model.enums.RemoveType;
+import com.romantulchak.bustransportation.model.enums.TripType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,4 +28,6 @@ public interface TripRepository extends JpaRepository<Trip, Long> {
     @Modifying
     @Query(value = "UPDATE Trip t SET t.removeType = :removeType WHERE t.id = :id")
     void updateRemoveType(@Param("id") long id, @Param("removeType") RemoveType removeType);
+
+    Optional<Integer> countAllByRemoveTypeAndCreatorId(RemoveType removeType, long id);
 }

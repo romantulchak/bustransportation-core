@@ -30,4 +30,8 @@ public interface TripService {
     List<CityStop> getStopsForTrip(long id);
 
     PageableDTO<TripDTO> getPreDeletedTrips(int page, Authentication authentication);
+
+    int getCountPreDeletedTrips(Authentication authentication);
+
+    TripDTO restoreTrip(long id);
 }
