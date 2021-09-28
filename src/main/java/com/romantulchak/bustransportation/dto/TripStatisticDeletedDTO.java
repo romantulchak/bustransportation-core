@@ -1,45 +1,43 @@
-package com.romantulchak.bustransportation.model;
+package com.romantulchak.bustransportation.dto;
 
-import com.ecfinder.core.anotation.ECFEntity;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.mapperDTO.annotation.DTO;
+import com.mapperDTO.annotation.MapToDTO;
+import com.romantulchak.bustransportation.model.CityStop;
+import com.romantulchak.bustransportation.model.View;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
-@ECFEntity(tablePrefix = "trip_statistic_deleted")
-@Entity
-public class TripStatisticDeleted {
+@DTO
+public class TripStatisticDeletedDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonView(View.TripDeletedStatistic.class)
+    @MapToDTO(mapClass = {View.TripDeletedStatistic.class})
     private long id;
 
+    @JsonView(View.TripDeletedStatistic.class)
+    @MapToDTO(mapClass = {View.TripDeletedStatistic.class})
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    @JsonView(View.TripDeletedStatistic.class)
+    @MapToDTO(mapClass = {View.TripDeletedStatistic.class})
+    private UserDTO user;
 
-    @ElementCollection
-    @LazyCollection(LazyCollectionOption.TRUE)
     private List<CityStop> stops;
 
+    @JsonView(View.TripDeletedStatistic.class)
+    @MapToDTO(mapClass = {View.TripDeletedStatistic.class})
     private LocalDateTime startDate;
 
+    @JsonView(View.TripDeletedStatistic.class)
+    @MapToDTO(mapClass = {View.TripDeletedStatistic.class})
     private LocalDateTime endDate;
 
+    @JsonView(View.TripDeletedStatistic.class)
+    @MapToDTO(mapClass = {View.TripDeletedStatistic.class})
     private LocalDateTime removeDate;
-
-    public TripStatisticDeleted(){}
-
-    public TripStatisticDeleted(String name, User user, List<CityStop> stops, LocalDateTime startDate, LocalDateTime endDate) {
-        this.name = name;
-        this.user = user;
-        this.stops = stops;
-        this.startDate = startDate;
-        this.endDate = endDate;
-    }
 
     public long getId() {
         return id;
@@ -57,11 +55,11 @@ public class TripStatisticDeleted {
         this.name = name;
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserDTO user) {
         this.user = user;
     }
 
@@ -97,4 +95,3 @@ public class TripStatisticDeleted {
         this.removeDate = removeDate;
     }
 }
-

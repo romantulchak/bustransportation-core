@@ -48,6 +48,7 @@ public class TripController {
     }
 
     @GetMapping("/tripsForUser/{page}")
+    @PreAuthorize("hasRole('USER')")
     public PageableDTO<TripDTO> getTripsForUser(@PathVariable("page") int page, Authentication authentication) {
         return tripService.getTripsForUser(page, authentication);
     }

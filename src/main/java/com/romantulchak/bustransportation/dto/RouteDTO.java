@@ -41,7 +41,6 @@ public class RouteDTO {
     @JsonView(View.RouteView.class)
     private int exitStop;
 
-
     private TripDTO tripDTO;
 
     public String getDepartureFrom() {

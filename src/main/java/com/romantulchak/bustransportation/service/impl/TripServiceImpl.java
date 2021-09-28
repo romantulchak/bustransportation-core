@@ -11,8 +11,12 @@ import com.romantulchak.bustransportation.exception.TripNotInPreDeletedState;
 import com.romantulchak.bustransportation.model.*;
 import com.romantulchak.bustransportation.model.enums.RemoveType;
 import com.romantulchak.bustransportation.model.enums.TripType;
-import com.romantulchak.bustransportation.repository.*;
+import com.romantulchak.bustransportation.repository.BusRepository;
+import com.romantulchak.bustransportation.repository.RouteRepository;
+import com.romantulchak.bustransportation.repository.SeatRepository;
+import com.romantulchak.bustransportation.repository.TripRepository;
 import com.romantulchak.bustransportation.service.TripService;
+import com.romantulchak.bustransportation.service.TripStatisticDeletedService;
 import com.romantulchak.bustransportation.utils.PageableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +26,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ public class TripServiceImpl implements TripService {
     private final SeatRepository seatRepository;
     private final RouteRepository routeRepository;
     private final BusRepository busRepository;
-    private final TripStatisticDeletedRepository tripStatisticDeletedRepository;
+    private final TripStatisticDeletedService tripStatisticDeletedService;
     private final ECFinderInvoker<CityStop> ecFinderInvoker;
     private final EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker;
 
@@ -47,7 +50,7 @@ public class TripServiceImpl implements TripService {
                            SeatRepository seatRepository,
                            RouteRepository routeRepository,
                            BusRepository busRepository,
-                           TripStatisticDeletedRepository tripStatisticDeletedRepository,
+                           TripStatisticDeletedService tripStatisticDeletedService,
                            ECFinderInvoker<CityStop> ecFinderInvoker,
                            EntityMapperInvoker<Trip, TripDTO> entityMapperInvoker) {
         this.tripRepository = tripRepository;
@@ -55,7 +58,7 @@ public class TripServiceImpl implements TripService {
         this.busRepository = busRepository;
         this.seatRepository = seatRepository;
         this.routeRepository = routeRepository;
-        this.tripStatisticDeletedRepository = tripStatisticDeletedRepository;
+        this.tripStatisticDeletedService = tripStatisticDeletedService;
         this.entityMapperInvoker = entityMapperInvoker;
     }
 
@@ -134,14 +137,11 @@ public class TripServiceImpl implements TripService {
         return convertToDTO(trip, View.TripView.class);
     }
 
+    @Transactional
     @Override
     public void delete(long id) {
         Trip trip = tripRepository.findById(id).orElseThrow(TripNotFoundException::new);
-        List<CityStop> stops = ecFinderInvoker.invoke(trip.getId(), CityStop.class, Trip.class);
-        LocalDateTime departure = stops.get(0).getDeparture();
-        LocalDateTime arrival = stops.get(stops.size() - 1).getArrival();
-        TripStatisticDeleted tripStatisticDeleted = new TripStatisticDeleted(trip.getName(), trip.getCreator(), stops, departure, arrival);
-        tripStatisticDeletedRepository.save(tripStatisticDeleted);
+        tripStatisticDeletedService.create(trip);
         tripRepository.deleteById(id);
     }
 

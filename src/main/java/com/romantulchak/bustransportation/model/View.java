@@ -9,4 +9,5 @@ public class View{
     public interface RouteView{}
     public interface TripTemplateView{}
     public interface TripTemplateStopsView{}
+    public interface TripDeletedStatistic{}
 }

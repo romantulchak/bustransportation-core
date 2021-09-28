@@ -1,3 +1,5 @@
+CREATE SEQUENCE IF NOT EXISTS hibernate_sequence START 1;
+
 CREATE TABLE IF NOT EXISTS role
 (
     id   bigserial   not null primary key,
